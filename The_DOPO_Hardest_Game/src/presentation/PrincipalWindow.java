@@ -7,7 +7,8 @@ import java.awt.*;
 
 /**
  * Ventana principal Swing que organiza pantallas y arranca partidas.
- * Autores: MurilloRubiano con apoyo de Claude Opus 4.6.
+ * @author (MurilloRubiano)
+ * @version (1.5)
  */
 public class PrincipalWindow extends JFrame {
 
