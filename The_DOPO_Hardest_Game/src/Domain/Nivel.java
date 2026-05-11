@@ -17,6 +17,7 @@ public class Nivel {
     private ZonaSegura zonaInicio;
     private ZonaSegura zonaMeta;
     private int tiempoLimite;
+    private List<Wall> paredes;
 
     /**
      * Construye un nivel con numero identificador y tiempo limite.
@@ -29,6 +30,7 @@ public class Nivel {
         this.tiempoLimite = tiempoLimite;
         this.enemigos = new ArrayList<>();
         this.monedas = new ArrayList<>();
+        this.paredes = new ArrayList<>();
     }
 
     /**
@@ -77,6 +79,14 @@ public class Nivel {
      */
     public int getNumero() {
         return numero;
+    }
+    
+    /**
+     * Obtiene las paredes
+     * @return paredes la lista de las paredes
+     */
+    public List<Wall> getParedes(){
+    	return paredes;
     }
 
     /**

@@ -63,6 +63,10 @@ public class GestorColisiones {
         for (Enemigo enemigo : nivel.getEnemigos()) {
             if (jugadorTocaEnemigo(jugador, enemigo)) {
                 jugador.perderVida();
+                //reiniciar monedas del nivel
+                for(Moneda moneda : nivel.getMonedas()) {
+                	moneda.reiniciar();
+                }
                 return;
             }
         }
@@ -73,5 +77,23 @@ public class GestorColisiones {
                 jugador.recogerMoneda(moneda);
             }
         }
+    }
+    
+    /**
+     * Verifica si el jugador colisiona con alguna pared y revierte su posicion
+     * 
+     * @param nivel
+     * @param prevX
+     * @param prevY
+     */
+    public void verificarColisionParedes(Nivel nivel, double prevX, double prevY) {
+    	Jugador jugador = nivel.getJugador();
+    	for(Wall pared : nivel.getParedes()) {
+    		if(detectarColision(jugador, pared)) {
+    			jugador.getPosicion().setX(prevX);
+    			jugador.getPosicion().setY(prevY);
+    			return;
+    		}
+    	}
     }
 }

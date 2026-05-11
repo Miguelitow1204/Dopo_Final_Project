@@ -5,6 +5,8 @@ import Domain.*;
 import javax.swing.*;
 import java.awt.*;
 
+import java.io.IOException;
+
 /**
  * Ventana principal Swing que organiza pantallas y arranca partidas.
  * @author (MurilloRubiano)
@@ -87,71 +89,21 @@ public class PrincipalWindow extends JFrame {
 
         // Crear el modelo del juego
         Juego juego = new Juego();
-
-        // Crear los 3 niveles
-        juego.agregarNivel(crearNivel1(tipo));
-        juego.agregarNivel(crearNivel2(tipo));
-        juego.agregarNivel(crearNivel3(tipo));
-
-        // Crear la pantalla de juego y agregarla al CardLayout
+        try {
+        	juego.agregarNivel(LectorNivel.cargar("configuraciones/nivel1.txt", tipo));
+        	juego.agregarNivel(crearNivel2(tipo));
+        	juego.agregarNivel(crearNivel3(tipo));
+        } catch (IOException e) {
+        	System.err.println("Error cargando nivel: " + e.getMessage());
+        }
+        
         GameScreen gameScreen = new GameScreen();
         container.add(gameScreen, GAME_SCREEN);
         cardLayout.show(container, GAME_SCREEN);
-
-        // Crear y arrancar el controlador del juego
+        
         controladorJuego = new ControladorJuego(juego, gameScreen, this);
         controladorJuego.iniciar();
-    }
-
-    // =============================================
-    // Creacion de niveles
-    // =============================================
-
-    /**
-     * Crea la configuracion del nivel 1.
-     *
-     * @param tipo tipo de personaje seleccionado.
-     * @return nivel listo para agregarse al juego.
-     */
-    private Nivel crearNivel1(TipoPersonaje tipo) {
-        Nivel nivel = new Nivel(1, 60);
-
-        Jugador jugador = new Jugador(new Posicion(45, 270), "Player", tipo);
-        nivel.setJugador(jugador);
-
-        nivel.setZonaInicio(new ZonaSegura(
-                new Posicion(0, 210), 100, 150, TipoZona.INICIO));
-        nivel.setZonaMeta(new ZonaSegura(
-                new Posicion(700, 210), 100, 150, TipoZona.META));
-
-        // Monedas
-        nivel.getMonedas().add(new Moneda(new Posicion(280, 230)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 280)));
-        nivel.getMonedas().add(new Moneda(new Posicion(520, 230)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 180)));
-        nivel.getMonedas().add(new Moneda(new Posicion(340, 340)));
-
-        // Enemigos horizontales
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(250, 190), 14, 14, 2,
-                new Posicion(180, 190), new Posicion(620, 190), true));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(450, 280), 14, 14, 2.5,
-                new Posicion(180, 280), new Posicion(620, 280), true));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(350, 370), 14, 14, 1.8,
-                new Posicion(180, 370), new Posicion(620, 370), true));
-
-        // Enemigos verticales
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(220, 180), 14, 14, 2,
-                new Posicion(220, 100), new Posicion(220, 480), false));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(580, 250), 14, 14, 2.2,
-                new Posicion(580, 100), new Posicion(580, 480), false));
-
-        return nivel;
-    }
+    } 
 
     /**
      * Crea la configuracion del nivel 2.

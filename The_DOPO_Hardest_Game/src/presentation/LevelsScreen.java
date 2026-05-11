@@ -67,16 +67,25 @@ public class LevelsScreen extends JPanel {
         String[] labels = {"1", "2", "3", "4", "5"};
         boolean[] unlocked = {true, false, false, false, false};
 
-        int col = 0, row = 1;
+        int col = 0;
+        int	row = 1;
         for (int i = 0; i < labels.length; i++) {
             JButton btn = createLevelButton(labels[i], unlocked[i]);
-            gbc.gridx = col; gbc.gridy = row;
+            //Permite acceder al nivel desde la pantalla de levels
+            if(unlocked[i]) {
+            	btn.addActionListener(e -> window.showCharacterSelection());
+            }
+            gbc.gridx = col;
+            gbc.gridy = row;
             add(btn, gbc);
             col++;
-            if (col > 2) { col = 0; row++; }
+            if(col > 2) {
+            	col = 0;
+            	row++;
+            }
         }
 
-        // Botón volver
+        //Botón volver
         JButton btnBack = new JButton("← BACK");
         btnBack.setFont(new Font("Monospaced", Font.BOLD, 14));
         btnBack.setBackground(new Color(180, 60, 60));

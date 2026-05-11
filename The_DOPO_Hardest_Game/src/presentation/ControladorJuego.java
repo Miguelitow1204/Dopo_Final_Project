@@ -9,7 +9,8 @@ import java.awt.event.KeyEvent;
 
 /**
  * Controlador principal del ciclo de juego, entrada de teclado y estados.
- * Autores: MurilloRubiano con apoyo de Claude Opus 4.6.
+ * @author Murillo-Rubiano
+ * @version 2.0
  */
 public class ControladorJuego implements ActionListener {
 
@@ -52,6 +53,12 @@ public class ControladorJuego implements ActionListener {
             if (juego.getEstado() == EstadoJuego.JUGANDO) {
                 juego.decrementarTiempo();
                 gameScreen.setTiempoRestante(juego.getTiempoRestante());
+                
+                //Derrota por tiempo
+                if(juego.getTiempoRestante() <= 0) {
+                	juego.setEstado(EstadoJuego.GAME_OVER);
+                	gameScreen.mostrarDerrota();
+                }
             }
         });
     }
@@ -65,7 +72,7 @@ public class ControladorJuego implements ActionListener {
         gameScreen.setNivel(nivel);
         gameScreen.setTiempoRestante(juego.getTiempoRestante());
         gameScreen.setMuertes(nivel.getJugador().getMuertes());
-        gameScreen.ocultarMensaje();
+        gameScreen.ocultarOverlay();
         temporizadorJuego.start();
         temporizadorSegundo.start();
 
@@ -117,7 +124,6 @@ public class ControladorJuego implements ActionListener {
         int dx = 0;
         int dy = 0;
 
-        // Solo una direccion a la vez (sin diagonal)
         if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_W) ||
                 controladorTeclado.isTeclaPresionada(KeyEvent.VK_UP)) {
             dy = -1;
@@ -132,10 +138,9 @@ public class ControladorJuego implements ActionListener {
             dx = 1;
         }
 
-        // Pausa con ESC
         if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
             juego.pausar();
-            gameScreen.setMensaje("PAUSED");
+            gameScreen.mostrarPausa();
             return;
         }
 
@@ -145,15 +150,19 @@ public class ControladorJuego implements ActionListener {
 
             jugador.mover(dx, dy);
 
-            // Verificar limites del area de juego (800x600, HUD=45)
             double newX = jugador.getPosicion().getX();
             double newY = jugador.getPosicion().getY();
 
+            // Limites del mapa coinciden con las paredes del nivel
             if (newX < 0 || newX + jugador.getAncho() > GameScreen.ANCHO ||
-                    newY < 45 || newY + jugador.getAlto() > GameScreen.ALTO) {
+                    newY < 155 || newY + jugador.getAlto() > 420) {
                 jugador.getPosicion().setX(prevX);
                 jugador.getPosicion().setY(prevY);
             }
+
+            // Verificar colision con paredes internas
+            gestorColisiones.verificarColisionParedes(
+                    juego.getNivelActual(), prevX, prevY);
         }
     }
 
@@ -161,28 +170,44 @@ public class ControladorJuego implements ActionListener {
      * Gestiona teclas cuando el juego esta en pausa.
      */
     private void procesarTeclasPausa() {
-        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER)) {
-            if (nivelCompletado) {
+    	if (nivelCompletado) {
+            //Retry
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
+                nivelCompletado = false;
+                juego.reiniciarNivel();
+                gameScreen.setTiempoRestante(juego.getTiempoRestante());
+                gameScreen.setMuertes(juego.getNivelActual().getJugador().getMuertes());
+                gameScreen.ocultarOverlay();
+                juego.setEstado(EstadoJuego.JUGANDO);
+                temporizadorSegundo.restart();
+            }
+            //Next level
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_N)) {
                 nivelCompletado = false;
                 boolean hayMas = juego.siguienteNivel();
                 if (hayMas) {
-                    gameScreen.ocultarMensaje();
+                    gameScreen.ocultarOverlay();
                     gameScreen.setNivel(juego.getNivelActual());
                     gameScreen.setTiempoRestante(juego.getTiempoRestante());
                     gameScreen.setMuertes(juego.getNivelActual().getJugador().getMuertes());
+                    juego.setEstado(EstadoJuego.JUGANDO);
                 } else {
-                    // Juego completado - ya se mostro VICTORIA
+                    detener();
+                    window.showMenu();
                 }
-            } else {
-                // Reanudar pausa normal
-                juego.pausar();
-                gameScreen.ocultarMensaje();
             }
-        }
-        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
-            // Volver al menu desde pausa
-            detener();
-            window.showMenu();
+            //Menu
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
+                detener();
+                window.showMenu();
+            }
+        } else {
+            //Pausa normal - reanudar con ENTER o ESC
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER) ||
+                    controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
+                juego.pausar();
+                gameScreen.ocultarOverlay();
+            }
         }
     }
 
@@ -190,8 +215,17 @@ public class ControladorJuego implements ActionListener {
      * Gestiona teclas cuando el juego esta en estado game over.
      */
     private void procesarTeclasGameOver() {
-        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER) ||
-                controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
+    	//Retry
+        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
+        	juego.reiniciarNivel();
+            gameScreen.setTiempoRestante(juego.getTiempoRestante());
+            gameScreen.setMuertes(juego.getNivelActual().getJugador().getMuertes());
+            gameScreen.ocultarOverlay();
+            juego.setEstado(EstadoJuego.JUGANDO);
+            temporizadorSegundo.restart();
+        }
+        //Menu
+        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
             detener();
             window.showMenu();
         }
@@ -201,17 +235,11 @@ public class ControladorJuego implements ActionListener {
      * Verifica si el nivel fue completado y prepara transicion.
      */
     private void verificarVictoria() {
-        Nivel nivel = juego.getNivelActual();
+    	Nivel nivel = juego.getNivelActual();
         if (nivel.estaCompleto()) {
             nivelCompletado = true;
             juego.setEstado(EstadoJuego.PAUSA);
-
-            // Verificar si era el ultimo nivel
-            if (juego.getIndiceNivel() >= juego.getNiveles().size() - 1) {
-                gameScreen.setMensaje("VICTORY! GAME COMPLETED!");
-            } else {
-                gameScreen.setMensaje("LEVEL " + nivel.getNumero() + " COMPLETED!");
-            }
+            gameScreen.mostrarVictoria();
         }
     }
 
