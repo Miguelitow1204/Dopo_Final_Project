@@ -9,8 +9,9 @@ import java.io.IOException;
 
 /**
  * Ventana principal Swing que organiza pantallas y arranca partidas.
+ * 
  * @author (MurilloRubiano)
- * @version (1.5)
+ * @version (2.0)
  */
 public class PrincipalWindow extends JFrame {
 
@@ -19,6 +20,8 @@ public class PrincipalWindow extends JFrame {
     private static final String LEVELS_SCREEN = "SELECT LEVEL";
     private static final String CHARACTER_SCREEN = "SELECT CHARACTER";
     private static final String GAME_SCREEN = "GAME";
+
+    private static final int TOTAL_NIVELES = 3; // Total de niveles disponibles
 
     private CardLayout cardLayout;
     private JPanel container;
@@ -81,128 +84,36 @@ public class PrincipalWindow extends JFrame {
 
     /**
      * Inicia el juego con el skin seleccionado.
-     * Crea los niveles, el modelo, la pantalla de juego y el controlador.
+     * Delega la creacion de niveles a FabricaNivel: cada nivel
+     * se lee desde su archivo configuraciones/nivelN.txt.
+     *
+     * @param skin identificador de skin ("RED", "BLUE", "GREEN").
      */
     public void startGame(String skin) {
-        // Convertir skin string a TipoPersonaje
         TipoPersonaje tipo = Jugador.skinToTipo(skin);
 
-        // Crear el modelo del juego
         Juego juego = new Juego();
         try {
-        	juego.agregarNivel(LectorNivel.cargar("configuraciones/nivel1.txt", tipo));
-        	juego.agregarNivel(crearNivel2(tipo));
-        	juego.agregarNivel(crearNivel3(tipo));
-        } catch (IOException e) {
-        	System.err.println("Error cargando nivel: " + e.getMessage());
+            FabricaNivel.cargarTodos(tipo, TOTAL_NIVELES)
+                    .forEach(juego::agregarNivel);
+        } catch (NivelNoEncontradoException e) {
+            System.err.println("[ERROR] " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
+                    "Error al cargar", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        
+
         GameScreen gameScreen = new GameScreen();
         container.add(gameScreen, GAME_SCREEN);
         cardLayout.show(container, GAME_SCREEN);
-        
+
         controladorJuego = new ControladorJuego(juego, gameScreen, this);
         controladorJuego.iniciar();
-    } 
-
-    /**
-     * Crea la configuracion del nivel 2.
-     *
-     * @param tipo tipo de personaje seleccionado.
-     * @return nivel listo para agregarse al juego.
-     */
-    private Nivel crearNivel2(TipoPersonaje tipo) {
-        Nivel nivel = new Nivel(2, 90);
-
-        Jugador jugador = new Jugador(new Posicion(45, 270), "Player", tipo);
-        nivel.setJugador(jugador);
-
-        nivel.setZonaInicio(new ZonaSegura(
-                new Posicion(0, 210), 100, 150, TipoZona.INICIO));
-        nivel.setZonaMeta(new ZonaSegura(
-                new Posicion(700, 210), 100, 150, TipoZona.META));
-
-        // Mas monedas
-        nivel.getMonedas().add(new Moneda(new Posicion(200, 140)));
-        nivel.getMonedas().add(new Moneda(new Posicion(350, 200)));
-        nivel.getMonedas().add(new Moneda(new Posicion(500, 300)));
-        nivel.getMonedas().add(new Moneda(new Posicion(600, 180)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 400)));
-        nivel.getMonedas().add(new Moneda(new Posicion(250, 380)));
-        nivel.getMonedas().add(new Moneda(new Posicion(550, 440)));
-
-        // Mas enemigos - filas horizontales
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(250, 130), 14, 14, 2.5,
-                new Posicion(140, 130), new Posicion(650, 130), true));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(450, 220), 14, 14, 3,
-                new Posicion(140, 220), new Posicion(650, 220), true));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(300, 310), 14, 14, 2,
-                new Posicion(140, 310), new Posicion(650, 310), true));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(500, 400), 14, 14, 2.8,
-                new Posicion(140, 400), new Posicion(650, 400), true));
-
-        // Columnas verticales
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(250, 160), 14, 14, 2.2,
-                new Posicion(250, 70), new Posicion(250, 520), false));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(420, 280), 14, 14, 2.5,
-                new Posicion(420, 70), new Posicion(420, 520), false));
-        nivel.getEnemigos().add(new EnemigoLineal(
-                new Posicion(590, 200), 14, 14, 2,
-                new Posicion(590, 70), new Posicion(590, 520), false));
-
-        return nivel;
     }
 
-    /**
-     * Crea la configuracion del nivel 3.
-     *
-     * @param tipo tipo de personaje seleccionado.
-     * @return nivel listo para agregarse al juego.
-     */
-    private Nivel crearNivel3(TipoPersonaje tipo) {
-        Nivel nivel = new Nivel(3, 120);
-
-        Jugador jugador = new Jugador(new Posicion(45, 270), "Player", tipo);
-        nivel.setJugador(jugador);
-
-        nivel.setZonaInicio(new ZonaSegura(
-                new Posicion(0, 210), 100, 150, TipoZona.INICIO));
-        nivel.setZonaMeta(new ZonaSegura(
-                new Posicion(700, 210), 100, 150, TipoZona.META));
-
-        // Monedas dispersas por todo el mapa
-        nivel.getMonedas().add(new Moneda(new Posicion(200, 110)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 110)));
-        nivel.getMonedas().add(new Moneda(new Posicion(600, 110)));
-        nivel.getMonedas().add(new Moneda(new Posicion(200, 290)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 290)));
-        nivel.getMonedas().add(new Moneda(new Posicion(600, 290)));
-        nivel.getMonedas().add(new Moneda(new Posicion(200, 470)));
-        nivel.getMonedas().add(new Moneda(new Posicion(400, 470)));
-        nivel.getMonedas().add(new Moneda(new Posicion(600, 470)));
-
-        // Patron cruzado de enemigos
-        for (int i = 0; i < 5; i++) {
-            nivel.getEnemigos().add(new EnemigoLineal(
-                    new Posicion(160 + i * 100, 90 + i * 40), 14, 14, 2 + i * 0.3,
-                    new Posicion(120, 90 + i * 40), new Posicion(680, 90 + i * 40), true));
-        }
-        for (int i = 0; i < 4; i++) {
-            nivel.getEnemigos().add(new EnemigoLineal(
-                    new Posicion(200 + i * 120, 120), 14, 14, 2 + i * 0.2,
-                    new Posicion(200 + i * 120, 60), new Posicion(200 + i * 120, 540), false));
-        }
-
-        return nivel;
-    }
-
-    /**
+    /*
+     * /**
      * Punto de entrada de la aplicacion de escritorio.
      *
      * @param args argumentos de linea de comandos.

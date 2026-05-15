@@ -1,0 +1,43 @@
+
+# NIVEL 3 - The DOPO Hardest Game
+#MurilloRubiano
+
+NUMERO = 3
+TIEMPO = 120
+
+# Posicion inicial del jugador
+JUGADOR = 45,270
+
+# Zonas seguras
+ZONA_INICIO = 0,210,100,150
+ZONA_META   = 700,210,100,150
+
+
+# Monedas en cuadricula 3x3
+
+MONEDA = 200,110
+MONEDA = 400,110
+MONEDA = 600,110
+MONEDA = 200,290
+MONEDA = 400,290
+MONEDA = 600,290
+MONEDA = 200,470
+MONEDA = 400,470
+MONEDA = 600,470
+
+
+# Enemigos horizontales - patron diagonal escalonado
+# (i=0..4): posicion y velocidad aumentan progresivamente
+
+ENEMIGO_LINEAL = 160,90,2.0,H,120,90,680,90
+ENEMIGO_LINEAL = 260,130,2.3,H,120,130,680,130
+ENEMIGO_LINEAL = 360,170,2.6,H,120,170,680,170
+ENEMIGO_LINEAL = 460,210,2.9,H,120,210,680,210
+ENEMIGO_LINEAL = 560,250,3.2,H,120,250,680,250
+
+# Enemigos verticales - columnas uniformes
+# (i=0..3): misma altura inicial, velocidad crece suavemente
+ENEMIGO_LINEAL = 200,120,2.0,V,200,60,200,540
+ENEMIGO_LINEAL = 320,120,2.2,V,320,60,320,540
+ENEMIGO_LINEAL = 440,120,2.4,V,440,60,440,540
+ENEMIGO_LINEAL = 560,120,2.6,V,560,60,560,540
