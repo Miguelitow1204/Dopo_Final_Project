@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 
 /**
  * Controlador principal del ciclo de juego, entrada de teclado y estados.
+ * 
  * @author Murillo-Rubiano
  * @version 2.0
  */
@@ -53,11 +54,11 @@ public class ControladorJuego implements ActionListener {
             if (juego.getEstado() == EstadoJuego.JUGANDO) {
                 juego.decrementarTiempo();
                 gameScreen.setTiempoRestante(juego.getTiempoRestante());
-                
-                //Derrota por tiempo
-                if(juego.getTiempoRestante() <= 0) {
-                	juego.setEstado(EstadoJuego.GAME_OVER);
-                	gameScreen.mostrarDerrota();
+
+                // Derrota por tiempo
+                if (juego.getTiempoRestante() <= 0) {
+                    juego.setEstado(EstadoJuego.GAME_OVER);
+                    gameScreen.mostrarDerrota();
                 }
             }
         });
@@ -95,25 +96,24 @@ public class ControladorJuego implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (juego.getEstado() == EstadoJuego.GAME_OVER) {
-            procesarTeclasGameOver();
-            gameScreen.repaint();
-            return;
+        switch (juego.getEstado()) {
+            case GAME_OVER:
+                procesarTeclasGameOver();
+                break;
+            case PAUSA:
+                procesarTeclasPausa();
+                break;
+            case JUGANDO:
+                procesarEntrada();
+                juego.getNivelActual().actualizar();
+                gestorColisiones.verificarColisionesNivel(juego.getNivelActual());
+                verificarVictoria();
+                actualizarVista();
+                break;
+            default:
+                break;
         }
-
-        if (juego.getEstado() == EstadoJuego.PAUSA) {
-            procesarTeclasPausa();
-            gameScreen.repaint();
-            return;
-        }
-
-        if (juego.getEstado() == EstadoJuego.JUGANDO) {
-            procesarEntrada();
-            juego.getNivelActual().actualizar();
-            gestorColisiones.verificarColisionesNivel(juego.getNivelActual());
-            verificarVictoria();
-            actualizarVista();
-        }
+        gameScreen.repaint();
     }
 
     /**
@@ -153,9 +153,10 @@ public class ControladorJuego implements ActionListener {
             double newX = jugador.getPosicion().getX();
             double newY = jugador.getPosicion().getY();
 
-            // Limites del mapa coinciden con las paredes del nivel
-            if (newX < 0 || newX + jugador.getAncho() > GameScreen.ANCHO ||
-                    newY < 155 || newY + jugador.getAlto() > 420) {
+            // Limites del mapa: consultados desde el nivel, no desde la vista
+            java.awt.Rectangle limites = juego.getNivelActual().getLimitesJugables();
+            if (newX < limites.getMinX() || newX + jugador.getAncho() > limites.getMaxX() ||
+                    newY < limites.getMinY() || newY + jugador.getAlto() > limites.getMaxY()) {
                 jugador.getPosicion().setX(prevX);
                 jugador.getPosicion().setY(prevY);
             }
@@ -170,8 +171,8 @@ public class ControladorJuego implements ActionListener {
      * Gestiona teclas cuando el juego esta en pausa.
      */
     private void procesarTeclasPausa() {
-    	if (nivelCompletado) {
-            //Retry
+        if (nivelCompletado) {
+            // Retry
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
                 nivelCompletado = false;
                 juego.reiniciarNivel();
@@ -181,7 +182,7 @@ public class ControladorJuego implements ActionListener {
                 juego.setEstado(EstadoJuego.JUGANDO);
                 temporizadorSegundo.restart();
             }
-            //Next level
+            // Next level
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_N)) {
                 nivelCompletado = false;
                 boolean hayMas = juego.siguienteNivel();
@@ -196,13 +197,13 @@ public class ControladorJuego implements ActionListener {
                     window.showMenu();
                 }
             }
-            //Menu
+            // Menu
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
                 detener();
                 window.showMenu();
             }
         } else {
-            //Pausa normal - reanudar con ENTER o ESC
+            // Pausa normal - reanudar con ENTER o ESC
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER) ||
                     controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
                 juego.pausar();
@@ -215,16 +216,16 @@ public class ControladorJuego implements ActionListener {
      * Gestiona teclas cuando el juego esta en estado game over.
      */
     private void procesarTeclasGameOver() {
-    	//Retry
+        // Retry
         if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
-        	juego.reiniciarNivel();
+            juego.reiniciarNivel();
             gameScreen.setTiempoRestante(juego.getTiempoRestante());
             gameScreen.setMuertes(juego.getNivelActual().getJugador().getMuertes());
             gameScreen.ocultarOverlay();
             juego.setEstado(EstadoJuego.JUGANDO);
             temporizadorSegundo.restart();
         }
-        //Menu
+        // Menu
         if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
             detener();
             window.showMenu();
@@ -235,7 +236,7 @@ public class ControladorJuego implements ActionListener {
      * Verifica si el nivel fue completado y prepara transicion.
      */
     private void verificarVictoria() {
-    	Nivel nivel = juego.getNivelActual();
+        Nivel nivel = juego.getNivelActual();
         if (nivel.estaCompleto()) {
             nivelCompletado = true;
             juego.setEstado(EstadoJuego.PAUSA);

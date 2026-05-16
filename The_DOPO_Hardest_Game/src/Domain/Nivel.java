@@ -1,14 +1,27 @@
 package Domain;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Agregado de entidades de un nivel y su condicion de finalizacion.
- * @author (MurilloRubiano)
- * @version (2.1)
+ * 
+ * @author MurilloRubiano
+ * @version 2.2
  */
 public class Nivel {
+
+    // Limites del area jugable en pixeles.
+    // Definen hasta donde puede moverse el jugador antes de chocar con las paredes
+    // del mapa.
+    // Centralizados aqui para que el controlador no dependa de constantes de la
+    // vista.
+    public static final int LIMITE_X_MIN = 0;
+    public static final int LIMITE_X_MAX = 800;
+    public static final int LIMITE_Y_MIN = 155;
+    public static final int LIMITE_Y_MAX = 420;
 
     private int numero;
     private Jugador jugador;
@@ -19,12 +32,6 @@ public class Nivel {
     private int tiempoLimite;
     private List<Wall> paredes;
 
-    /**
-     * Construye un nivel con numero identificador y tiempo limite.
-     *
-     * @param numero       numero del nivel.
-     * @param tiempoLimite tiempo maximo en segundos.
-     */
     public Nivel(int numero, int tiempoLimite) {
         this.numero = numero;
         this.tiempoLimite = tiempoLimite;
@@ -33,9 +40,6 @@ public class Nivel {
         this.paredes = new ArrayList<>();
     }
 
-    /**
-     * Inicializa estado del jugador y monedas al comenzar el nivel.
-     */
     public void inicializar() {
         jugador.setMonedasRecogidas(0);
         jugador.reiniciarPosicion();
@@ -44,146 +48,87 @@ public class Nivel {
         }
     }
 
-    /**
-     * Actualiza los enemigos del nivel para el frame actual.
-     */
     public void actualizar() {
         for (Enemigo e : enemigos) {
             e.actualizar();
         }
     }
 
-    /**
-     * Evalua si el nivel se considera completado.
-     *
-     * @return true si se recogieron todas las monedas y el jugador llego a meta.
-     */
     public boolean estaCompleto() {
         return jugador.haRecogidoTodas(monedas.size())
                 && zonaMeta.contiene(jugador);
     }
 
-    /**
-     * Reinicia el nivel reutilizando su inicializacion.
-     */
     public void reiniciar() {
         inicializar();
     }
 
-    // Getters y setters
-
-    /**
-     * Obtiene el numero del nivel.
-     *
-     * @return numero identificador.
-     */
     public int getNumero() {
         return numero;
     }
-    
-    /**
-     * Obtiene las paredes
-     * @return paredes la lista de las paredes
-     */
-    public List<Wall> getParedes(){
-    	return paredes;
+
+    public Rectangle getLimitesJugables() {
+        return new Rectangle(LIMITE_X_MIN, LIMITE_Y_MIN,
+                LIMITE_X_MAX - LIMITE_X_MIN,
+                LIMITE_Y_MAX - LIMITE_Y_MIN);
     }
 
-    /**
-     * Obtiene el jugador asociado al nivel.
-     *
-     * @return jugador del nivel.
-     */
+    public List<Wall> getParedes() {
+        return Collections.unmodifiableList(paredes);
+    }
+
+    public void agregarPared(Wall pared) {
+        paredes.add(pared);
+    }
+
     public Jugador getJugador() {
         return jugador;
     }
 
-    /**
-     * Define el jugador asociado al nivel.
-     *
-     * @param jugador jugador del nivel.
-     */
     public void setJugador(Jugador jugador) {
         this.jugador = jugador;
     }
 
-    /**
-     * Obtiene la lista de enemigos del nivel.
-     *
-     * @return enemigos configurados.
-     */
     public List<Enemigo> getEnemigos() {
-        return enemigos;
+        return Collections.unmodifiableList(enemigos);
     }
 
-    /**
-     * Reemplaza la lista de enemigos del nivel.
-     *
-     * @param enemigos nueva lista de enemigos.
-     */
+    public void agregarEnemigo(Enemigo enemigo) {
+        enemigos.add(enemigo);
+    }
+
     public void setEnemigos(List<Enemigo> enemigos) {
-        this.enemigos = enemigos;
+        this.enemigos = new ArrayList<>(enemigos);
     }
 
-    /**
-     * Obtiene la lista de monedas del nivel.
-     *
-     * @return monedas configuradas.
-     */
     public List<Moneda> getMonedas() {
-        return monedas;
+        return Collections.unmodifiableList(monedas);
     }
 
-    /**
-     * Reemplaza la lista de monedas del nivel.
-     *
-     * @param monedas nueva lista de monedas.
-     */
+    public void agregarMoneda(Moneda moneda) {
+        monedas.add(moneda);
+    }
+
     public void setMonedas(List<Moneda> monedas) {
-        this.monedas = monedas;
+        this.monedas = new ArrayList<>(monedas);
     }
 
-    /**
-     * Obtiene la zona de inicio del nivel.
-     *
-     * @return zona de inicio.
-     */
     public ZonaSegura getZonaInicio() {
         return zonaInicio;
     }
 
-    /**
-     * Define la zona de inicio del nivel.
-     *
-     * @param zonaInicio zona de inicio.
-     */
     public void setZonaInicio(ZonaSegura zonaInicio) {
         this.zonaInicio = zonaInicio;
     }
 
-    /**
-     * Obtiene la zona meta del nivel.
-     *
-     * @return zona de llegada.
-     */
     public ZonaSegura getZonaMeta() {
         return zonaMeta;
     }
 
-    /**
-     * Define la zona meta del nivel.
-     *
-     * @param zonaMeta zona objetivo.
-     */
     public void setZonaMeta(ZonaSegura zonaMeta) {
         this.zonaMeta = zonaMeta;
     }
 
-    /**
-     * Obtiene el tiempo limite de este nivel.
-     *
-     * @return tiempo maximo en segundos.
-     */
     public int getTiempoLimite() {
         return tiempoLimite;
     }
