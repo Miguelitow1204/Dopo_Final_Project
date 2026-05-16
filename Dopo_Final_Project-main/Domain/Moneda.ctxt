@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Moneda
+comment0.text=\r\n\ Entidad\ coleccionable\ que\ incrementa\ el\ progreso\ del\ nivel.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.0)\r\n
+comment1.params=
+comment1.target=void\ recoger()
+comment1.text=\r\n\ Marca\ la\ moneda\ como\ recogida\ y\ la\ desactiva.\r\n
+comment2.params=
+comment2.target=boolean\ isRecogida()
+comment2.text=\r\n\ Indica\ si\ la\ moneda\ ya\ fue\ recogida.\r\n\r\n\ @return\ true\ cuando\ ya\ no\ esta\ disponible\ en\ el\ nivel.\r\n
+comment3.params=
+comment3.target=void\ reiniciar()
+comment3.text=\r\n\ Restablece\ la\ moneda\ a\ su\ estado\ inicial.\r\n
+comment4.params=
+comment4.target=java.awt.Rectangle\ getBounds()
+comment4.text=\r\n\ Obtiene\ el\ area\ de\ colision\ de\ la\ moneda.\r\n\r\n\ @return\ rectangulo\ de\ colision.\r\n
+comment5.params=otro
+comment5.target=boolean\ colisionaCon(Colisionable)
+comment5.text=\r\n\ Evalua\ colision\ con\ otra\ entidad\ colisionable.\r\n\r\n\ @param\ otro\ entidad\ a\ comparar.\r\n\ @return\ true\ si\ los\ limites\ se\ intersectan.\r\n
+comment6.params=
+comment6.target=void\ actualizar()
+comment6.text=\r\n\ No\ aplica\ logica\ por\ frame\ porque\ la\ moneda\ es\ estatica.\r\n
+numComments=7

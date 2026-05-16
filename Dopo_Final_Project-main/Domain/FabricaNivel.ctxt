@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=FabricaNivel
+comment0.text=\r\n\ Fabrica\ centralizada\ para\ la\ carga\ de\ niveles\ desde\ archivos\ de\r\n\ configuracion.\r\n\ Encapsula\ el\ detalle\ de\ donde\ y\ como\ se\ leen\ los\ niveles,\ de\ modo\ que\r\n\ el\ resto\ del\ sistema\ solo\ necesita\ pedir\ "dame\ el\ nivel\ N"\ sin\ saber\ nada\r\n\ sobre\ archivos,\ rutas\ ni\ excepciones\ de\ I/O.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=FabricaNivel()
+comment2.params=numero\ tipo
+comment2.target=Nivel\ cargar(int,\ TipoPersonaje)
+comment2.text=\r\n\ Carga\ un\ nivel\ especifico\ desde\ su\ archivo\ de\ configuracion.\r\n\ El\ archivo\ esperado\ es\:\ configuraciones/nivelN.txt\r\n\r\n\ @param\ numero\ numero\ del\ nivel\ a\ cargar\ (1,\ 2,\ 3...).\r\n\ @param\ tipo\ \ \ tipo\ de\ personaje\ seleccionado\ por\ el\ jugador.\r\n\ @return\ nivel\ configurado\ y\ listo\ para\ agregarse\ al\ juego.\r\n\ @throws\ NivelNoEncontradoException\ si\ el\ archivo\ no\ existe\ o\ tiene\ errores\ de\r\n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ formato.\r\n
+comment3.params=tipo\ cantidad
+comment3.target=java.util.List\ cargarTodos(TipoPersonaje,\ int)
+comment3.text=\r\n\ Carga\ todos\ los\ niveles\ disponibles\ de\ forma\ secuencial.\r\n\ Si\ alguno\ falla,\ lanza\ NivelNoEncontradoException\ y\ detiene\ la\ carga.\r\n\r\n\ @param\ tipo\ \ \ \ \ tipo\ de\ personaje\ seleccionado\ por\ el\ jugador.\r\n\ @param\ cantidad\ numero\ total\ de\ niveles\ a\ cargar.\r\n\ @return\ lista\ ordenada\ de\ niveles\ listos\ para\ jugar.\r\n\ @throws\ NivelNoEncontradoException\ si\ cualquier\ nivel\ no\ puede\ cargarse.\r\n
+numComments=4

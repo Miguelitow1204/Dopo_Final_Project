@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=ControladorTeclado
+comment0.text=\r\n\ Gestiona\ teclas\ presionadas\ para\ consulta\ continua\ durante\ el\ game\ loop.\r\n\ Autores\:\ MurilloRubiano\ con\ apoyo\ de\ Claude\ Opus\ 4.6.\r\n
+comment1.params=
+comment1.target=ControladorTeclado()
+comment1.text=\r\n\ Inicializa\ el\ conjunto\ de\ teclas\ actualmente\ presionadas.\r\n
+comment2.params=e
+comment2.target=void\ keyPressed(java.awt.event.KeyEvent)
+comment2.text=\r\n\ Registra\ una\ tecla\ cuando\ pasa\ a\ estado\ presionado.\r\n\r\n\ @param\ e\ evento\ de\ teclado\ recibido.\r\n
+comment3.params=e
+comment3.target=void\ keyReleased(java.awt.event.KeyEvent)
+comment3.text=\r\n\ Elimina\ una\ tecla\ del\ estado\ presionado\ al\ liberarse.\r\n\r\n\ @param\ e\ evento\ de\ teclado\ recibido.\r\n
+comment4.params=e
+comment4.target=void\ keyTyped(java.awt.event.KeyEvent)
+comment4.text=\r\n\ Metodo\ no\ utilizado\ porque\ solo\ se\ trabaja\ con\ presion/liberacion.\r\n\r\n\ @param\ e\ evento\ de\ teclado.\r\n
+comment5.params=codigoTecla
+comment5.target=boolean\ isTeclaPresionada(int)
+comment5.text=\r\n\ Consulta\ si\ una\ tecla\ sigue\ presionada\ en\ este\ frame.\r\n\r\n\ @param\ codigoTecla\ codigo\ KeyEvent.VK_*\ a\ evaluar.\r\n\ @return\ true\ si\ la\ tecla\ permanece\ activa.\r\n
+comment6.params=
+comment6.target=java.util.Set\ getTeclasPresionadas()
+comment6.text=\r\n\ Expone\ el\ conjunto\ actual\ de\ teclas\ presionadas.\r\n\r\n\ @return\ conjunto\ de\ codigos\ de\ tecla\ activos.\r\n
+numComments=7

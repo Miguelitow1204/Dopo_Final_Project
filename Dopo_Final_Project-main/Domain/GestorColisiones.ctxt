@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=GestorColisiones
+comment0.text=\r\n\ Servicio\ de\ reglas\ de\ colision\ entre\ jugador,\ enemigos\ y\ monedas.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.5)\r\n
+comment1.params=a\ b
+comment1.target=boolean\ detectarColision(Colisionable,\ Colisionable)
+comment1.text=\r\n\ Detecta\ interseccion\ entre\ dos\ objetos\ colisionables.\r\n\r\n\ @param\ a\ primer\ objeto.\r\n\ @param\ b\ segundo\ objeto.\r\n\ @return\ true\ si\ los\ limites\ se\ intersectan.\r\n
+comment2.params=jugador\ enemigo
+comment2.target=boolean\ jugadorTocaEnemigo(Jugador,\ Enemigo)
+comment2.text=\r\n\ Verifica\ colision\ entre\ jugador\ y\ enemigo.\r\n\r\n\ @param\ jugador\ jugador\ activo.\r\n\ @param\ enemigo\ enemigo\ evaluado.\r\n\ @return\ true\ si\ el\ jugador\ toca\ al\ enemigo.\r\n
+comment3.params=jugador\ moneda
+comment3.target=boolean\ jugadorTocaMoneda(Jugador,\ Moneda)
+comment3.text=\r\n\ Verifica\ colision\ entre\ jugador\ y\ moneda.\r\n\r\n\ @param\ jugador\ jugador\ activo.\r\n\ @param\ moneda\ \ moneda\ evaluada.\r\n\ @return\ true\ si\ el\ jugador\ toca\ la\ moneda.\r\n
+comment4.params=jugador\ zona
+comment4.target=boolean\ jugadorEnZona(Jugador,\ ZonaSegura)
+comment4.text=\r\n\ Indica\ si\ el\ jugador\ esta\ dentro\ de\ una\ zona\ segura.\r\n\r\n\ @param\ jugador\ jugador\ activo.\r\n\ @param\ zona\ \ \ \ zona\ segura\ objetivo.\r\n\ @return\ true\ si\ el\ jugador\ esta\ totalmente\ contenido.\r\n
+comment5.params=nivel
+comment5.target=void\ verificarColisionesNivel(Nivel)
+comment5.text=\r\n\ Aplica\ reglas\ de\ colision\ del\ nivel\ en\ el\ frame\ actual.\r\n\r\n\ @param\ nivel\ nivel\ a\ procesar.\r\n
+comment6.params=nivel\ prevX\ prevY
+comment6.target=void\ verificarColisionParedes(Nivel,\ double,\ double)
+comment6.text=\r\n\ Verifica\ si\ el\ jugador\ colisiona\ con\ alguna\ pared\ y\ revierte\ su\ posicion\r\n\ \r\n\ @param\ nivel\r\n\ @param\ prevX\r\n\ @param\ prevY\r\n
+numComments=7

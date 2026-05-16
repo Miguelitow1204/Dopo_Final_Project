@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=PrincipalWindow
+comment0.text=\r\n\ Ventana\ principal\ Swing\ que\ organiza\ pantallas\ y\ arranca\ partidas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (2.0)\r\n
+comment1.params=
+comment1.target=PrincipalWindow()
+comment1.text=\r\n\ Construye\ la\ ventana\ principal\ y\ registra\ las\ pantallas\ base.\r\n
+comment2.params=
+comment2.target=void\ showMenu()
+comment2.text=\r\n\ Muestra\ el\ menu\ principal\ y\ detiene\ partida\ activa\ si\ existe.\r\n
+comment3.params=
+comment3.target=void\ showModeSelection()
+comment3.text=\r\n\ Muestra\ la\ pantalla\ de\ seleccion\ de\ modo.\r\n
+comment4.params=
+comment4.target=void\ showLevelsScreen()
+comment4.text=\r\n\ Muestra\ la\ pantalla\ de\ seleccion\ de\ nivel.\r\n
+comment5.params=
+comment5.target=void\ showCharacterSelection()
+comment5.text=\r\n\ Muestra\ la\ pantalla\ de\ seleccion\ de\ personaje.\r\n
+comment6.params=skin
+comment6.target=void\ startGame(java.lang.String)
+comment6.text=\r\n\ Inicia\ el\ juego\ con\ el\ skin\ seleccionado.\r\n\ Delega\ la\ creacion\ de\ niveles\ a\ FabricaNivel\:\ cada\ nivel\r\n\ se\ lee\ desde\ su\ archivo\ configuraciones/nivelN.txt.\r\n\r\n\ @param\ skin\ identificador\ de\ skin\ ("RED",\ "BLUE",\ "GREEN").\r\n
+comment7.params=args
+comment7.target=void\ main(java.lang.String[])
+comment7.text=\r\n\ /**\r\n\ Punto\ de\ entrada\ de\ la\ aplicacion\ de\ escritorio.\r\n\r\n\ @param\ args\ argumentos\ de\ linea\ de\ comandos.\r\n
+numComments=8

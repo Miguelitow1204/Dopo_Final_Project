@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=NivelNoEncontradoException
+comment0.text=\r\n\ Excepcion\ lanzada\ cuando\ un\ nivel\ no\ puede\ ser\ cargado\r\n\ desde\ su\ archivo\ de\ configuracion.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=mensaje
+comment1.target=NivelNoEncontradoException(java.lang.String)
+comment1.text=\r\n\ Crea\ la\ excepcion\ con\ un\ mensaje\ descriptivo.\r\n\r\n\ @param\ mensaje\ descripcion\ del\ error.\r\n
+comment2.params=mensaje\ causa
+comment2.target=NivelNoEncontradoException(java.lang.String,\ java.lang.Throwable)
+comment2.text=\r\n\ Crea\ la\ excepcion\ con\ mensaje\ y\ causa\ original.\r\n\r\n\ @param\ mensaje\ descripcion\ del\ error.\r\n\ @param\ causa\ \ \ excepcion\ original\ que\ genero\ el\ problema.\r\n
+numComments=3

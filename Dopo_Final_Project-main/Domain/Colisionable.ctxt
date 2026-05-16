@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Colisionable
+comment0.text=\r\n\ Contrato\ para\ entidades\ que\ participan\ en\ deteccion\ de\ colisiones.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.0)\r\n
+comment1.params=
+comment1.target=java.awt.Rectangle\ getBounds()
+comment1.text=\r\n\ Obtiene\ el\ rectangulo\ de\ colision\ de\ la\ entidad.\r\n\r\n\ @return\ area\ rectangular\ usada\ para\ detectar\ intersecciones.\r\n
+comment2.params=otro
+comment2.target=boolean\ colisionaCon(Colisionable)
+comment2.text=\r\n\ Evalua\ si\ esta\ entidad\ colisiona\ con\ otra\ entidad\ colisionable.\r\n\r\n\ @param\ otro\ entidad\ contra\ la\ que\ se\ compara\ la\ colision.\r\n\ @return\ true\ si\ los\ limites\ se\ intersectan.\r\n
+numComments=3

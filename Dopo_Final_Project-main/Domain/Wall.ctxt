@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Wall
+comment0.text=\r\n\ Solid\ wall\ that\ blocks\ the\ player's\ path\ and\ limits\ enemy\ bounce-outs\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ 1.0\ \r\n
+comment1.params=posicion\ ancho\ alto
+comment1.target=Wall(Posicion,\ int,\ int)
+comment1.text=\r\n\ Creates\ a\ wall\ in\ given\ position\ and\ dimension\r\n\ \r\n\ @param\ posicion\r\n\ @param\ ancho\r\n\ @param\ alto\r\n
+comment2.params=
+comment2.target=java.awt.Rectangle\ getBounds()
+comment3.params=otro
+comment3.target=boolean\ colisionaCon(Colisionable)
+comment4.params=
+comment4.target=void\ actualizar()
+numComments=5

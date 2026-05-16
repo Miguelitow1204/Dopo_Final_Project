@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Movible
+comment0.text=\r\n\ Contrato\ para\ entidades\ con\ desplazamiento\ y\ velocidad.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.0)\r\n
+comment1.params=dx\ dy
+comment1.target=void\ mover(int,\ int)
+comment1.text=\r\n\ Desplaza\ la\ entidad\ en\ los\ ejes\ X\ y\ Y.\r\n\r\n\ @param\ dx\ desplazamiento\ en\ X.\r\n\ @param\ dy\ desplazamiento\ en\ Y.\r\n
+comment2.params=
+comment2.target=int\ getVelocidad()
+comment2.text=\r\n\ Obtiene\ la\ velocidad\ base\ de\ la\ entidad.\r\n\r\n\ @return\ velocidad\ configurada.\r\n
+numComments=3

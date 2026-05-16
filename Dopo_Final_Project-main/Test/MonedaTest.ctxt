@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=MonedaTest
+comment0.text=\r\n\ Unit\ test\ for\ class\ Moneda\r\n\ @author\ MurilloRubiano\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ testMonedaInicialNoRecogida()
+comment3.params=
+comment3.target=void\ testRecogerMoneda()
+comment4.params=
+comment4.target=void\ testReiniciarMoneda()
+comment5.params=
+comment5.target=void\ testMonedaTienePositions()
+numComments=6

@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=EnemigoLineal
+comment0.text=\r\n\ Enemigo\ que\ recorre\ una\ ruta\ lineal\ horizontal\ o\ vertical.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.5)\r\n
+comment1.params=posicion\ ancho\ alto\ velocidad\ puntoA\ puntoB\ movimientoHorizontal
+comment1.target=EnemigoLineal(Posicion,\ int,\ int,\ double,\ Posicion,\ Posicion,\ boolean)
+comment1.text=\r\n\ Crea\ un\ enemigo\ con\ recorrido\ lineal\ entre\ dos\ limites.\r\n\r\n\ @param\ posicion\ \ \ \ \ \ \ \ \ \ \ \ \ posicion\ inicial.\r\n\ @param\ ancho\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ancho\ del\ enemigo.\r\n\ @param\ alto\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alto\ del\ enemigo.\r\n\ @param\ velocidad\ \ \ \ \ \ \ \ \ \ \ \ velocidad\ de\ movimiento.\r\n\ @param\ puntoA\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limite\ inicial\ del\ recorrido.\r\n\ @param\ puntoB\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ limite\ final\ del\ recorrido.\r\n\ @param\ movimientoHorizontal\ true\ para\ mover\ en\ X,\ false\ para\ mover\ en\ Y.\r\n
+comment2.params=
+comment2.target=void\ calcularTrayectoria()
+comment2.text=\r\n\ Avanza\ al\ enemigo\ y\ cambia\ direccion\ al\ alcanzar\ los\ extremos.\r\n
+comment3.params=
+comment3.target=void\ actualizar()
+comment3.text=\r\n\ Actualiza\ el\ enemigo\ aplicando\ su\ trayectoria\ lineal.\r\n
+comment4.params=
+comment4.target=int\ getDireccionActual()
+comment4.text=\r\n\ Obtiene\ la\ direccion\ actual\ de\ avance.\r\n\r\n\ @return\ 1\ para\ avance\ y\ -1\ para\ retroceso.\r\n
+comment5.params=direccionActual
+comment5.target=void\ setDireccionActual(int)
+comment5.text=\r\n\ Define\ la\ direccion\ de\ avance\ del\ enemigo.\r\n\r\n\ @param\ direccionActual\ valor\ de\ direccion\ (1\ o\ -1).\r\n
+numComments=6

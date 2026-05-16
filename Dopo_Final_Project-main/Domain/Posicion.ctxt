@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Posicion
+comment0.text=\r\n\ Valor\ mutable\ de\ coordenadas\ 2D\ para\ entidades\ del\ juego.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.0)\r\n
+comment1.params=x\ y
+comment1.target=Posicion(double,\ double)
+comment1.text=\r\n\ Construye\ una\ posicion\ 2D.\r\n\r\n\ @param\ x\ coordenada\ horizontal.\r\n\ @param\ y\ coordenada\ vertical.\r\n
+comment2.params=
+comment2.target=double\ getX()
+comment2.text=\r\n\ Obtiene\ la\ coordenada\ X.\r\n\r\n\ @return\ valor\ actual\ de\ X.\r\n
+comment3.params=x
+comment3.target=void\ setX(double)
+comment3.text=\r\n\ Define\ la\ coordenada\ X.\r\n\r\n\ @param\ x\ nuevo\ valor\ de\ X.\r\n
+comment4.params=
+comment4.target=double\ getY()
+comment4.text=\r\n\ Obtiene\ la\ coordenada\ Y.\r\n\r\n\ @return\ valor\ actual\ de\ Y.\r\n
+comment5.params=y
+comment5.target=void\ setY(double)
+comment5.text=\r\n\ Define\ la\ coordenada\ Y.\r\n\r\n\ @param\ y\ nuevo\ valor\ de\ Y.\r\n
+comment6.params=otra
+comment6.target=double\ distanciaA(Posicion)
+comment6.text=\r\n\ Calcula\ la\ distancia\ euclidiana\ a\ otra\ posicion.\r\n\r\n\ @param\ otra\ posicion\ objetivo.\r\n\ @return\ distancia\ entre\ ambos\ puntos.\r\n
+comment7.params=
+comment7.target=Posicion\ clonar()
+comment7.text=\r\n\ Crea\ una\ copia\ de\ la\ posicion\ actual.\r\n\r\n\ @return\ nueva\ instancia\ con\ los\ mismos\ valores\ de\ X\ e\ Y.\r\n
+numComments=8
