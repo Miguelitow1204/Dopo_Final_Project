@@ -5,8 +5,9 @@ import java.util.List;
 
 /**
  * Modelo central del juego: niveles, tiempo, estado y observadores.
+ * 
  * @author (MurilloRubiano)
- * @version (2.5)
+ * @version (3.0)
  */
 public class Juego {
 
@@ -15,14 +16,12 @@ public class Juego {
     private int indiceNivel;
     private EstadoJuego estado;
     private int tiempoRestante;
-    private List<ObservadorJuego> observadores;
 
     /**
      * Inicializa estructuras y estado base del juego.
      */
     public Juego() {
         this.niveles = new ArrayList<>();
-        this.observadores = new ArrayList<>();
         this.estado = EstadoJuego.MENU;
         this.indiceNivel = 0;
     }
@@ -46,7 +45,6 @@ public class Juego {
     public void pausar() {
         if (estado == EstadoJuego.JUGANDO) {
             estado = EstadoJuego.PAUSA;
-            notificarObservadores(EventoJuego.JUEGO_PAUSADO);
         } else if (estado == EstadoJuego.PAUSA) {
             estado = EstadoJuego.JUGANDO;
         }
@@ -55,7 +53,7 @@ public class Juego {
     /**
      * Avanza al siguiente nivel si existe.
      *
-     * @return true si se pudo cargar otro nivel, false si se termino el juego.
+     * @return true si se cargo otro nivel, false si se terminaron todos.
      */
     public boolean siguienteNivel() {
         indiceNivel++;
@@ -63,13 +61,9 @@ public class Juego {
             nivelActual = niveles.get(indiceNivel);
             tiempoRestante = nivelActual.getTiempoLimite();
             nivelActual.inicializar();
-            for (ObservadorJuego obs : observadores) {
-                obs.alCambiarNivel(nivelActual.getNumero());
-            }
             return true;
         } else {
             estado = EstadoJuego.GAME_OVER;
-            notificarObservadores(EventoJuego.VICTORIA);
             return false;
         }
     }
@@ -85,15 +79,12 @@ public class Juego {
     }
 
     /**
-     * Reduce el tiempo restante y dispara game over al agotarse.
+     * Reduce el tiempo restante en un segundo.
+     * El estado GAME_OVER por tiempo lo gestiona el controlador.
      */
     public void decrementarTiempo() {
         if (tiempoRestante > 0) {
             tiempoRestante--;
-        }
-        if (tiempoRestante <= 0) {
-            estado = EstadoJuego.GAME_OVER;
-            notificarObservadores(EventoJuego.TIEMPO_AGOTADO);
         }
     }
 
@@ -104,26 +95,6 @@ public class Juego {
      */
     public void agregarNivel(Nivel nivel) {
         niveles.add(nivel);
-    }
-
-    /**
-     * Registra un observador del juego.
-     *
-     * @param observador observador a suscribir.
-     */
-    public void agregarObservador(ObservadorJuego observador) {
-        observadores.add(observador);
-    }
-
-    /**
-     * Notifica un evento a todos los observadores registrados.
-     *
-     * @param evento evento ocurrido.
-     */
-    public void notificarObservadores(EventoJuego evento) {
-        for (ObservadorJuego obs : observadores) {
-            obs.alCambiarEstado(evento);
-        }
     }
 
     // Getters y setters
