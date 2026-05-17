@@ -9,6 +9,10 @@ public class CharacterSelectionScreen extends JPanel {
     private JButton btnRed, btnBlue, btnGreen;
     private String selectedSkin = "RED";
     private static final Color COLOR_SELECTED = new Color(255, 200, 50);
+    
+    private String skinP1 = "RED";
+    private String skinP2 = "RED";
+    private boolean seleccionandoP2 = false;
 
     public CharacterSelectionScreen(PrincipalWindow window) {
         this.window = window;
@@ -63,24 +67,30 @@ public class CharacterSelectionScreen extends JPanel {
     }
 
     private void buildUI() {
+        removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(12, 20, 12, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Título
-        JLabel title = new JLabel("SELECT YOUR CHARACTER");
-        title.setFont(new Font("Monospaced", Font.BOLD, 22));
+        //Título
+        String tituloTexto = "SELECT YOUR CHARACTER";
+        if (window.getModoJuego().equals("PVP")) {
+            tituloTexto = seleccionandoP2 ? "PLAYER 2 - SELECT CHARACTER" : "PLAYER 1 - SELECT CHARACTER";
+        }
+
+        JLabel title = new JLabel(tituloTexto);
+        title.setFont(new Font("Monospaced", Font.BOLD, 20));
         title.setForeground(new Color(255, 200, 50));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 3;
         add(title, gbc);
 
-        // Botones de personaje
+        //Botones de personaje
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.NONE;
 
-        btnRed   = createSkinButton("BLINKY", "Speed: normal\nSize: normal", new Color(220, 50, 50));
-        btnBlue  = createSkinButton("INKY",   "Speed: fast\nSize: large",   new Color(50, 100, 220));
+        btnRed   = createSkinButton("BLINKY", "Speed: normal\nSize: normal",  new Color(220, 50, 50));
+        btnBlue  = createSkinButton("INKY",   "Speed: fast\nSize: large",     new Color(50, 100, 220));
         btnGreen = createSkinButton("CLYDE",  "Speed: normal\nAbsorbs 1 hit", new Color(50, 180, 70));
 
         btnRed.addActionListener(e   -> selectSkin("RED"));
@@ -91,22 +101,27 @@ public class CharacterSelectionScreen extends JPanel {
         gbc.gridx = 1; gbc.gridy = 1; add(btnBlue,  gbc);
         gbc.gridx = 2; gbc.gridy = 1; add(btnGreen, gbc);
 
-        // Botones de navegación
+        //Botones navegación
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
 
         JButton btnBack = createNavButton("← BACK", new Color(180, 60, 60));
-        btnBack.addActionListener(e -> window.showModeSelection());
-        gbc.gridx = 0; gbc.gridy = 2;
+        btnBack.addActionListener(e -> {
+            seleccionandoP2 = false;
+            window.showModeSelection();
+        });
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
         add(btnBack, gbc);
 
-        JButton btnPlay = createNavButton("PLAY ▶", new Color(255, 200, 50));
-        btnPlay.setForeground(new Color(30, 30, 40));
-        btnPlay.addActionListener(e -> window.startGame(selectedSkin));
+        JButton btnNext = createNavButton(window.getModoJuego().equals("PVP") && !seleccionandoP2 ? "NEXT ▶" : "PLAY ▶",
+            new Color(255, 200, 50));
+        btnNext.setForeground(new Color(30, 30, 40));
+        btnNext.addActionListener(e -> confirmarSeleccion());
         gbc.gridx = 2; gbc.gridy = 2;
-        add(btnPlay, gbc);
+        add(btnNext, gbc);
 
-        selectSkin("RED"); // selección por defecto
+        selectSkin("RED");
+        revalidate();
+        repaint();
     }
 
     private void selectSkin(String skin) {
@@ -142,4 +157,42 @@ public class CharacterSelectionScreen extends JPanel {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;
     }
+    
+    /**
+     * Confirma la selección de skin segun el modo de juego
+     * En PvP primero selecciona P1 luego P2, en PLAYER arranca directo
+     */
+    private void confirmarSeleccion(){
+        if(window.getModoJuego().equals("PVP")){
+            if(!seleccionandoP2){
+                skinP1 = selectedSkin;
+                seleccionandoP2 = true;
+                selectedSkin = "RED";
+                buildUI();
+            } else {
+                skinP2 = selectedSkin;
+                seleccionandoP2 = false;
+                window.startGamePvP(skinP1, skinP2);
+            }
+        } else {
+            window.startGame(selectedSkin);
+        }
+    }
+    
+    /**
+     * Obtiene la skin seleccionada por P1
+     * @return skin skin de P1
+     */
+    public String getSkinP1(){
+        return skinP1;
+    }
+    
+    /**
+     * Obtiene la skin seleccionada por P2
+     * @return skin skin de P2
+     */
+    public String getSkinP2(){
+        return skinP2;
+    }
+    
 }

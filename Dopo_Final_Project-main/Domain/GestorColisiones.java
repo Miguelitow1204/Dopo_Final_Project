@@ -83,19 +83,87 @@ public class GestorColisiones {
     }
 
     /**
-     * Verifica si el jugador colisiona con alguna pared y revierte su posicion
-     * 
-     * @param nivel
-     * @param prevX
-     * @param prevY
+     * Verifica si un jugador colisiona con alguna pared y revierte su posicion.
+     *
+     * @param nivel   nivel a procesar.
+     * @param prevX   posicion X previa del jugador.
+     * @param prevY   posicion Y previa del jugador.
+     * @param jugador jugador a verificar.
      */
-    public void verificarColisionParedes(Nivel nivel, double prevX, double prevY) {
-        Jugador jugador = nivel.getJugador();
+    public void verificarColisionParedes(Nivel nivel, double prevX, double prevY, Jugador jugador) {
         for (Wall pared : nivel.getParedes()) {
-            if (detectarColision(jugador, pared)) {
+            if (jugador.colisionaCon(pared)) {
                 jugador.getPosicion().setX(prevX);
                 jugador.getPosicion().setY(prevY);
                 return;
+            }
+        }
+    }
+    
+    /**
+     * Verifica si los dos jugadores colisionan entre si.
+     * En ese caso ambos pierden una vida y regresan a su punto de inicio.
+     *
+     * @param jugador1 primer jugador.
+     * @param jugador2 segundo jugador.
+     * @return true si colisionaron.
+     */
+    public boolean jugadoresColisionan(Jugador jugador1, Jugador jugador2) {
+        return detectarColision(jugador1, jugador2);
+    }
+
+    /**
+     * Aplica reglas de colision del nivel en modo PvP.
+     *
+     * @param nivel nivel a procesar.
+     */
+    public void verificarColisionesNivelPvP(Nivel nivel) {
+        Jugador j1 = nivel.getJugador();
+        Jugador j2 = nivel.getJugador2();
+
+        //Colision P1 con enemigos
+        for (Enemigo enemigo : nivel.getEnemigos()) {
+            if (jugadorTocaEnemigo(j1, enemigo)) {
+                j1.perderVida();
+                for (Moneda m : nivel.getMonedas()) {
+                    m.reiniciar();
+                }
+                return;
+            }
+        }
+
+        //Colision P2 con enemigos
+        for (Enemigo enemigo : nivel.getEnemigos()) {
+            if (jugadorTocaEnemigo(j2, enemigo)) {
+                j2.perderVida();
+                for (Moneda m : nivel.getMonedas()) {
+                    m.reiniciar();
+                }
+                return;
+            }
+        }
+
+        //Colision entre jugadores - ambos mueren
+        if (jugadoresColisionan(j1, j2)) {
+            j1.perderVida();
+            j2.perderVida();
+            for (Moneda m : nivel.getMonedas()) {
+                m.reiniciar();
+            }
+            return;
+        }
+
+        //P1 recoge monedas
+        for (Moneda moneda : nivel.getMonedas()) {
+            if (moneda.isActiva() && jugadorTocaMoneda(j1, moneda)) {
+                j1.recogerMoneda(moneda);
+            }
+        }
+
+        //P2 recoge monedas
+        for (Moneda moneda : nivel.getMonedas()) {
+            if (moneda.isActiva() && jugadorTocaMoneda(j2, moneda)) {
+                j2.recogerMoneda(moneda);
             }
         }
     }

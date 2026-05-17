@@ -26,6 +26,13 @@ public class PrincipalWindow extends JFrame {
     private CardLayout cardLayout;
     private JPanel container;
     private ControladorJuego controladorJuego;
+    
+    private int nivelesDesbloqueados = 1; //Numero de niveles desbloqueados en la sesion actual
+    private int nivelSeleccionado = 1; // Nivel seleccionado desde la pantalla de levels
+    
+    private LevelsScreen levelsScreen;
+    
+    private String modoJuego = "PLAYER"; //Modo de juego seleccionado: PLAYER o PvP
 
     /**
      * Construye la ventana principal y registra las pantallas base.
@@ -42,7 +49,8 @@ public class PrincipalWindow extends JFrame {
 
         container.add(new MenuScreen(this), MENU_SCREEN);
         container.add(new SelectionModeScreen(this), MODE_SCREEN);
-        container.add(new LevelsScreen(this), LEVELS_SCREEN);
+        levelsScreen = new LevelsScreen(this);
+        container.add(levelsScreen, LEVELS_SCREEN);
         container.add(new CharacterSelectionScreen(this), CHARACTER_SCREEN);
 
         add(container);
@@ -72,6 +80,7 @@ public class PrincipalWindow extends JFrame {
      * Muestra la pantalla de seleccion de nivel.
      */
     public void showLevelsScreen() {
+        levelsScreen.actualizar();
         cardLayout.show(container, LEVELS_SCREEN);
     }
 
@@ -103,6 +112,9 @@ public class PrincipalWindow extends JFrame {
                     "Error al cargar", JOptionPane.ERROR_MESSAGE);
             return;
         }
+        
+        //Saltar al nivel Seleccionado
+        juego.irAlNivel(nivelSeleccionado - 1);
 
         GameScreen gameScreen = new GameScreen();
         container.add(gameScreen, GAME_SCREEN);
@@ -111,9 +123,97 @@ public class PrincipalWindow extends JFrame {
         controladorJuego = new ControladorJuego(juego, gameScreen, this);
         controladorJuego.iniciar();
     }
+    
+    /**
+     * Inicia el juego en modo Player vs Player.
+     *
+     * @param skinP1 skin del jugador 1.
+     * @param skinP2 skin del jugador 2.
+     */
+    public void startGamePvP(String skinP1, String skinP2) {
+        TipoPersonaje tipoP1 = Jugador.skinToTipo(skinP1);
+        TipoPersonaje tipoP2 = Jugador.skinToTipo(skinP2);
 
-    /*
-     * /**
+        Juego juego = new Juego();
+        try {
+            FabricaNivel.cargarTodos(tipoP1, TOTAL_NIVELES)
+                    .forEach(juego::agregarNivel);
+        } catch (NivelNoEncontradoException e) {
+            System.err.println("[ERROR] " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                    "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
+                    "Error al cargar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        juego.irAlNivel(nivelSeleccionado - 1);
+
+        GameScreen gameScreen = new GameScreen();
+        container.add(gameScreen, GAME_SCREEN);
+        cardLayout.show(container, GAME_SCREEN);
+
+        controladorJuego = new ControladorJuego(juego, gameScreen, this, tipoP2);
+        controladorJuego.iniciar();
+    }
+    
+    /**
+     * Desbloquea el siguiente nivel si no se ha alcanzado el maximo.
+     * Se llama cuando el jugador completa el nivel actual.
+     */
+    public void desbloquearSiguienteNivel() {
+        if (nivelesDesbloqueados < TOTAL_NIVELES) {
+            nivelesDesbloqueados++;
+        }
+    }
+
+    /**
+     * Obtiene el numero de niveles desbloqueados en la sesion actual.
+     *
+     * @return cantidad de niveles disponibles.
+     */
+    public int getNivelesDesbloqueados() {
+        return nivelesDesbloqueados;
+    }
+
+    /**
+     * Define el nivel desde el que arrancara la partida.
+     * Se usa cuando el jugador selecciona un nivel desde LevelsScreen.
+     *
+     * @param nivel numero del nivel seleccionado.
+     */
+    public void setNivelSeleccionado(int nivel) {
+        this.nivelSeleccionado = nivel;
+    }
+
+    /**
+     * Obtiene el nivel seleccionado para iniciar la partida.
+     *
+     * @return numero del nivel a cargar.
+     */
+    public int getNivelSeleccionado() {
+        return nivelSeleccionado;
+    }
+    
+    /**
+     * Define el modo de juego seleccionado
+     * 
+     * @param modo modo de juego
+     */
+    public void setModoJuego(String modo){
+        this.modoJuego = modo;
+    }
+    
+    /**
+     * Obtiene el modo de juego seleccionado
+     * 
+     * @return modo de juego actual
+     */
+    public String getModoJuego(){
+        return modoJuego;
+    }
+
+    /**
+     *
      * Punto de entrada de la aplicacion de escritorio.
      *
      * @param args argumentos de linea de comandos.

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GestorColisiones
-comment0.text=\r\n\ Servicio\ de\ reglas\ de\ colision\ entre\ jugador,\ enemigos\ y\ monedas.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.5)\r\n
+comment0.text=\r\n\ Servicio\ de\ reglas\ de\ colision\ entre\ jugador,\ enemigos\ y\ monedas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.5)\r\n
 comment1.params=a\ b
 comment1.target=boolean\ detectarColision(Colisionable,\ Colisionable)
 comment1.text=\r\n\ Detecta\ interseccion\ entre\ dos\ objetos\ colisionables.\r\n\r\n\ @param\ a\ primer\ objeto.\r\n\ @param\ b\ segundo\ objeto.\r\n\ @return\ true\ si\ los\ limites\ se\ intersectan.\r\n
@@ -16,7 +16,13 @@ comment4.text=\r\n\ Indica\ si\ el\ jugador\ esta\ dentro\ de\ una\ zona\ segura
 comment5.params=nivel
 comment5.target=void\ verificarColisionesNivel(Nivel)
 comment5.text=\r\n\ Aplica\ reglas\ de\ colision\ del\ nivel\ en\ el\ frame\ actual.\r\n\r\n\ @param\ nivel\ nivel\ a\ procesar.\r\n
-comment6.params=nivel\ prevX\ prevY
-comment6.target=void\ verificarColisionParedes(Nivel,\ double,\ double)
-comment6.text=\r\n\ Verifica\ si\ el\ jugador\ colisiona\ con\ alguna\ pared\ y\ revierte\ su\ posicion\r\n\ \r\n\ @param\ nivel\r\n\ @param\ prevX\r\n\ @param\ prevY\r\n
-numComments=7
+comment6.params=nivel\ prevX\ prevY\ jugador
+comment6.target=void\ verificarColisionParedes(Nivel,\ double,\ double,\ Jugador)
+comment6.text=\r\n\ Verifica\ si\ un\ jugador\ colisiona\ con\ alguna\ pared\ y\ revierte\ su\ posicion.\r\n\r\n\ @param\ nivel\ \ \ nivel\ a\ procesar.\r\n\ @param\ prevX\ \ \ posicion\ X\ previa\ del\ jugador.\r\n\ @param\ prevY\ \ \ posicion\ Y\ previa\ del\ jugador.\r\n\ @param\ jugador\ jugador\ a\ verificar.\r\n
+comment7.params=jugador1\ jugador2
+comment7.target=boolean\ jugadoresColisionan(Jugador,\ Jugador)
+comment7.text=\r\n\ Verifica\ si\ los\ dos\ jugadores\ colisionan\ entre\ si.\r\n\ En\ ese\ caso\ ambos\ pierden\ una\ vida\ y\ regresan\ a\ su\ punto\ de\ inicio.\r\n\r\n\ @param\ jugador1\ primer\ jugador.\r\n\ @param\ jugador2\ segundo\ jugador.\r\n\ @return\ true\ si\ colisionaron.\r\n
+comment8.params=nivel
+comment8.target=void\ verificarColisionesNivelPvP(Nivel)
+comment8.text=\r\n\ Aplica\ reglas\ de\ colision\ del\ nivel\ en\ modo\ PvP.\r\n\r\n\ @param\ nivel\ nivel\ a\ procesar.\r\n
+numComments=9

@@ -53,35 +53,40 @@ public class LevelsScreen extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Título
+        //Título
         JLabel title = new JLabel("LEVELS");
         title.setFont(new Font("Monospaced", Font.BOLD, 30));
         title.setForeground(new Color(255, 165, 0));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0; gbc.gridy = 0;
+        gbc.gridx = 0; 
+        gbc.gridy = 0;
         gbc.gridwidth = 3;
         add(title, gbc);
 
-        // Niveles — por ahora solo el 1 desbloqueado
+        //Niveles
         gbc.gridwidth = 1;
-        String[] labels = {"1", "2", "3", "4", "5"};
-        boolean[] unlocked = {true, false, false, false, false};
-
+        int desbloqueados = window.getModoJuego().equals("PVP") ? 5 : window.getNivelesDesbloqueados();
+        String[] labels = {"1","2","3","4","5"};
+        
         int col = 0;
-        int	row = 1;
-        for (int i = 0; i < labels.length; i++) {
-            JButton btn = createLevelButton(labels[i], unlocked[i]);
-            //Permite acceder al nivel desde la pantalla de levels
-            if(unlocked[i]) {
-            	btn.addActionListener(e -> window.showCharacterSelection());
+        int row = 1;
+        for(int i = 0; i < labels.length; i++){
+            int numeroNivel = i + 1;
+            boolean unlocked = numeroNivel <= desbloqueados;
+            JButton btn = createLevelButton(labels[i], unlocked);
+            if(unlocked){
+                btn.addActionListener(e -> {
+                    window.setNivelSeleccionado(numeroNivel);
+                    window.showCharacterSelection();
+                });
             }
             gbc.gridx = col;
             gbc.gridy = row;
             add(btn, gbc);
             col++;
-            if(col > 2) {
-            	col = 0;
-            	row++;
+            if(col > 2){
+                col = 0;
+                row++;
             }
         }
 
@@ -93,7 +98,8 @@ public class LevelsScreen extends JPanel {
         btnBack.setFocusPainted(false);
         btnBack.setBorderPainted(false);
         btnBack.addActionListener(e -> window.showMenu());
-        gbc.gridx = 0; gbc.gridy = row + 1;
+        gbc.gridx = 0; 
+        gbc.gridy = row + 1;
         gbc.gridwidth = 3;
         add(btnBack, gbc);
     }
@@ -114,5 +120,15 @@ public class LevelsScreen extends JPanel {
             btn.setEnabled(false);
         }
         return btn;
+    }
+    
+    /**
+     * Reconstruye los botones de nivel reflejando el progreso actual
+     */
+    public void actualizar(){
+        removeAll();
+        buildUI();
+        revalidate();
+        repaint();
     }
 }

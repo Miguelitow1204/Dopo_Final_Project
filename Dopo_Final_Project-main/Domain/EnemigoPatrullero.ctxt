@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=EnemigoPatrullero
+comment0.text=\r\n\ Enemigo\ que\ patrulla\ una\ zona\ circular\ con\ radio\ y\ velocidad\ angular\r\n\ configurables.\r\n\ La\ posicion\ se\ calcula\ trigonometricamente\ en\ cada\ frame\ a\ partir\ del\ centro,\r\n\ el\ radio\ y\ el\ angulo\ acumulado.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=centro\ radio\ velocidadAngular
+comment1.target=EnemigoPatrullero(Posicion,\ double,\ double)
+comment1.text=\r\n\ Crea\ un\ enemigo\ patrullero\ circular.\r\n\r\n\ @param\ centro\ \ \ \ \ \ \ \ \ \ \ centro\ de\ la\ trayectoria\ circular.\r\n\ @param\ radio\ \ \ \ \ \ \ \ \ \ \ \ radio\ del\ circulo\ en\ pixeles.\r\n\ @param\ velocidadAngular\ radianes\ por\ frame;\ negativo\ invierte\ el\ sentido.\r\n
+comment2.params=
+comment2.target=void\ calcularTrayectoria()
+comment2.text=\r\n\ Calcula\ la\ siguiente\ posicion\ en\ la\ trayectoria\ circular.\r\n\ Resta\ la\ mitad\ del\ ancho\ y\ alto\ para\ que\ el\ centro\ del\ enemigo\r\n\ siga\ exactamente\ el\ circulo\ definido.\r\n
+comment3.params=
+comment3.target=void\ actualizar()
+comment3.text=\r\n\ Actualiza\ el\ enemigo\ aplicando\ su\ trayectoria\ circular.\r\n
+comment4.params=
+comment4.target=Posicion\ getCentro()
+comment4.text=\r\n\ Obtiene\ el\ centro\ de\ la\ trayectoria\ circular.\r\n\r\n\ @return\ posicion\ central\ del\ circulo.\r\n
+comment5.params=
+comment5.target=double\ getRadio()
+comment5.text=\r\n\ Obtiene\ el\ radio\ de\ la\ trayectoria\ circular.\r\n\r\n\ @return\ radio\ en\ pixeles.\r\n
+comment6.params=
+comment6.target=double\ getVelocidadAngular()
+comment6.text=\r\n\ Obtiene\ la\ velocidad\ angular\ del\ enemigo.\r\n\r\n\ @return\ radianes\ por\ frame.\r\n
+numComments=7

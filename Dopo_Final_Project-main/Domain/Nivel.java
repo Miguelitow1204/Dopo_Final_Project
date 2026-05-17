@@ -31,6 +31,9 @@ public class Nivel {
     private ZonaSegura zonaMeta;
     private int tiempoLimite;
     private List<Wall> paredes;
+    
+    private Jugador jugador2; //Segundo jugador para el modo PvP. Null en modo Player Normal
+    private boolean modoPvP = false; //Bandera que indica si el nivel esta en PvP
 
     public Nivel(int numero, int tiempoLimite) {
         this.numero = numero;
@@ -46,6 +49,11 @@ public class Nivel {
         for (Moneda m : monedas) {
             m.reiniciar();
         }
+        //Resetear jugador 2 si existe
+        if(jugador2 != null){
+            jugador2.setMonedasRecogidas(0);
+            jugador2.reiniciarPosicion();
+        }
     }
 
     public void actualizar() {
@@ -57,6 +65,60 @@ public class Nivel {
     public boolean estaCompleto() {
         return jugador.haRecogidoTodas(monedas.size())
                 && zonaMeta.contiene(jugador);
+    }
+    
+    /**
+     * Evalua si el nivel fue completado en modo PvP.
+     * Gana quien llegue primero a la zona opuesta con todas las monedas.
+     *
+     * @return 1 si gano P1, 2 si gano P2, 0 si nadie ha ganado aun.
+     */
+    public int ganadorPvP() {
+        if (jugador.haRecogidoTodas(monedas.size()) && zonaMeta.contiene(jugador)) {
+            return 1;
+        }
+        
+        if (jugador2 != null && jugador2.haRecogidoTodas(monedas.size()) 
+                && zonaInicio.contiene(jugador2)) {
+            return 2;
+        }
+        return 0;
+    }
+    
+    /**
+     * Obtiene el segundo jugador del nivel.
+     *
+     * @return jugador 2 o null si no es PvP.
+     */
+    public Jugador getJugador2() {
+        return jugador2;
+    }
+
+    /**
+     * Define el segundo jugador del nivel.
+     *
+     * @param jugador2 jugador 2.
+     */
+    public void setJugador2(Jugador jugador2) {
+        this.jugador2 = jugador2;
+    }
+
+    /**
+     * Indica si el nivel esta en modo PvP.
+     *
+     * @return true si es PvP.
+     */
+    public boolean isModoPvP() {
+        return modoPvP;
+    }
+
+    /**
+     * Define si el nivel esta en modo PvP.
+     *
+     * @param modoPvP true para activar PvP.
+     */
+    public void setModoPvP(boolean modoPvP) {
+        this.modoPvP = modoPvP;
     }
 
     public void reiniciar() {

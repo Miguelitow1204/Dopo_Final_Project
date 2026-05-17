@@ -27,11 +27,11 @@ public class Juego {
     }
 
     /**
-     * Inicia la partida desde el primer nivel disponible.
+     * Inicia la partida desde el nivel indicado por indiceNivel.
+     * Si no se llama a irALNivel() previamente, inicia desde el nivel 1.
      */
     public void iniciar() {
         if (!niveles.isEmpty()) {
-            indiceNivel = 0;
             nivelActual = niveles.get(indiceNivel);
             tiempoRestante = nivelActual.getTiempoLimite();
             nivelActual.inicializar();
@@ -151,5 +151,17 @@ public class Juego {
      */
     public int getIndiceNivel() {
         return indiceNivel;
+    }
+    
+    /**
+     * Salta directamente a un nivel especifico dado su indice
+     * Se usa cuando el jugador selecciona un nivel desbloqueado desde Level Screen
+     * 
+     * @param indice indice basado en cero del nivel a cargar
+     */
+    public void irAlNivel(int indice){
+        if(indice >= 0 && indice < niveles.size()){
+            indiceNivel = indice;
+        }
     }
 }

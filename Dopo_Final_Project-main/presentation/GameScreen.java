@@ -26,6 +26,10 @@ public class GameScreen extends JPanel {
     private boolean mostrandoVictoria;
     private boolean mostrandoDerrota;
     private boolean mostrandoPausa;
+    
+    private boolean modoPvP = false;
+    private boolean mostrandoVictoriaPvP = false;
+    private String mensajeVictoriaPvP = "";
 
     /**
      * Crea el panel de juego y configura propiedades de render.
@@ -64,9 +68,22 @@ public class GameScreen extends JPanel {
         dibujarMonedas(g2, nivel.getMonedas());
         dibujarEnemigos(g2, nivel.getEnemigos());
         dibujarJugador(g2, nivel.getJugador());
+        if (modoPvP && nivel.getJugador2() != null) {
+            dibujarJugador2(g2, nivel.getJugador2());
+        }
         dibujarHUD(g2);
 
         if (mostrandoVictoria) {
+            dibujarVictoria(g2);
+        } else if (mostrandoDerrota) {
+            dibujarDerrota(g2);
+        } else if (mostrandoPausa) {
+            dibujarPausa(g2);
+        }
+        
+        if (mostrandoVictoriaPvP) {
+            dibujarVictoriaPvP(g2);
+        } else if (mostrandoVictoria) {
             dibujarVictoria(g2);
         } else if (mostrandoDerrota) {
             dibujarDerrota(g2);
@@ -259,6 +276,49 @@ public class GameScreen extends JPanel {
             }
         }
     }
+    
+    /**
+     * Dibuja el jugador 2 en modo PvP con borde distintivo.
+     *
+     * @param g contexto grafico.
+     */
+    private void dibujarJugador2(Graphics2D g, Jugador jugador2) {
+        if (jugador2 == null) return;
+        int x = (int) jugador2.getPosicion().getX();
+        int y = (int) jugador2.getPosicion().getY();
+        int w = jugador2.getAncho();
+        int h = jugador2.getAlto();
+
+        Color colorPrincipal;
+        Color colorBorde;
+        switch (jugador2.getTipoPersonaje()) {
+            case AZUL:
+                colorPrincipal = new Color(50, 120, 230);
+                colorBorde = new Color(30, 70, 160);
+                break;
+            case VERDE:
+                colorPrincipal = new Color(50, 190, 70);
+                colorBorde = new Color(30, 120, 40);
+                break;
+            default:
+                colorPrincipal = new Color(220, 50, 50);
+                colorBorde = new Color(160, 30, 30);
+                break;
+        }
+
+        g.setColor(colorPrincipal);
+        g.fillRect(x, y, w, h);
+        // Borde amarillo para distinguir P2
+        g.setColor(new Color(255, 200, 50));
+        g.setStroke(new BasicStroke(2));
+        g.drawRect(x, y, w, h);
+        g.setStroke(new BasicStroke(1));
+
+        // P2 label
+        g.setFont(new Font("Monospaced", Font.BOLD, 9));
+        g.setColor(Color.WHITE);
+        g.drawString("P2", x + 4, y + h - 4);
+    }
 
     /**
      * Dibuja la barra superior con nivel, muertes, monedas y tiempo.
@@ -341,6 +401,51 @@ public class GameScreen extends JPanel {
         dibujarBotonOverlay(g, boxX + 20, boxY + 180, 140, 44, "↺ RETRY [R]", new Color(60, 60, 180));
         dibujarBotonOverlay(g, boxX + 180, boxY + 180, 140, 44, "▶ NEXT LEVEL [N]", new Color(50, 160, 50));
         dibujarBotonOverlay(g, boxX + 340, boxY + 180, 140, 44, "⌂ MENU [M]", new Color(160, 60, 60));
+    }
+    
+    /**
+     * Dibuja el overlay de victoria en modo PvP mostrando el ganador.
+     *
+     * @param g contexto grafico.
+     */
+    private void dibujarVictoriaPvP(Graphics2D g) {
+        //Overlay oscuro
+        g.setColor(new Color(0, 0, 0, 170));
+        g.fillRect(0, 0, ANCHO, ALTO);
+
+        //Caja central
+        int boxW = 500, boxH = 280;
+        int boxX = (ANCHO - boxW) / 2;
+        int boxY = (ALTO - boxH) / 2;
+
+        g.setColor(new Color(20, 20, 60));
+        g.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        g.setColor(new Color(100, 100, 255));
+        g.setStroke(new BasicStroke(3));
+        g.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        g.setStroke(new BasicStroke(1));
+
+        //Titulo
+        g.setFont(new Font("Monospaced", Font.BOLD, 36));
+        g.setColor(new Color(150, 150, 255));
+        FontMetrics fm = g.getFontMetrics();
+        g.drawString(mensajeVictoriaPvP,
+                (ANCHO - fm.stringWidth(mensajeVictoriaPvP)) / 2, boxY + 80);
+
+        //Botones
+        dibujarBotonOverlay(g, boxX + 20,  boxY + 160, 140, 44,
+                            "PLAY AGAIN",  new Color(60, 60, 180));
+        dibujarBotonOverlay(g, boxX + 180, boxY + 160, 140, 44,
+                            "SEL. LEVEL",  new Color(50, 160, 50));
+        dibujarBotonOverlay(g, boxX + 340, boxY + 160, 140, 44,
+                            "MENU",        new Color(160, 60, 60));
+
+        //Instrucciones
+        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        g.setColor(new Color(150, 150, 170));
+        String inst = "R = Play Again   |   L = Select Level   |   M = Menu";
+        fm = g.getFontMetrics();
+        g.drawString(inst, (ANCHO - fm.stringWidth(inst)) / 2, boxY + 230);
     }
 
     /**
@@ -506,6 +611,7 @@ public class GameScreen extends JPanel {
         this.mostrandoVictoria = false;
         this.mostrandoDerrota = false;
         this.mostrandoPausa = false;
+        this.mostrandoVictoriaPvP = false;
     }
 
     /**
@@ -526,5 +632,26 @@ public class GameScreen extends JPanel {
 
     public void mostrarPausa() {
         this.mostrandoPausa = true;
+    }
+    
+    /**
+     * Activa o desactiva el modo PvP en la vista.
+     *
+     * @param modoPvP true para activar PvP.
+     */
+    public void setModoPvP(boolean modoPvP) {
+        this.modoPvP = modoPvP;
+    }
+
+    /**
+     * Muestra el overlay de victoria en modo PvP indicando el ganador.
+     *
+     * @param ganador numero del jugador ganador (1 o 2).
+     */
+    public void mostrarVictoriaPvP(int ganador) {
+        this.mensajeVictoriaPvP = "PLAYER " + ganador + " WINS!";
+        this.mostrandoVictoriaPvP = true;
+        this.mostrandoVictoria = false;
+        this.mostrandoDerrota = false;
     }
 }

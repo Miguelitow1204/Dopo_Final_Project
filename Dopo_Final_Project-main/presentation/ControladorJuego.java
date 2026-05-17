@@ -26,6 +26,9 @@ public class ControladorJuego implements ActionListener {
 
     private static final int FPS = 60;
     private static final int INTERVALO_MS = 1000 / FPS;
+    
+    private boolean modoPvP; //Indica si el juego esta en modo PvP
+    private TipoPersonaje tipoP2; //Tipo de personaje de P2 
 
     /**
      * Construye el controlador del juego y configura timers y entrada.
@@ -63,6 +66,20 @@ public class ControladorJuego implements ActionListener {
             }
         });
     }
+    
+    /**
+     * Construye el controlador en modo PvP con dos jugadores.
+     *
+     * @param juego      modelo principal del juego.
+     * @param gameScreen vista de render del juego.
+     * @param window     ventana principal para cambiar de pantalla.
+     * @param tipoP2     tipo de personaje del jugador 2.
+     */
+    public ControladorJuego(Juego juego, GameScreen gameScreen, PrincipalWindow window, TipoPersonaje tipoP2) {
+        this(juego, gameScreen, window);
+        this.modoPvP = true;
+        this.tipoP2 = tipoP2;
+    }
 
     /**
      * Inicia una nueva partida y arranca el ciclo de actualizacion.
@@ -70,14 +87,26 @@ public class ControladorJuego implements ActionListener {
     public void iniciar() {
         juego.iniciar();
         Nivel nivel = juego.getNivelActual();
+
+        //Configurar jugador 2 en modo PvP
+        if (modoPvP) {
+            Jugador jugador2 = new Jugador(new Posicion(nivel.getZonaMeta().getPosicion().getX() + 30,
+                nivel.getZonaMeta().getPosicion().getY() + nivel.getZonaMeta().getAlto() / 2), "Player2", tipoP2);
+            nivel.setJugador2(jugador2);
+            jugador2.setPosicionInicial(new Posicion(
+                    nivel.getZonaMeta().getPosicion().getX() + 30,
+                    nivel.getZonaMeta().getPosicion().getY() + 
+                    nivel.getZonaMeta().getAlto() / 2));
+            nivel.setModoPvP(true);
+            gameScreen.setModoPvP(true);
+        }
+
         gameScreen.setNivel(nivel);
         gameScreen.setTiempoRestante(juego.getTiempoRestante());
         gameScreen.setMuertes(nivel.getJugador().getMuertes());
         gameScreen.ocultarOverlay();
         temporizadorJuego.start();
         temporizadorSegundo.start();
-
-        // Asegurar que el panel tenga el foco para recibir teclas
         gameScreen.requestFocusInWindow();
     }
 
@@ -105,12 +134,18 @@ public class ControladorJuego implements ActionListener {
                 break;
             case JUGANDO:
                 procesarEntrada();
+                if (modoPvP) {
+                    procesarEntradaP2();
+                }
                 juego.getNivelActual().actualizar();
-                gestorColisiones.verificarColisionesNivel(juego.getNivelActual());
-                verificarVictoria();
+                if (modoPvP) {
+                    gestorColisiones.verificarColisionesNivelPvP(juego.getNivelActual());
+                    verificarVictoriaPvP();
+                } else {
+                    gestorColisiones.verificarColisionesNivel(juego.getNivelActual());
+                    verificarVictoria();
+                }
                 actualizarVista();
-                break;
-            default:
                 break;
         }
         gameScreen.repaint();
@@ -163,16 +198,85 @@ public class ControladorJuego implements ActionListener {
 
             // Verificar colision con paredes internas
             gestorColisiones.verificarColisionParedes(
-                    juego.getNivelActual(), prevX, prevY);
+                    juego.getNivelActual(), prevX, prevY, jugador);
+        }
+    }
+    
+    /**
+     * Lee entrada del teclado para el jugador 2 (flechas).
+     */
+    private void procesarEntradaP2() {
+        Jugador jugador2 = juego.getNivelActual().getJugador2();
+        if (jugador2 == null) return;
+
+        int dx = 0, dy = 0;
+
+        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_UP))    dy = -1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_DOWN))  dy = 1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_LEFT))  dx = -1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_RIGHT)) dx = 1;
+
+        if (dx != 0 || dy != 0) {
+            double prevX = jugador2.getPosicion().getX();
+            double prevY = jugador2.getPosicion().getY();
+
+            jugador2.mover(dx, dy);
+
+            double newX = jugador2.getPosicion().getX();
+            double newY = jugador2.getPosicion().getY();
+
+            java.awt.Rectangle limites = juego.getNivelActual().getLimitesJugables();
+            if (newX < limites.getMinX() || newX + jugador2.getAncho() > limites.getMaxX() ||
+                    newY < limites.getMinY() || newY + jugador2.getAlto() > limites.getMaxY()) {
+                jugador2.getPosicion().setX(prevX);
+                jugador2.getPosicion().setY(prevY);
+            }
+            gestorColisiones.verificarColisionParedes(
+                    juego.getNivelActual(), prevX, prevY, jugador2);
+        }
+    }
+    
+    /**
+     * Verifica si un jugador colisiona con alguna pared y revierte su posicion.
+     *
+     * @param nivel   nivel a procesar.
+     * @param prevX   posicion X previa del jugador.
+     * @param prevY   posicion Y previa del jugador.
+     * @param jugador jugador a verificar.
+     */
+    public void verificarColisionParedes(Nivel nivel, double prevX, double prevY, Jugador jugador) {
+        for (Wall pared : nivel.getParedes()) {
+            if (jugador.colisionaCon(pared)) {
+                jugador.getPosicion().setX(prevX);
+                jugador.getPosicion().setY(prevY);
+                return;
+            }
         }
     }
 
-    /**
-     * Gestiona teclas cuando el juego esta en pausa.
-     */
     private void procesarTeclasPausa() {
         if (nivelCompletado) {
-            // Retry
+            if (juego.getNivelActual().isModoPvP()) {
+                if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
+                    nivelCompletado = false;
+                    juego.reiniciarNivel();
+                    gameScreen.ocultarOverlay();
+                    juego.setEstado(EstadoJuego.JUGANDO);
+                    temporizadorSegundo.restart();
+                }
+                
+                if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_L)) {
+                    detener();
+                    window.showLevelsScreen();
+                }
+                
+                if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
+                    detener();
+                    window.showMenu();
+                }
+                return;
+            }
+            // Retry modo normal
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_R)) {
                 nivelCompletado = false;
                 juego.reiniciarNivel();
@@ -203,7 +307,6 @@ public class ControladorJuego implements ActionListener {
                 window.showMenu();
             }
         } else {
-            // Pausa normal - reanudar con ENTER o ESC
             if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER) ||
                     controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
                 juego.pausar();
@@ -240,7 +343,21 @@ public class ControladorJuego implements ActionListener {
         if (nivel.estaCompleto()) {
             nivelCompletado = true;
             juego.setEstado(EstadoJuego.PAUSA);
+            window.desbloquearSiguienteNivel();
             gameScreen.mostrarVictoria();
+        }
+    }
+    
+    /**
+     * Verifica si alguno de los jugadores gano en modo PvP.
+     */
+    private void verificarVictoriaPvP() {
+        Nivel nivel = juego.getNivelActual();
+        int ganador = nivel.ganadorPvP();
+        if (ganador > 0) {
+            nivelCompletado = true;
+            juego.setEstado(EstadoJuego.PAUSA);
+            gameScreen.mostrarVictoriaPvP(ganador);
         }
     }
 
