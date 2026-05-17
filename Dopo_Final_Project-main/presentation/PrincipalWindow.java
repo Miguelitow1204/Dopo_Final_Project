@@ -21,7 +21,7 @@ public class PrincipalWindow extends JFrame {
     private static final String CHARACTER_SCREEN = "SELECT CHARACTER";
     private static final String GAME_SCREEN = "GAME";
 
-    private static final int TOTAL_NIVELES = 3; // Total de niveles disponibles
+    private static final int TOTAL_NIVELES = 4; // Total de niveles disponibles
 
     private CardLayout cardLayout;
     private JPanel container;

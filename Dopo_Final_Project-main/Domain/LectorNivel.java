@@ -79,6 +79,14 @@ public class LectorNivel {
 						Double.parseDouble(c[6]), Double.parseDouble(c[7]));
 				nivel.agregarEnemigo(new EnemigoLineal(
 						new Posicion(x, y), 14, 14, vel, puntoA, puntoB, horizontal));
+			} else if (key.equals("ENEMIGO_CIRCULAR")) {
+				String[] c = value.split(",");
+				double cx = Double.parseDouble(c[0]);
+				double cy = Double.parseDouble(c[1]);
+				double radio = Double.parseDouble(c[2]);
+				double velAngular = Double.parseDouble(c[3]);
+				nivel.agregarEnemigo(new EnemigoPatrullero(
+						new Posicion(cx, cy), radio, velAngular));
 			}
 		}
 		reader.close();
