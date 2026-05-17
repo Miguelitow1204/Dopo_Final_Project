@@ -2,6 +2,7 @@ package Domain;
 
 /**
  * Servicio de reglas de colision entre jugador, enemigos y monedas.
+ * 
  * @author (MurilloRubiano)
  * @version (1.5)
  */
@@ -62,10 +63,12 @@ public class GestorColisiones {
         // Verificar colision con enemigos
         for (Enemigo enemigo : nivel.getEnemigos()) {
             if (jugadorTocaEnemigo(jugador, enemigo)) {
-                jugador.perderVida();
-                //reiniciar monedas del nivel
-                for(Moneda moneda : nivel.getMonedas()) {
-                	moneda.reiniciar();
+                boolean murio = jugador.perderVida();
+                if (murio) {
+                    // Solo reiniciar monedas si el jugador murio realmente
+                    for (Moneda moneda : nivel.getMonedas()) {
+                        moneda.reiniciar();
+                    }
                 }
                 return;
             }
@@ -78,7 +81,7 @@ public class GestorColisiones {
             }
         }
     }
-    
+
     /**
      * Verifica si el jugador colisiona con alguna pared y revierte su posicion
      * 
@@ -87,13 +90,13 @@ public class GestorColisiones {
      * @param prevY
      */
     public void verificarColisionParedes(Nivel nivel, double prevX, double prevY) {
-    	Jugador jugador = nivel.getJugador();
-    	for(Wall pared : nivel.getParedes()) {
-    		if(detectarColision(jugador, pared)) {
-    			jugador.getPosicion().setX(prevX);
-    			jugador.getPosicion().setY(prevY);
-    			return;
-    		}
-    	}
+        Jugador jugador = nivel.getJugador();
+        for (Wall pared : nivel.getParedes()) {
+            if (detectarColision(jugador, pared)) {
+                jugador.getPosicion().setX(prevX);
+                jugador.getPosicion().setY(prevY);
+                return;
+            }
+        }
     }
 }

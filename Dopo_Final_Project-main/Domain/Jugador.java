@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 /**
  * Representa al jugador con movimiento, vidas y recoleccion de monedas.
+ * 
  * @author (MurilloRubiano)
  * @version (1.5)
  */
@@ -15,6 +16,8 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
     private String nombre;
     private TipoPersonaje tipoPersonaje;
     private int muertes;
+    private boolean escudoActivo;
+    private int velocidadOriginal;
 
     /**
      * Crea un jugador con nombre, tipo y posicion inicial.
@@ -31,6 +34,7 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
         this.monedasRecogidas = 0;
         this.muertes = 0;
         configurarSegunTipo();
+        this.velocidadOriginal = this.velocidad;
     }
 
     /**
@@ -52,6 +56,7 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
                 this.velocidad = 3;
                 this.ancho = 20;
                 this.alto = 20;
+                this.escudoActivo = true;
                 break;
         }
     }
@@ -132,12 +137,30 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
     }
 
     /**
-     * Incrementa muertes y reinicia progreso de intento actual.
+     * Gestiona el impacto de un enemigo sobre el jugador.
+     * Para el verde con escudo activo: absorbe el golpe, guarda la posicion
+     * actual como checkpoint y reduce la velocidad.
+     * Para el verde sin escudo: muere y reaparece en el checkpoint guardado.
+     *
+     * @return true si el jugador murio, false si el escudo absorb el golpe.
      */
-    public void perderVida() {
+    public boolean perderVida() {
+        if (tipoPersonaje == TipoPersonaje.VERDE && escudoActivo) {
+            // Primer golpe: el escudo absorbe, el jugador se queda donde esta
+            escudoActivo = false;
+            velocidad = (int) (velocidadOriginal * 0.7);
+            return false;
+        }
         muertes++;
-        reiniciarPosicion();
-        monedasRecogidas = 0;
+        if (tipoPersonaje == TipoPersonaje.VERDE) {
+            escudoActivo = true;
+            velocidad = velocidadOriginal;
+            // monedasRecogidas NO se resetea
+        } else {
+            monedasRecogidas = 0; // solo para rojo y azul
+            reiniciarPosicion();
+        }
+        return true;
     }
 
     /**
@@ -159,6 +182,15 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
     }
 
     // Getters y setters
+
+    /**
+     * Indica si el escudo del jugador verde esta activo.
+     *
+     * @return true si el proximo golpe sera absorbido.
+     */
+    public boolean isEscudoActivo() {
+        return escudoActivo;
+    }
 
     /**
      * Obtiene la cantidad de monedas recogidas en el intento actual.

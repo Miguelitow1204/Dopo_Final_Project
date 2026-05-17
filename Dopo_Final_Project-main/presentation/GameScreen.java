@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Vista principal del juego: render de mapa, entidades, HUD y mensajes.
+ * 
  * @author (Murillo Rubiano)
  * @version 2.0
  */
@@ -25,6 +26,7 @@ public class GameScreen extends JPanel {
     private boolean mostrandoVictoria;
     private boolean mostrandoDerrota;
     private boolean mostrandoPausa;
+
     /**
      * Crea el panel de juego y configura propiedades de render.
      */
@@ -64,13 +66,12 @@ public class GameScreen extends JPanel {
         dibujarJugador(g2, nivel.getJugador());
         dibujarHUD(g2);
 
-
         if (mostrandoVictoria) {
             dibujarVictoria(g2);
-        } else if(mostrandoDerrota) {
-        	dibujarDerrota(g2);
-        } else if(mostrandoPausa) {
-        	dibujarPausa(g2);
+        } else if (mostrandoDerrota) {
+            dibujarDerrota(g2);
+        } else if (mostrandoPausa) {
+            dibujarPausa(g2);
         }
     }
 
@@ -92,23 +93,23 @@ public class GameScreen extends JPanel {
                 g.fillRect(x, y, tamCelda, tamCelda);
             }
         }
-        //Paredes sólidas visibles
+        // Paredes sólidas visibles
         int grosor = 10;
         g.setColor(new Color(60, 60, 90));
-        //Pared superior
+        // Pared superior
         g.fillRect(0, HUD_ALTO, ANCHO, grosor);
-        //Pared inferior
+        // Pared inferior
         g.fillRect(0, ALTO - grosor, ANCHO, grosor);
         // Pared izquierda
         g.fillRect(0, HUD_ALTO, grosor, ALTO - HUD_ALTO);
         // Pared derecha
         g.fillRect(ANCHO - grosor, HUD_ALTO, grosor, ALTO - HUD_ALTO);
-        
+
         // Borde decorativo encima
         g.setColor(new Color(255, 200, 50));
         g.setStroke(new BasicStroke(2));
-        g.drawRect(grosor, HUD_ALTO + grosor, 
-                   ANCHO - grosor * 2 - 1, ALTO - HUD_ALTO - grosor * 2 - 1);
+        g.drawRect(grosor, HUD_ALTO + grosor,
+                ANCHO - grosor * 2 - 1, ALTO - HUD_ALTO - grosor * 2 - 1);
         g.setStroke(new BasicStroke(1));
     }
 
@@ -236,6 +237,27 @@ public class GameScreen extends JPanel {
         // Cuadradito interior decorativo (estilo original)
         g.setColor(new Color(255, 255, 255, 80));
         g.fillRect(x + 4, y + 4, w - 8, h - 8);
+
+        // Indicadores visuales exclusivos del jugador verde
+        if (jugador.getTipoPersonaje() == TipoPersonaje.VERDE) {
+            if (jugador.isEscudoActivo()) {
+                // Escudo activo: anillo verde brillante
+                g.setColor(new Color(100, 255, 120, 180));
+                g.setStroke(new BasicStroke(3));
+                g.drawRect(x - 4, y - 4, w + 8, h + 8);
+                g.setStroke(new BasicStroke(1));
+            } else {
+                // Escudo roto: borde rojo pulsante para indicar vulnerabilidad
+                g.setColor(new Color(220, 50, 50, 200));
+                g.setStroke(new BasicStroke(3));
+                g.drawRect(x - 4, y - 4, w + 8, h + 8);
+                // Icono de advertencia en la esquina superior derecha
+                g.setStroke(new BasicStroke(1));
+                g.setFont(new Font("Monospaced", Font.BOLD, 10));
+                g.setColor(new Color(255, 80, 80));
+                g.drawString("!", x + w + 2, y + 4);
+            }
+        }
     }
 
     /**
@@ -278,133 +300,135 @@ public class GameScreen extends JPanel {
     }
 
     /**
-     * Dibuja un mensaje central superpuesto sobre el juego indicando la victoria del nivel.
+     * Dibuja un mensaje central superpuesto sobre el juego indicando la victoria
+     * del nivel.
      *
-     * @param g     contexto grafico.
+     * @param g contexto grafico.
      */
     private void dibujarVictoria(Graphics2D g) {
-    	//Overlay
-    	g.setColor(new Color(0, 0, 0, 170));
-    	g.fillRect(0, 0, ANCHO, ALTO);
-    	
-    	//Caja central
-    	int boxW = 500;
-    	int boxH = 280;
-    	int boxX = (ANCHO - boxW) / 2;
-    	int boxY = (ALTO - boxH) / 2;
-    	
-    	g.setColor(new Color(20, 60, 20));
-    	g.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
-    	g.setColor(new Color(50, 200, 80));
-    	g.setStroke(new BasicStroke(3));
-    	g.drawRoundRect(boxY, boxY, boxW, boxH, 20, 20);
-    	g.setStroke(new BasicStroke(1));
-    	
-    	//Title
-    	g.setFont(new Font("Monospaced", Font.BOLD, 36));
-    	g.setColor(new Color(50, 220, 80));
-    	String titulo = "YOU WIN!";
-    	FontMetrics fm = g.getFontMetrics();
-    	g.drawString(titulo, (ANCHO - fm.stringWidth(titulo)) / 2, boxY + 70);
-    	
-    	//Subtitle level
-    	g.setFont(new Font("Monospaced", Font.PLAIN, 16));
-    	g.setColor(Color.WHITE);
-    	String subtitle = "LEVEL COMPLETED!";
-    	fm = g.getFontMetrics();
-    	g.drawString(subtitle, (ANCHO - fm.stringWidth(subtitle)) / 2, boxY + 105);
-    	
-    	//Botones
-    	dibujarBotonOverlay(g, boxX + 20, boxY + 180, 140, 44, "↺ RETRY [R]", new Color(60, 60, 180));
-    	dibujarBotonOverlay(g, boxX + 180, boxY + 180, 140, 44, "▶ NEXT LEVEL [N]", new Color(50, 160, 50));
-    	dibujarBotonOverlay(g, boxX + 340, boxY + 180, 140, 44, "⌂ MENU [M]", new Color(160, 60, 60));
+        // Overlay
+        g.setColor(new Color(0, 0, 0, 170));
+        g.fillRect(0, 0, ANCHO, ALTO);
+
+        // Caja central
+        int boxW = 500;
+        int boxH = 280;
+        int boxX = (ANCHO - boxW) / 2;
+        int boxY = (ALTO - boxH) / 2;
+
+        g.setColor(new Color(20, 60, 20));
+        g.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
+        g.setColor(new Color(50, 200, 80));
+        g.setStroke(new BasicStroke(3));
+        g.drawRoundRect(boxY, boxY, boxW, boxH, 20, 20);
+        g.setStroke(new BasicStroke(1));
+
+        // Title
+        g.setFont(new Font("Monospaced", Font.BOLD, 36));
+        g.setColor(new Color(50, 220, 80));
+        String titulo = "YOU WIN!";
+        FontMetrics fm = g.getFontMetrics();
+        g.drawString(titulo, (ANCHO - fm.stringWidth(titulo)) / 2, boxY + 70);
+
+        // Subtitle level
+        g.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        g.setColor(Color.WHITE);
+        String subtitle = "LEVEL COMPLETED!";
+        fm = g.getFontMetrics();
+        g.drawString(subtitle, (ANCHO - fm.stringWidth(subtitle)) / 2, boxY + 105);
+
+        // Botones
+        dibujarBotonOverlay(g, boxX + 20, boxY + 180, 140, 44, "↺ RETRY [R]", new Color(60, 60, 180));
+        dibujarBotonOverlay(g, boxX + 180, boxY + 180, 140, 44, "▶ NEXT LEVEL [N]", new Color(50, 160, 50));
+        dibujarBotonOverlay(g, boxX + 340, boxY + 180, 140, 44, "⌂ MENU [M]", new Color(160, 60, 60));
     }
-    
+
     /**
      * Muestra el mensaje indicando que el timepo se acabó, mensaje de derrota
      * 
      * @param g
      */
     private void dibujarDerrota(Graphics2D g) {
-    	//Overlay
-    	g.setColor(new Color(0, 0, 0, 170));
-    	g.fillRect(0, 0, ANCHO, ALTO);
-    	
-    	//Caja central
-    	int boxW = 500;
-    	int boxH = 250;
-    	int boxX = (ANCHO - boxW) / 2;
-    	int boxY = (ALTO - boxH) / 2;
-    	
-    	g.setColor(new Color(60, 20, 20));
+        // Overlay
+        g.setColor(new Color(0, 0, 0, 170));
+        g.fillRect(0, 0, ANCHO, ALTO);
+
+        // Caja central
+        int boxW = 500;
+        int boxH = 250;
+        int boxX = (ANCHO - boxW) / 2;
+        int boxY = (ALTO - boxH) / 2;
+
+        g.setColor(new Color(60, 20, 20));
         g.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
         g.setColor(new Color(200, 50, 50));
         g.setStroke(new BasicStroke(3));
         g.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
         g.setStroke(new BasicStroke(1));
-        
-        //Title
+
+        // Title
         g.setFont(new Font("Monospaced", Font.BOLD, 36));
         g.setColor(new Color(220, 50, 50));
         String titulo = "YOU LOST!";
         FontMetrics fm = g.getFontMetrics();
         g.drawString(titulo, (ANCHO - fm.stringWidth(titulo)) / 2, boxY + 70);
-        
-        //Subtitulo
+
+        // Subtitulo
         g.setFont(new Font("Monospaced", Font.PLAIN, 16));
         g.setColor(Color.WHITE);
         String sub = "Time's up! Better luck next time.";
         fm = g.getFontMetrics();
         g.drawString(sub, (ANCHO - fm.stringWidth(sub)) / 2, boxY + 110);
-        
-        //Botones
-        dibujarBotonOverlay(g, boxX + 80,  boxY + 160, 140, 44,
-                            "↺ RETRY [R]", new Color(60, 60, 180));
+
+        // Botones
+        dibujarBotonOverlay(g, boxX + 80, boxY + 160, 140, 44,
+                "↺ RETRY [R]", new Color(60, 60, 180));
         dibujarBotonOverlay(g, boxX + 280, boxY + 160, 140, 44,
-                            "⌂ MENU [M]",  new Color(160, 60, 60));
+                "⌂ MENU [M]", new Color(160, 60, 60));
     }
-    
+
     /**
      * muestra la pantalla de pausa del juego
+     * 
      * @param g
      */
     private void dibujarPausa(Graphics2D g) {
-    	//Overlay
-    	g.setColor(new Color(0, 0, 0, 170));
+        // Overlay
+        g.setColor(new Color(0, 0, 0, 170));
         g.fillRect(0, 0, ANCHO, ALTO);
-        
-        //Caja
-        int boxW = 500; 
-        int	boxH = 250;
+
+        // Caja
+        int boxW = 500;
+        int boxH = 250;
         int boxX = (ANCHO - boxW) / 2;
         int boxY = (ALTO - boxH) / 2;
-        
+
         g.setColor(new Color(20, 20, 60));
         g.fillRoundRect(boxX, boxY, boxW, boxH, 20, 20);
         g.setColor(new Color(100, 100, 255));
         g.setStroke(new BasicStroke(3));
         g.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
         g.setStroke(new BasicStroke(1));
-        
-        //Titulo
+
+        // Titulo
         g.setFont(new Font("Monospaced", Font.BOLD, 36));
         g.setColor(new Color(150, 150, 255));
         String titulo = "⏸️ PAUSED";
         FontMetrics fm = g.getFontMetrics();
         g.drawString(titulo, (ANCHO - fm.stringWidth(titulo)) / 2, boxY + 70);
-        
-        //Subtitulo
+
+        // Subtitulo
         g.setFont(new Font("Monospaced", Font.PLAIN, 16));
         g.setColor(Color.WHITE);
         String sub = "Game is paused";
         fm = g.getFontMetrics();
         g.drawString(sub, (ANCHO - fm.stringWidth(sub)) / 2, boxY + 110);
-        
-        //Botones
-        dibujarBotonOverlay(g, boxX + 180,  boxY + 155, 140, 44,
-                            "▶ RESUME [esc]", new Color(60, 60, 180));
+
+        // Botones
+        dibujarBotonOverlay(g, boxX + 180, boxY + 155, 140, 44,
+                "▶ RESUME [esc]", new Color(60, 60, 180));
     }
-    
+
     /**
      * Dibuja los botones de Retry level, Next Level y Menu
      * 
@@ -418,7 +442,7 @@ public class GameScreen extends JPanel {
      * @param color
      */
     private void dibujarBotonOverlay(Graphics2D g, int x, int y, int w, int h, String texto, Color color) {
-    	g.setColor(color);
+        g.setColor(color);
         g.fillRoundRect(x, y, w, h, 10, 10);
         g.setColor(color.brighter());
         g.drawRoundRect(x, y, w, h, 10, 10);
@@ -427,7 +451,7 @@ public class GameScreen extends JPanel {
         FontMetrics fm = g.getFontMetrics();
         g.drawString(texto, x + (w - fm.stringWidth(texto)) / 2, y + 28);
     }
-    
+
     /**
      * Dibuja las paredes del nivel donde rebotan los enemigos azules
      * 
@@ -476,16 +500,6 @@ public class GameScreen extends JPanel {
     }
 
     /**
-     * Establece y muestra un mensaje superpuesto.
-     *
-     * @param mensaje texto del mensaje.
-     */
-    //public void setMensaje(String mensaje) {
-      //  this.mensaje = mensaje;
-        //this.mostrandoMensaje = true;
-    //}
-
-    /**
      * Oculta el mensaje central en pantalla.
      */
     public void ocultarOverlay() {
@@ -493,24 +507,24 @@ public class GameScreen extends JPanel {
         this.mostrandoDerrota = false;
         this.mostrandoPausa = false;
     }
-    
+
     /**
      * Establece el estado de visctoria en true
      */
     public void mostrarVictoria() {
-    	this.mostrandoVictoria = true;
-    	this.mostrandoDerrota = false;
+        this.mostrandoVictoria = true;
+        this.mostrandoDerrota = false;
     }
-    
+
     /**
      * Establece el estado de derrota en true
      */
     public void mostrarDerrota() {
-    	this.mostrandoDerrota = true;
-    	this.mostrandoVictoria = false;
+        this.mostrandoDerrota = true;
+        this.mostrandoVictoria = false;
     }
-    
+
     public void mostrarPausa() {
-    	this.mostrandoPausa = true;
+        this.mostrandoPausa = true;
     }
 }
