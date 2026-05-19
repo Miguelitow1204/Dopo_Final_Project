@@ -9,7 +9,7 @@ import java.util.List;
  * Agregado de entidades de un nivel y su condicion de finalizacion.
  * 
  * @author MurilloRubiano
- * @version 2.2
+ * @version 3.0
  */
 public class Nivel {
 
@@ -29,6 +29,7 @@ public class Nivel {
     private List<Moneda> monedas;
     private ZonaSegura zonaInicio;
     private ZonaSegura zonaMeta;
+    private ZonaSegura zonaIntermedia;
     private int tiempoLimite;
     private List<Wall> paredes;
     
@@ -74,14 +75,17 @@ public class Nivel {
      * @return 1 si gano P1, 2 si gano P2, 0 si nadie ha ganado aun.
      */
     public int ganadorPvP() {
-        if (jugador.haRecogidoTodas(monedas.size()) && zonaMeta.contiene(jugador)) {
+        int totalMonedas = monedas.size();
+        int monedasTotalesRecogidas = jugador.getMonedasRecogidas() + jugador2.getMonedasRecogidas();
+        
+        if(monedasTotalesRecogidas >= totalMonedas && zonaMeta.contiene(jugador)){
             return 1;
         }
         
-        if (jugador2 != null && jugador2.haRecogidoTodas(monedas.size()) 
-                && zonaInicio.contiene(jugador2)) {
+        if(monedasTotalesRecogidas >= totalMonedas && zonaInicio.contiene(jugador2)){
             return 2;
         }
+        
         return 0;
     }
     
@@ -189,6 +193,14 @@ public class Nivel {
 
     public void setZonaMeta(ZonaSegura zonaMeta) {
         this.zonaMeta = zonaMeta;
+    }
+    
+    public ZonaSegura getZonaIntermedia(){
+        return zonaIntermedia;
+    }
+    
+    public void setZonaIntermedia(ZonaSegura zonaIntermedia){
+        this.zonaIntermedia = zonaIntermedia;
     }
 
     public int getTiempoLimite() {

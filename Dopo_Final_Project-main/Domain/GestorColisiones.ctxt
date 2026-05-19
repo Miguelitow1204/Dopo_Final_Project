@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GestorColisiones
-comment0.text=\r\n\ Servicio\ de\ reglas\ de\ colision\ entre\ jugador,\ enemigos\ y\ monedas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.5)\r\n
+comment0.text=\r\n\ Servicio\ de\ reglas\ de\ colision\ entre\ jugador,\ enemigos\ y\ monedas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (1.7)\r\n
 comment1.params=a\ b
 comment1.target=boolean\ detectarColision(Colisionable,\ Colisionable)
 comment1.text=\r\n\ Detecta\ interseccion\ entre\ dos\ objetos\ colisionables.\r\n\r\n\ @param\ a\ primer\ objeto.\r\n\ @param\ b\ segundo\ objeto.\r\n\ @return\ true\ si\ los\ limites\ se\ intersectan.\r\n

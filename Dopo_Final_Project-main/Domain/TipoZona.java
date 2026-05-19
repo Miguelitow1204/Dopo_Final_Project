@@ -7,5 +7,6 @@ package Domain;
  */
 public enum TipoZona {
     INICIO,
-    META
+    META,
+    INTERMEDIA
 }

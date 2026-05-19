@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=FabricaNivel
-comment0.text=\r\n\ Fabrica\ centralizada\ para\ la\ carga\ de\ niveles\ desde\ archivos\ de\r\n\ configuracion.\r\n\ Encapsula\ el\ detalle\ de\ donde\ y\ como\ se\ leen\ los\ niveles,\ de\ modo\ que\r\n\ el\ resto\ del\ sistema\ solo\ necesita\ pedir\ "dame\ el\ nivel\ N"\ sin\ saber\ nada\r\n\ sobre\ archivos,\ rutas\ ni\ excepciones\ de\ I/O.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment0.text=\r\n\ Fabrica\ centralizada\ para\ la\ carga\ de\ niveles\ desde\ archivos\ de\r\n\ configuracion.\r\n\ Encapsula\ el\ detalle\ de\ donde\ y\ como\ se\ leen\ los\ niveles,\ de\ modo\ que\r\n\ el\ resto\ del\ sistema\ solo\ necesita\ pedir\ "dame\ el\ nivel\ N"\ sin\ saber\ nada\r\n\ sobre\ archivos,\ rutas\ ni\ excepciones\ de\ I/O.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.2\r\n
 comment1.params=
 comment1.target=FabricaNivel()
 comment2.params=numero\ tipo

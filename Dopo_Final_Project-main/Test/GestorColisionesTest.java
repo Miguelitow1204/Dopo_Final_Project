@@ -71,4 +71,69 @@ public class GestorColisionesTest {
         gestor.verificarColisionesNivel(nivel);
         assertEquals(0, jugador.getMonedasRecogidas());
     }
+    
+    //TESTS PVP
+
+    @Test
+    public void testJugadoresColisionan() {
+        Jugador jugador2 = new Jugador(new Posicion(100, 100), "P2", TipoPersonaje.AZUL);
+        assertTrue(gestor.jugadoresColisionan(jugador, jugador2));
+    }
+
+    @Test
+    public void testJugadoresNoColisionan() {
+        Jugador jugador2 = new Jugador(new Posicion(400, 400), "P2", TipoPersonaje.AZUL);
+        assertFalse(gestor.jugadoresColisionan(jugador, jugador2));
+    }
+
+    @Test
+    public void testColisionPvPJ1ConEnemigoReiniciaMonedas() {
+        Nivel nivel = new Nivel(1, 60);
+        nivel.setModoPvP(true);
+        nivel.setJugador(jugador);
+        Jugador jugador2 = new Jugador(new Posicion(400, 400), "P2", TipoPersonaje.AZUL);
+        nivel.setJugador2(jugador2);
+        nivel.setZonaInicio(new ZonaSegura(
+                new Posicion(0, 0), 100, 100, TipoZona.INICIO));
+        nivel.setZonaMeta(new ZonaSegura(
+                new Posicion(500, 500), 100, 100, TipoZona.META));
+
+        Moneda moneda = new Moneda(new Posicion(300, 300));
+        jugador2.recogerMoneda(moneda);
+        nivel.agregarMoneda(moneda);
+
+        EnemigoLineal enemigo = new EnemigoLineal(
+                new Posicion(100, 100), 14, 14, 2,
+                new Posicion(50, 100), new Posicion(200, 100), true);
+        nivel.agregarEnemigo(enemigo);
+
+        gestor.verificarColisionesNivelPvP(nivel);
+
+        assertEquals(0, jugador2.getMonedasRecogidas());
+    }
+
+    @Test
+    public void testColisionEntrePvPAmbosReinician() {
+        Nivel nivel = new Nivel(1, 60);
+        nivel.setModoPvP(true);
+        nivel.setJugador(jugador);
+        Jugador jugador2 = new Jugador(new Posicion(100, 100), "P2", TipoPersonaje.AZUL);
+        nivel.setJugador2(jugador2);
+        nivel.setZonaInicio(new ZonaSegura(
+                new Posicion(0, 0), 100, 100, TipoZona.INICIO));
+        nivel.setZonaMeta(new ZonaSegura(
+                new Posicion(500, 500), 100, 100, TipoZona.META));
+
+        Moneda moneda1 = new Moneda(new Posicion(300, 300));
+        Moneda moneda2 = new Moneda(new Posicion(350, 300));
+        jugador.recogerMoneda(moneda1);
+        jugador2.recogerMoneda(moneda2);
+        nivel.agregarMoneda(moneda1);
+        nivel.agregarMoneda(moneda2);
+
+        gestor.verificarColisionesNivelPvP(nivel);
+
+        assertEquals(0, jugador.getMonedasRecogidas());
+        assertEquals(0, jugador2.getMonedasRecogidas());
+    }
 }

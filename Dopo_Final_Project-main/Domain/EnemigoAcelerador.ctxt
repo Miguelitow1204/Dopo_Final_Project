@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=EnemigoAcelerador
+comment0.text=\r\n\ Enemigo\ Acelerador\ Tipo\ A\ que\ se\ desplaza\ al\ doble\ de\ velocidad\r\n\ de\ los\ enemigos\ normales\ en\ linea\ recta.\ Rebota\ en\ paredes\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @versio\ 1.0\r\n
+comment1.params=posicion\ ancho\ alto\ velocidad\ puntoA\ puntoB\ movimientoHorizontal
+comment1.target=EnemigoAcelerador(Posicion,\ int,\ int,\ double,\ Posicion,\ Posicion,\ boolean)
+numComments=2

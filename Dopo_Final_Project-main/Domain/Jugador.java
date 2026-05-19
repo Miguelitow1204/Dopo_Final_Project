@@ -6,7 +6,7 @@ import java.awt.Rectangle;
  * Representa al jugador con movimiento, vidas y recoleccion de monedas.
  * 
  * @author (MurilloRubiano)
- * @version (1.5)
+ * @version (1.7)
  */
 public class Jugador extends EntidadJuego implements Movible, Colisionable {
 
@@ -18,6 +18,9 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
     private int muertes;
     private boolean escudoActivo;
     private int velocidadOriginal;
+    
+    private int framesSinDaño = 0;
+    private static final int FRAMES_INVULNERABLE = 90; //1.5 sec a 60 FPS
 
     /**
      * Crea un jugador con nombre, tipo y posicion inicial.
@@ -145,22 +148,38 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
      * @return true si el jugador murio, false si el escudo absorb el golpe.
      */
     public boolean perderVida() {
+        //Si esta en periodo de invulnerabilidad, ignorar el golpe
+        if(framesSinDaño > 0){
+            return false;
+        }
+        framesSinDaño = FRAMES_INVULNERABLE;
+        
         if (tipoPersonaje == TipoPersonaje.VERDE && escudoActivo) {
-            // Primer golpe: el escudo absorbe, el jugador se queda donde esta
+            //Primer golpe: pierde escudo y velocidad, no muere, monedas intactas
             escudoActivo = false;
             velocidad = (int) (velocidadOriginal * 0.7);
             return false;
         }
+        //Segundo hit (verde sin escudo) o cualquier hit(rojo/azul): muerte real
         muertes++;
+        monedasRecogidas = 0;
+        reiniciarPosicion();
         if (tipoPersonaje == TipoPersonaje.VERDE) {
+            //Restaurar escudo y velocidad al morir
             escudoActivo = true;
             velocidad = velocidadOriginal;
-            // monedasRecogidas NO se resetea
-        } else {
-            monedasRecogidas = 0; // solo para rojo y azul
-            reiniciarPosicion();
-        }
+        }   
         return true;
+    }
+    
+    /**
+     * Reduce el contador de invulnerabilidad cada frame
+     * Debe llamarse en cada tick del game loop
+     */
+    public void actualizarInvulnerabilidad(){
+        if(framesSinDaño > 0){
+            framesSinDaño--;
+        }
     }
 
     /**

@@ -11,7 +11,7 @@ import java.io.IOException;
  * Ventana principal Swing que organiza pantallas y arranca partidas.
  * 
  * @author (MurilloRubiano)
- * @version (2.0)
+ * @version (2.2)
  */
 public class PrincipalWindow extends JFrame {
 
@@ -105,11 +105,10 @@ public class PrincipalWindow extends JFrame {
         try {
             FabricaNivel.cargarTodos(tipo, TOTAL_NIVELES)
                     .forEach(juego::agregarNivel);
-        } catch (NivelNoEncontradoException e) {
-            System.err.println("[ERROR] " + e.getMessage());
-            JOptionPane.showMessageDialog(this,
-                    "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
-                    "Error al cargar", JOptionPane.ERROR_MESSAGE);
+        } catch (RuntimeException e) {
+            LogErrores.registrar("Error al iniciar el juego", e);
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
+                "Error al cargar", JOptionPane.ERROR_MESSAGE);
             return;
         }
         

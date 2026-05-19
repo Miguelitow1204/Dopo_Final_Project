@@ -65,7 +65,7 @@ public class LevelsScreen extends JPanel {
 
         //Niveles
         gbc.gridwidth = 1;
-        int desbloqueados = window.getModoJuego().equals("PVP") ? 5 : window.getNivelesDesbloqueados();
+        int desbloqueados = 5;
         String[] labels = {"1","2","3","4","5"};
         
         int col = 0;

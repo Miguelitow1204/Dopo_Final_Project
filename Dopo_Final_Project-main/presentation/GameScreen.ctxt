@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GameScreen
-comment0.text=\r\n\ Vista\ principal\ del\ juego\:\ render\ de\ mapa,\ entidades,\ HUD\ y\ mensajes.\r\n\ \r\n\ @author\ (Murillo\ Rubiano)\r\n\ @version\ 2.0\r\n
+comment0.text=\r\n\ Vista\ principal\ del\ juego\:\ render\ de\ mapa,\ entidades,\ HUD\ y\ mensajes.\r\n\ \r\n\ @author\ (Murillo\ Rubiano)\r\n\ @version\ 2.1\r\n
 comment1.params=
 comment1.target=GameScreen()
 comment1.text=\r\n\ Crea\ el\ panel\ de\ juego\ y\ configura\ propiedades\ de\ render.\r\n

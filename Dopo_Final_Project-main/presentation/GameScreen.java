@@ -11,7 +11,7 @@ import java.util.List;
  * Vista principal del juego: render de mapa, entidades, HUD y mensajes.
  * 
  * @author (Murillo Rubiano)
- * @version 2.0
+ * @version 2.1
  */
 public class GameScreen extends JPanel {
 
@@ -65,6 +65,9 @@ public class GameScreen extends JPanel {
         dibujarParedes(g2, nivel.getParedes());
         dibujarZonaSegura(g2, nivel.getZonaInicio());
         dibujarZonaSegura(g2, nivel.getZonaMeta());
+        if(nivel.getZonaIntermedia() != null){
+            dibujarZonaSegura(g2, nivel.getZonaIntermedia());
+        }
         dibujarMonedas(g2, nivel.getMonedas());
         dibujarEnemigos(g2, nivel.getEnemigos());
         dibujarJugador(g2, nivel.getJugador());
@@ -144,8 +147,10 @@ public class GameScreen extends JPanel {
 
         if (zona.getTipo() == TipoZona.INICIO) {
             g.setColor(new Color(130, 220, 130, 160));
-        } else {
+        } else if(zona.getTipo() == TipoZona.META){
             g.setColor(new Color(40, 160, 60, 160));
+        } else {
+            g.setColor(new Color(100, 180, 255, 160)); 
         }
         g.fillRect(x, y, zona.getAncho(), zona.getAlto());
 
@@ -156,7 +161,8 @@ public class GameScreen extends JPanel {
         // Texto indicador
         g.setFont(new Font("Monospaced", Font.BOLD, 11));
         g.setColor(new Color(20, 80, 30));
-        String label = zona.getTipo() == TipoZona.INICIO ? "START" : "GOAL";
+        String label = zona.getTipo() == TipoZona.INICIO ? "START" :
+                       zona.getTipo() == TipoZona.META ? "GOAL" : "CHECK";
         FontMetrics fm = g.getFontMetrics();
         int tx = x + (zona.getAncho() - fm.stringWidth(label)) / 2;
         int ty = y + zona.getAlto() - 8;
@@ -326,30 +332,41 @@ public class GameScreen extends JPanel {
      * @param g contexto grafico.
      */
     private void dibujarHUD(Graphics2D g) {
-        // Barra superior oscura
+        //Barra superior oscura
         g.setColor(new Color(30, 30, 45));
         g.fillRect(0, 0, ANCHO, HUD_ALTO);
 
-        // Linea inferior del HUD
+        //Linea inferior del HUD
         g.setColor(new Color(255, 200, 50));
         g.fillRect(0, HUD_ALTO - 2, ANCHO, 2);
 
         g.setFont(new Font("Monospaced", Font.BOLD, 15));
 
-        // Nivel
+        //Nivel
         g.setColor(new Color(100, 200, 255));
         g.drawString("LEVEL " + (nivel != null ? nivel.getNumero() : ""), 20, 28);
 
-        // Muertes
-        g.setColor(new Color(255, 100, 100));
-        g.drawString("DEATHS: " + muertes, 180, 28);
+        //Muertes
+        if(modoPvP && nivel.getJugador2() != null){
+            int muertesTotales = nivel.getJugador().getMuertes() + nivel.getJugador2().getMuertes();
+            g.setColor(new Color(255, 100, 100));
+            g.drawString("DEATHS: " + muertesTotales, 180, 28);
+        } else {
+            g.setColor(new Color(255, 100, 100));
+            g.drawString("DEATHS: " + muertes, 180, 28);
+        }
 
-        // Monedas
+        //Monedas
         if (nivel != null) {
-            Jugador j = nivel.getJugador();
             int total = nivel.getMonedas().size();
+            int recogidas;
+            if(modoPvP && nivel.getJugador2() != null){
+                recogidas = nivel.getJugador().getMonedasRecogidas() + nivel.getJugador2().getMonedasRecogidas();
+            } else {
+                recogidas = nivel.getJugador().getMonedasRecogidas();
+            }
             g.setColor(new Color(255, 215, 0));
-            g.drawString("COINS: " + j.getMonedasRecogidas() + "/" + total, 380, 28);
+            g.drawString("COINS: " + recogidas + "/" + total, 380, 28);
         }
 
         // Tiempo
@@ -434,18 +451,11 @@ public class GameScreen extends JPanel {
 
         //Botones
         dibujarBotonOverlay(g, boxX + 20,  boxY + 160, 140, 44,
-                            "PLAY AGAIN",  new Color(60, 60, 180));
+                            "PLAY AGAIN [R]",  new Color(60, 60, 180));
         dibujarBotonOverlay(g, boxX + 180, boxY + 160, 140, 44,
-                            "SEL. LEVEL",  new Color(50, 160, 50));
+                            "SEL. LEVEL [L]",  new Color(50, 160, 50));
         dibujarBotonOverlay(g, boxX + 340, boxY + 160, 140, 44,
-                            "MENU",        new Color(160, 60, 60));
-
-        //Instrucciones
-        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        g.setColor(new Color(150, 150, 170));
-        String inst = "R = Play Again   |   L = Select Level   |   M = Menu";
-        fm = g.getFontMetrics();
-        g.drawString(inst, (ANCHO - fm.stringWidth(inst)) / 2, boxY + 230);
+                            "MENU [M]",        new Color(160, 60, 60));
     }
 
     /**

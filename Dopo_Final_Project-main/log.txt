@@ -1,0 +1,4 @@
+[2026-05-18 22:10:28] ERROR: No se pudo cargar el nivel 1 desde: configuraciones/nivel1.txt
+    Causa: For input string: "hola;"
+[2026-05-18 22:10:28] ERROR: Error al iniciar el juego
+    Causa: No se pudo cargar el nivel 1 desde: configuraciones/nivel1.txt

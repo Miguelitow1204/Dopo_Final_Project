@@ -4,7 +4,7 @@ package Domain;
  * Servicio de reglas de colision entre jugador, enemigos y monedas.
  * 
  * @author (MurilloRubiano)
- * @version (1.5)
+ * @version (1.7)
  */
 public class GestorColisiones {
 
@@ -60,7 +60,7 @@ public class GestorColisiones {
     public void verificarColisionesNivel(Nivel nivel) {
         Jugador jugador = nivel.getJugador();
 
-        // Verificar colision con enemigos
+        //Verificar colision con enemigos
         for (Enemigo enemigo : nivel.getEnemigos()) {
             if (jugadorTocaEnemigo(jugador, enemigo)) {
                 boolean murio = jugador.perderVida();
@@ -74,11 +74,18 @@ public class GestorColisiones {
             }
         }
 
-        // Verificar colision con monedas
+        //Verificar colision con monedas
         for (Moneda moneda : nivel.getMonedas()) {
             if (moneda.isActiva() && jugadorTocaMoneda(jugador, moneda)) {
                 jugador.recogerMoneda(moneda);
             }
+        }
+        
+        //Verificar zona intermedia
+        ZonaSegura intermedia = nivel.getZonaIntermedia();
+        if(intermedia != null && intermedia.contiene(nivel.getJugador())){
+            nivel.getJugador().setPosicionInicial(new Posicion(intermedia.getPosicion().getX() + 10,
+                                                               intermedia.getPosicion().getY() + intermedia.getAlto()/2));
         }
     }
 
@@ -120,49 +127,61 @@ public class GestorColisiones {
     public void verificarColisionesNivelPvP(Nivel nivel) {
         Jugador j1 = nivel.getJugador();
         Jugador j2 = nivel.getJugador2();
-
+        
         //Colision P1 con enemigos
-        for (Enemigo enemigo : nivel.getEnemigos()) {
-            if (jugadorTocaEnemigo(j1, enemigo)) {
-                j1.perderVida();
-                for (Moneda m : nivel.getMonedas()) {
-                    m.reiniciar();
+        for(Enemigo enemigo : nivel.getEnemigos()){
+            if(jugadorTocaEnemigo(j1, enemigo)){
+                boolean murio = j1.perderVida();
+                if(murio){
+                    j1.setMonedasRecogidas(0);
+                    j2.setMonedasRecogidas(0);
+                    for(Moneda m : nivel.getMonedas()){
+                        m.reiniciar();
+                    }
                 }
                 return;
             }
         }
-
+        
         //Colision P2 con enemigos
-        for (Enemigo enemigo : nivel.getEnemigos()) {
-            if (jugadorTocaEnemigo(j2, enemigo)) {
-                j2.perderVida();
-                for (Moneda m : nivel.getMonedas()) {
-                    m.reiniciar();
+        for(Enemigo enemigo : nivel.getEnemigos()){
+            if(jugadorTocaEnemigo(j2, enemigo)){
+                boolean murio = j2.perderVida();
+                if(murio){
+                    j1.setMonedasRecogidas(0);
+                    j2.setMonedasRecogidas(0);
+                    for(Moneda m : nivel.getMonedas()){
+                        m.reiniciar();
+                    }
                 }
                 return;
             }
         }
-
-        //Colision entre jugadores - ambos mueren
-        if (jugadoresColisionan(j1, j2)) {
-            j1.perderVida();
-            j2.perderVida();
-            for (Moneda m : nivel.getMonedas()) {
-                m.reiniciar();
+        
+        //Colision entre jugadores
+        if(jugadoresColisionan(j1, j2)){
+            boolean murioJ1 = j1.perderVida();
+            boolean murioJ2 = j2.perderVida();
+            if(murioJ1 || murioJ2){
+                j1.setMonedasRecogidas(0);
+                j2.setMonedasRecogidas(0);
+                for(Moneda m : nivel.getMonedas()){
+                    m.reiniciar();
+                }
             }
             return;
         }
-
+        
         //P1 recoge monedas
-        for (Moneda moneda : nivel.getMonedas()) {
-            if (moneda.isActiva() && jugadorTocaMoneda(j1, moneda)) {
+        for(Moneda moneda : nivel.getMonedas()){
+            if(moneda.isActiva() && jugadorTocaMoneda(j1, moneda)){
                 j1.recogerMoneda(moneda);
             }
         }
-
+        
         //P2 recoge monedas
-        for (Moneda moneda : nivel.getMonedas()) {
-            if (moneda.isActiva() && jugadorTocaMoneda(j2, moneda)) {
+        for(Moneda moneda : nivel.getMonedas()){
+            if(moneda.isActiva() && jugadorTocaMoneda(j2, moneda)){
                 j2.recogerMoneda(moneda);
             }
         }

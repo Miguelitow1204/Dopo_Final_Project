@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=LogErrores
+comment0.text=\r\n\ Servicio\ de\ registro\ de\ errores\ para\ los\ programadores.\r\n\ Escribe\ un\ archivo\ log.txt\ con\ fecha\ y\ hora\ de\ cada\ error\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=LogErrores()
+comment2.params=mensaje
+comment2.target=void\ registrar(java.lang.String)
+comment2.text=\r\n\ Registra\ un\ mensaje\ de\ error\ en\ el\ archivo\ log.txt\r\n\ \r\n\ @param\ mensaje\ descripcion\ del\ error\r\n
+comment3.params=mensaje\ excepcion
+comment3.target=void\ registrar(java.lang.String,\ java.lang.Exception)
+comment3.text=\r\n\ Registra\ un\ error\ con\ su\ excepcion\ asociada\r\n\ \r\n\ @param\ mensaje\ descripcion\ del\ error\r\n\ @param\ excepcion\ excepcion\ original\r\n
+numComments=4

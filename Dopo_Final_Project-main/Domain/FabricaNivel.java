@@ -12,7 +12,7 @@ import java.util.List;
  * sobre archivos, rutas ni excepciones de I/O.
  *
  * @author MurilloRubiano
- * @version 1.0
+ * @version 1.2
  */
 public class FabricaNivel {
 
@@ -36,9 +36,9 @@ public class FabricaNivel {
         String ruta = RUTA_BASE + "nivel" + numero + ".txt";
         try {
             return LectorNivel.cargar(ruta, tipo);
-        } catch (IOException e) {
-            throw new NivelNoEncontradoException(
-                    "No se pudo cargar el nivel " + numero + " desde: " + ruta, e);
+        } catch (IOException | RuntimeException e) {
+            LogErrores.registrar("No se pudo cargar el nivel " + numero + " desde: " + ruta, e);
+            throw new NivelNoEncontradoException("No se pudo cargar el nivel " + numero + " desde: " + ruta, e);
         }
     }
 

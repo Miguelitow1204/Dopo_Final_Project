@@ -133,6 +133,10 @@ public class ControladorJuego implements ActionListener {
                 procesarTeclasPausa();
                 break;
             case JUGANDO:
+                juego.getNivelActual().getJugador().actualizarInvulnerabilidad();
+                if(modoPvP && juego.getNivelActual().getJugador2() != null){
+                    juego.getNivelActual().getJugador2().actualizarInvulnerabilidad();
+                }
                 procesarEntrada();
                 if (modoPvP) {
                     procesarEntradaP2();
@@ -159,17 +163,13 @@ public class ControladorJuego implements ActionListener {
         int dx = 0;
         int dy = 0;
 
-        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_W) ||
-                controladorTeclado.isTeclaPresionada(KeyEvent.VK_UP)) {
+        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_W)) {
             dy = -1;
-        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_S) ||
-                controladorTeclado.isTeclaPresionada(KeyEvent.VK_DOWN)) {
+        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_S)) {
             dy = 1;
-        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_A) ||
-                controladorTeclado.isTeclaPresionada(KeyEvent.VK_LEFT)) {
+        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_A)) {
             dx = -1;
-        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_D) ||
-                controladorTeclado.isTeclaPresionada(KeyEvent.VK_RIGHT)) {
+        } else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_D)) {
             dx = 1;
         }
 
