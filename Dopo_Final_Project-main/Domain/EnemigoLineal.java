@@ -1,11 +1,13 @@
 package Domain;
+import java.io.Serializable;
 
 /**
  * Enemigo que recorre una ruta lineal horizontal o vertical.
  * @author (MurilloRubiano)
  * @version (1.5)
  */
-public class EnemigoLineal extends Enemigo {
+public class EnemigoLineal extends Enemigo implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private int direccionActual;
     private boolean movimientoHorizontal;

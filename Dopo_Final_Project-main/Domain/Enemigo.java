@@ -1,13 +1,15 @@
 package Domain;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /**
  * Base abstracta para enemigos con trayectorias y colisiones.
  * @author (MurilloRubiano)
  * @version (2.0)
  */
-public abstract class Enemigo extends EntidadJuego implements Movible, Colisionable {
+public abstract class Enemigo extends EntidadJuego implements Movible, Colisionable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected double velocidad;
     protected Posicion puntoA;

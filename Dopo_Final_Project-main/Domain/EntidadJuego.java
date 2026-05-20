@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @version (2.1)
  */
 public abstract class EntidadJuego implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected Posicion posicion;
     protected int ancho;

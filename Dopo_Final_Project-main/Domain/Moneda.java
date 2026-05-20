@@ -1,13 +1,15 @@
 package Domain;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /**
  * Entidad coleccionable que incrementa el progreso del nivel.
  * @author (MurilloRubiano)
  * @version (1.0)
  */
-public class Moneda extends EntidadJuego implements Colisionable {
+public class Moneda extends EntidadJuego implements Colisionable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private boolean recogida;
 

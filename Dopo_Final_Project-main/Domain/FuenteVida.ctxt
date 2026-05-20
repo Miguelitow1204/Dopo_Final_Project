@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=FuenteVida
+comment0.text=\r\n\ Elemento\ especial\ que\ otorga\ un\ punto\ de\ vida\ adicional\ al\ jugador.\r\n\ Desaparece\ una\ vez\ usada.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=posicion
+comment1.target=FuenteVida(Posicion)
+comment1.text=\r\n\ Crea\ una\ fuente\ de\ vida\ en\ la\ posicion\ indicada.\r\n\r\n\ @param\ posicion\ ubicacion\ de\ la\ fuente.\r\n
+comment2.params=jugador
+comment2.target=void\ activar(Jugador)
+comment2.text=\r\n\ Activa\ el\ efecto\ de\ la\ fuente\ sobre\ el\ jugador.\r\n\ Le\ da\ un\ punto\ de\ vida\ adicional\ y\ desaparece.\r\n\r\n\ @param\ jugador\ jugador\ que\ la\ activa.\r\n
+comment3.params=
+comment3.target=boolean\ isUsada()
+comment3.text=\r\n\ Indica\ si\ la\ fuente\ ya\ fue\ usada.\r\n\r\n\ @return\ true\ si\ ya\ fue\ consumida.\r\n
+comment4.params=
+comment4.target=java.awt.Rectangle\ getBounds()
+comment5.params=otro
+comment5.target=boolean\ colisionaCon(Colisionable)
+comment6.params=
+comment6.target=void\ actualizar()
+numComments=7

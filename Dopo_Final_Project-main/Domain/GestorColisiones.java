@@ -87,6 +87,13 @@ public class GestorColisiones {
             nivel.getJugador().setPosicionInicial(new Posicion(intermedia.getPosicion().getX() + 10,
                                                                intermedia.getPosicion().getY() + intermedia.getAlto()/2));
         }
+        
+        // Verificar fuentes de vida
+        for (FuenteVida fuente : nivel.getFuentesVida()) {
+            if (fuente.isActiva() && detectarColision(jugador, fuente)) {
+                fuente.activar(jugador);
+            }
+        }
     }
 
     /**

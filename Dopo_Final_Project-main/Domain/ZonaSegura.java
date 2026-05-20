@@ -1,11 +1,13 @@
 package Domain;
+import java.io.Serializable;
 
 /**
  * Area rectangular segura usada como inicio o meta del nivel.
  * @author (MurilloRubiano)
  * @version (1.5)
  */
-public class ZonaSegura extends EntidadJuego {
+public class ZonaSegura extends EntidadJuego implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private TipoZona tipo;
 

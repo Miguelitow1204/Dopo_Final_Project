@@ -121,4 +121,27 @@ public class NivelTest {
 
         assertEquals(2, nivel.ganadorPvP());
     }
+    
+    //TESTS ZONA INTERMEDIA
+
+    @Test
+    public void testNivelSinZonaIntermediaInicial() {
+        assertNull(nivel.getZonaIntermedia());
+    }
+
+    @Test
+    public void testAgregarZonaIntermedia() {
+        ZonaSegura intermedia = new ZonaSegura(
+                new Posicion(300, 150), 150, 270, TipoZona.INTERMEDIA);
+        nivel.setZonaIntermedia(intermedia);
+        assertNotNull(nivel.getZonaIntermedia());
+    }
+
+    @Test
+    public void testZonaIntermediaTipoCorrecto() {
+        ZonaSegura intermedia = new ZonaSegura(
+                new Posicion(300, 150), 150, 270, TipoZona.INTERMEDIA);
+        nivel.setZonaIntermedia(intermedia);
+        assertEquals(TipoZona.INTERMEDIA, nivel.getZonaIntermedia().getTipo());
+    }
 }

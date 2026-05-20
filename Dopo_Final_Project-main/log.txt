@@ -2,3 +2,16 @@
     Causa: For input string: "hola;"
 [2026-05-18 22:10:28] ERROR: Error al iniciar el juego
     Causa: No se pudo cargar el nivel 1 desde: configuraciones/nivel1.txt
+[2026-05-19 14:48:15] ERROR: No se pudo cargar el nivel 99 desde: configuraciones/nivel99.txt
+    Causa: configuraciones\nivel99.txt (El sistema no puede encontrar el archivo especificado)
+[2026-05-19 21:37:16] ERROR: Partida guardada correctamente.
+[2026-05-19 21:37:36] ERROR: Partida cargada correctamente.
+[2026-05-19 21:51:17] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partidaPrueba.dat
+[2026-05-19 21:51:21] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partida.dat
+[2026-05-19 21:51:28] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partida.dat
+[2026-05-19 22:09:01] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partida.dat
+[2026-05-19 22:15:38] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\hsgd
+[2026-05-19 22:21:43] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-19 22:22:12] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-19 22:27:39] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-19 22:28:56] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat

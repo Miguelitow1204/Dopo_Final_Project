@@ -1,6 +1,7 @@
 package Domain;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 /**
  * Representa al jugador con movimiento, vidas y recoleccion de monedas.
@@ -8,7 +9,8 @@ import java.awt.Rectangle;
  * @author (MurilloRubiano)
  * @version (1.7)
  */
-public class Jugador extends EntidadJuego implements Movible, Colisionable {
+public class Jugador extends EntidadJuego implements Movible, Colisionable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     private int monedasRecogidas;
     private int velocidad;
@@ -281,5 +283,19 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable {
      */
     public TipoPersonaje getTipoPersonaje() {
         return tipoPersonaje;
+    }
+    
+    /**
+     * Otorga un punto de vida adicional al jugador.
+     * Para el verde restaura el escudo si lo habia perdido.
+     */
+    public void ganarVida() {
+        if (tipoPersonaje == TipoPersonaje.VERDE && !escudoActivo) {
+            escudoActivo = true;
+            velocidad = velocidadOriginal;
+        }
+        //Para rojo y azul simplemente registramos la vida extra
+        //como invulnerabilidad temporal
+        framesSinDaño = FRAMES_INVULNERABLE * 2;
     }
 }

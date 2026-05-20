@@ -2,6 +2,7 @@ package Domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Modelo central del juego: niveles, tiempo, estado y observadores.
@@ -9,7 +10,8 @@ import java.util.List;
  * @author (MurilloRubiano)
  * @version (3.0)
  */
-public class Juego {
+public class Juego implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     private Nivel nivelActual;
     private List<Nivel> niveles;

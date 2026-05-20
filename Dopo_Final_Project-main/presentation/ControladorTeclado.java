@@ -68,4 +68,11 @@ public class ControladorTeclado implements KeyListener {
     public Set<Integer> getTeclasPresionadas() {
         return teclasPresionadas;
     }
+    
+    /**
+     * Limpia todas las teclas presionadas actualmente.
+     */
+    public void limpiarTeclas() {
+        teclasPresionadas.clear();
+    }
 }

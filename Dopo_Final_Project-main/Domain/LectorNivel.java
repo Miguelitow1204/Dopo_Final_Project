@@ -105,6 +105,11 @@ public class LectorNivel {
                         Double.parseDouble(c[6]), Double.parseDouble(c[7]));
                 nivel.agregarEnemigo(new EnemigoAcelerador(
                         new Posicion(x, y), 14, 14, vel, puntoA, puntoB, horizontal));
+            } else if (key.equals("FUENTE_VIDA")) {
+                String[] c = value.split(",");
+                nivel.agregarFuenteVida(new FuenteVida(
+                        new Posicion(Double.parseDouble(c[0]), 
+                        Double.parseDouble(c[1]))));
             }
         }
         reader.close();

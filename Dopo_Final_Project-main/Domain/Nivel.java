@@ -4,14 +4,16 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.io.Serializable;
 
 /**
  * Agregado de entidades de un nivel y su condicion de finalizacion.
  * 
  * @author MurilloRubiano
- * @version 3.0
+ * @version 3.1
  */
-public class Nivel {
+public class Nivel implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     // Limites del area jugable en pixeles.
     // Definen hasta donde puede moverse el jugador antes de chocar con las paredes
@@ -32,6 +34,7 @@ public class Nivel {
     private ZonaSegura zonaIntermedia;
     private int tiempoLimite;
     private List<Wall> paredes;
+    private List<FuenteVida> fuentesVida;
     
     private Jugador jugador2; //Segundo jugador para el modo PvP. Null en modo Player Normal
     private boolean modoPvP = false; //Bandera que indica si el nivel esta en PvP
@@ -42,6 +45,7 @@ public class Nivel {
         this.enemigos = new ArrayList<>();
         this.monedas = new ArrayList<>();
         this.paredes = new ArrayList<>();
+        this.fuentesVida = new ArrayList<>();
     }
 
     public void inicializar() {
@@ -205,5 +209,23 @@ public class Nivel {
 
     public int getTiempoLimite() {
         return tiempoLimite;
+    }
+    
+    /**
+     * Obtiene las fuentes de vida del nivel.
+     *
+     * @return lista inmutable de fuentes.
+     */
+    public List<FuenteVida> getFuentesVida() {
+        return Collections.unmodifiableList(fuentesVida);
+    }
+
+    /**
+     * Agrega una fuente de vida al nivel.
+     *
+     * @param fuente fuente a agregar.
+     */
+    public void agregarFuenteVida(FuenteVida fuente) {
+        fuentesVida.add(fuente);
     }
 }

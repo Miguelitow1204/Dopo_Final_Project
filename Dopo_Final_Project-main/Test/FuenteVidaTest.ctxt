@@ -1,0 +1,14 @@
+#BlueJ class context
+comment0.target=FuenteVidaTest
+comment0.text=\r\n\ Pruebas\ unitarias\ para\ FuenteVida.\r\n\ @author\ MurilloRubiano\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ testFuenteInicialActiva()
+comment3.params=
+comment3.target=void\ testActivarFuenteDesaparece()
+comment4.params=
+comment4.target=void\ testFuenteNoSeActivaDosVeces()
+comment5.params=
+comment5.target=void\ testFuenteVerdeRestaurasEscudo()
+numComments=6
