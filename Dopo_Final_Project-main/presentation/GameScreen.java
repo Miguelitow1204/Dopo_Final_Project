@@ -30,6 +30,8 @@ public class GameScreen extends JPanel {
     private boolean modoPvP = false;
     private boolean mostrandoVictoriaPvP = false;
     private String mensajeVictoriaPvP = "";
+    
+    private boolean mensajeGuardado = false;
 
     /**
      * Crea el panel de juego y configura propiedades de render.
@@ -69,6 +71,7 @@ public class GameScreen extends JPanel {
             dibujarZonaSegura(g2, nivel.getZonaIntermedia());
         }
         dibujarMonedas(g2, nivel.getMonedas());
+        dibujarFuentesVida(g2, nivel.getFuentesVida());
         dibujarEnemigos(g2, nivel.getEnemigos());
         dibujarJugador(g2, nivel.getJugador());
         if (modoPvP && nivel.getJugador2() != null) {
@@ -92,6 +95,10 @@ public class GameScreen extends JPanel {
             dibujarDerrota(g2);
         } else if (mostrandoPausa) {
             dibujarPausa(g2);
+        }
+        
+        if (mensajeGuardado) {
+            dibujarMensajeGuardado(g2);
         }
     }
 
@@ -325,6 +332,31 @@ public class GameScreen extends JPanel {
         g.setColor(Color.WHITE);
         g.drawString("P2", x + 4, y + h - 4);
     }
+    
+    /**
+     * Dibuja las fuentes de vida activas del nivel.
+     *
+     * @param g           contexto grafico.
+     * @param fuentesVida fuentes del nivel.
+     */
+    private void dibujarFuentesVida(Graphics2D g, List<FuenteVida> fuentesVida) {
+        for (FuenteVida fuente : fuentesVida) {
+            if (fuente.isActiva()) {
+                int x = (int) fuente.getPosicion().getX();
+                int y = (int) fuente.getPosicion().getY();
+
+                //Cruz verde
+                g.setColor(new Color(50, 220, 80));
+                g.fillRect(x + 5, y, 6, 16);
+                g.fillRect(x, y + 5, 16, 6);
+
+                //Borde
+                g.setColor(new Color(30, 160, 50));
+                g.drawRect(x + 5, y, 6, 16);
+                g.drawRect(x, y + 5, 16, 6);
+            }
+        }
+    }
 
     /**
      * Dibuja la barra superior con nivel, muertes, monedas y tiempo.
@@ -540,8 +572,10 @@ public class GameScreen extends JPanel {
         g.drawString(sub, (ANCHO - fm.stringWidth(sub)) / 2, boxY + 110);
 
         // Botones
-        dibujarBotonOverlay(g, boxX + 180, boxY + 155, 140, 44,
+        dibujarBotonOverlay(g, boxX + 50, boxY + 170, 160, 44,
                 "▶ RESUME [esc]", new Color(60, 60, 180));
+        dibujarBotonOverlay(g, boxX + 290, boxY + 170, 160, 44,
+                "SAVE [S]", new Color(50, 160, 50));
     }
 
     /**
@@ -583,6 +617,20 @@ public class GameScreen extends JPanel {
             g.fillRect(x, y, pared.getAncho(), pared.getAlto());
 
         }
+    }
+    
+    /**
+     * Dibuja el mensaje de confirmacion de la partida guardada
+     * 
+     * @param g
+     */
+    private void dibujarMensajeGuardado(Graphics2D g) {
+        g.setColor(new Color(50, 160, 50, 200));
+        g.fillRoundRect(250, 10, 300, 35, 10, 10);
+        g.setFont(new Font("Monospaced", Font.BOLD, 14));
+        g.setColor(Color.WHITE);
+        g.drawString("Game saved!", 340, 33);
+        mensajeGuardado = false;
     }
 
     // Metodos publicos
@@ -663,5 +711,12 @@ public class GameScreen extends JPanel {
         this.mostrandoVictoriaPvP = true;
         this.mostrandoVictoria = false;
         this.mostrandoDerrota = false;
+    }
+    
+    /**
+     * Muestra un mensaje temporal de partida guardada.
+     */
+    public void mostrarMensajeGuardado() {
+        this.mensajeGuardado = true;
     }
 }

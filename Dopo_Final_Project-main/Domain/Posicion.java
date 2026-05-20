@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @version (1.0)
  */
 public class Posicion implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private double x;
     private double y;

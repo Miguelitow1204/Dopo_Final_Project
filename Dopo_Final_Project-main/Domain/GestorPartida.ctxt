@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=GestorPartida
+comment0.text=\r\n\ Servicio\ para\ guardar\ y\ cargar\ el\ estado\ de\ una\ partida.\r\n\ Usa\ serializacion\ Java\ para\ persistir\ el\ objeto\ Juego\ completo.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=GestorPartida()
+comment2.params=juego\ ruta
+comment2.target=void\ guardar(Juego,\ java.lang.String)
+comment2.text=\r\n\ Guarda\ el\ estado\ del\ juego\ en\ la\ ruta\ especificada.\r\n\r\n\ @param\ juego\ estado\ del\ juego\ a\ guardar.\r\n\ @param\ ruta\ \ ruta\ completa\ del\ archivo\ destino.\r\n\ @throws\ IOException\ si\ no\ se\ puede\ escribir\ el\ archivo.\r\n
+comment3.params=ruta
+comment3.target=Juego\ cargar(java.lang.String)
+comment3.text=\r\n\ Carga\ el\ estado\ de\ una\ partida\ desde\ la\ ruta\ especificada.\r\n\r\n\ @param\ ruta\ ruta\ completa\ del\ archivo\ a\ cargar.\r\n\ @return\ juego\ restaurado\ desde\ el\ archivo.\r\n\ @throws\ IOException\ \ \ \ \ \ \ \ \ \ \ \ si\ no\ se\ puede\ leer\ el\ archivo.\r\n\ @throws\ ClassNotFoundException\ si\ el\ archivo\ no\ es\ valido.\r\n
+numComments=4

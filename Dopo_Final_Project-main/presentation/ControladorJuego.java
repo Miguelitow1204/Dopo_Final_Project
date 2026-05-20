@@ -117,6 +117,21 @@ public class ControladorJuego implements ActionListener {
         temporizadorJuego.stop();
         temporizadorSegundo.stop();
     }
+    
+    /**
+     * Reanuda una partida cargada desde archivo sin reiniciar el estado.
+     */
+    public void reanudar() {
+        Nivel nivel = juego.getNivelActual();
+        gameScreen.setNivel(nivel);
+        gameScreen.setTiempoRestante(juego.getTiempoRestante());
+        gameScreen.setMuertes(nivel.getJugador().getMuertes());
+        gameScreen.ocultarOverlay();
+        juego.setEstado(EstadoJuego.JUGANDO);
+        temporizadorJuego.start();
+        temporizadorSegundo.start();
+        gameScreen.requestFocusInWindow();
+    }
 
     /**
      * Ejecuta un tick del game loop segun el estado actual.
@@ -307,10 +322,13 @@ public class ControladorJuego implements ActionListener {
                 window.showMenu();
             }
         } else {
-            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ENTER) ||
-                    controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_ESCAPE)) {
                 juego.pausar();
                 gameScreen.ocultarOverlay();
+            }
+            if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_S)) {
+                controladorTeclado.limpiarTeclas();
+                window.guardarPartida(juego);
             }
         }
     }

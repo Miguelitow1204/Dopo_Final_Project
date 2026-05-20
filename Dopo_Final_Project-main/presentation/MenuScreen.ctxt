@@ -1,9 +1,14 @@
 #BlueJ class context
 comment0.target=MenuScreen
-comment1.params=g
-comment1.target=void\ paintComponent(java.awt.Graphics)
-comment2.params=
-comment2.target=void\ buildUI()
-comment3.params=text\ bg
-comment3.target=javax.swing.JButton\ createButton(java.lang.String,\ java.awt.Color)
-numComments=4
+comment1.params=window
+comment1.target=MenuScreen(PrincipalWindow)
+comment2.params=g
+comment2.target=void\ paintComponent(java.awt.Graphics)
+comment3.params=
+comment3.target=void\ buildUI()
+comment4.params=text\ bg
+comment4.target=javax.swing.JButton\ createButton(java.lang.String,\ java.awt.Color)
+comment5.params=
+comment5.target=void\ actualizar()
+comment5.text=\r\n\ Reconstruye\ el\ menu\ para\ reflejar\ si\ hay\ partida\ guardada.\r\n
+numComments=6

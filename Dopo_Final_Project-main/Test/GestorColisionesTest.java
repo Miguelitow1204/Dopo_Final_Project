@@ -136,4 +136,29 @@ public class GestorColisionesTest {
         assertEquals(0, jugador.getMonedasRecogidas());
         assertEquals(0, jugador2.getMonedasRecogidas());
     }
+    
+    //TESTS ZONA INTERMEDIA
+
+    @Test
+    public void testZonaIntermediaCambiaCheckpoint() {
+        Nivel nivel = new Nivel(1, 60);
+        nivel.setJugador(jugador);
+        nivel.setZonaInicio(new ZonaSegura(
+                new Posicion(0, 150), 150, 270, TipoZona.INICIO));
+        nivel.setZonaMeta(new ZonaSegura(
+                new Posicion(650, 150), 150, 270, TipoZona.META));
+
+        ZonaSegura intermedia = new ZonaSegura(
+                new Posicion(300, 150), 150, 270, TipoZona.INTERMEDIA);
+        nivel.setZonaIntermedia(intermedia);
+
+        //Mover jugador a la zona intermedia
+        jugador.getPosicion().setX(350);
+        jugador.getPosicion().setY(270);
+
+        gestor.verificarColisionesNivel(nivel);
+
+        //El checkpoint deberia haber cambiado
+        assertNotEquals(0, (int) jugador.getPosicionInicial().getX());
+    }
 }

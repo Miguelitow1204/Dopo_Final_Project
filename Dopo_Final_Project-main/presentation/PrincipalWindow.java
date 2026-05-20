@@ -31,6 +31,7 @@ public class PrincipalWindow extends JFrame {
     private int nivelSeleccionado = 1; // Nivel seleccionado desde la pantalla de levels
     
     private LevelsScreen levelsScreen;
+    private MenuScreen menuScreen;
     
     private String modoJuego = "PLAYER"; //Modo de juego seleccionado: PLAYER o PvP
 
@@ -47,7 +48,8 @@ public class PrincipalWindow extends JFrame {
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
 
-        container.add(new MenuScreen(this), MENU_SCREEN);
+        menuScreen = new MenuScreen(this);
+        container.add(menuScreen, MENU_SCREEN);
         container.add(new SelectionModeScreen(this), MODE_SCREEN);
         levelsScreen = new LevelsScreen(this);
         container.add(levelsScreen, LEVELS_SCREEN);
@@ -66,6 +68,7 @@ public class PrincipalWindow extends JFrame {
             controladorJuego.detener();
             controladorJuego = null;
         }
+        menuScreen.actualizar();
         cardLayout.show(container, MENU_SCREEN);
     }
 
@@ -153,6 +156,61 @@ public class PrincipalWindow extends JFrame {
 
         controladorJuego = new ControladorJuego(juego, gameScreen, this, tipoP2);
         controladorJuego.iniciar();
+    }
+    
+    /**
+     * Abre un explorador de archivos para guardar la partida actual.
+     *
+     * @param juego estado del juego a guardar.
+     */
+    public void guardarPartida(Juego juego) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar partida");
+        fileChooser.setSelectedFile(new java.io.File("partida.dat"));
+
+        int resultado = fileChooser.showSaveDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            try {
+                GestorPartida.guardar(juego, ruta);
+                JOptionPane.showMessageDialog(this,
+                        "Partida guardada correctamente.",
+                        "Guardado", JOptionPane.INFORMATION_MESSAGE);
+            } catch (Exception e) {
+                LogErrores.registrar("Error al guardar la partida.", e);
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo guardar la partida.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    /**
+     * Abre un explorador de archivos para cargar una partida guardada.
+     */
+    public void cargarPartida() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Abrir partida");
+
+        int resultado = fileChooser.showOpenDialog(this);
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            String ruta = fileChooser.getSelectedFile().getAbsolutePath();
+            try {
+                Juego juego = GestorPartida.cargar(ruta);
+
+                GameScreen gameScreen = new GameScreen();
+                container.add(gameScreen, GAME_SCREEN);
+                cardLayout.show(container, GAME_SCREEN);
+
+                controladorJuego = new ControladorJuego(juego, gameScreen, this);
+                controladorJuego.reanudar();
+            } catch (Exception e) {
+                LogErrores.registrar("Error al cargar la partida.", e);
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo cargar la partida.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
     
     /**
