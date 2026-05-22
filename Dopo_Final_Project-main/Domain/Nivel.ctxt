@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Nivel
-comment0.text=\r\n\ Agregado\ de\ entidades\ de\ un\ nivel\ y\ su\ condicion\ de\ finalizacion.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 3.1\r\n
+comment0.text=\r\n\ Agregado\ de\ entidades\ de\ un\ nivel\ y\ su\ condicion\ de\ finalizacion.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 3.2\r\n
 comment1.params=numero\ tiempoLimite
 comment1.target=Nivel(int,\ int)
 comment10.params=
@@ -53,6 +53,12 @@ comment30.text=\r\n\ Obtiene\ las\ fuentes\ de\ vida\ del\ nivel.\r\n\r\n\ @retu
 comment31.params=fuente
 comment31.target=void\ agregarFuenteVida(FuenteVida)
 comment31.text=\r\n\ Agrega\ una\ fuente\ de\ vida\ al\ nivel.\r\n\r\n\ @param\ fuente\ fuente\ a\ agregar.\r\n
+comment32.params=
+comment32.target=java.util.List\ getBombas()
+comment32.text=\r\n\ Obtiene\ las\ bombas\ del\ nivel\r\n\ \r\n\ @return\ lista\ de\ bombas\r\n
+comment33.params=bomba
+comment33.target=void\ agregarBomba(Bomba)
+comment33.text=\r\n\ Agrega\ una\ bomba\ al\ nivel\r\n\ \r\n\ @param\ bomba\r\n
 comment4.params=
 comment4.target=boolean\ estaCompleto()
 comment5.params=
@@ -70,4 +76,4 @@ comment8.text=\r\n\ Indica\ si\ el\ nivel\ esta\ en\ modo\ PvP.\r\n\r\n\ @return
 comment9.params=modoPvP
 comment9.target=void\ setModoPvP(boolean)
 comment9.text=\r\n\ Define\ si\ el\ nivel\ esta\ en\ modo\ PvP.\r\n\r\n\ @param\ modoPvP\ true\ para\ activar\ PvP.\r\n
-numComments=32
+numComments=34

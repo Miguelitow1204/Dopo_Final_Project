@@ -110,6 +110,11 @@ public class LectorNivel {
                 nivel.agregarFuenteVida(new FuenteVida(
                         new Posicion(Double.parseDouble(c[0]), 
                         Double.parseDouble(c[1]))));
+            } else if (key.equals("BOMBA")){
+                String[] c = value.split(",");
+                nivel.agregarBomba(new Bomba(
+                        new Posicion(Double.parseDouble(c[0]),
+                        Double.parseDouble(c[1]))));
             }
         }
         reader.close();

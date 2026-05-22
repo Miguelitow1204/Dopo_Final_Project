@@ -11,7 +11,7 @@ import java.util.List;
  * Vista principal del juego: render de mapa, entidades, HUD y mensajes.
  * 
  * @author (Murillo Rubiano)
- * @version 2.1
+ * @version 2.5
  */
 public class GameScreen extends JPanel {
 
@@ -72,6 +72,7 @@ public class GameScreen extends JPanel {
         }
         dibujarMonedas(g2, nivel.getMonedas());
         dibujarFuentesVida(g2, nivel.getFuentesVida());
+        dibujarBombas(g2, nivel.getBombas());
         dibujarEnemigos(g2, nivel.getEnemigos());
         dibujarJugador(g2, nivel.getJugador());
         if (modoPvP && nivel.getJugador2() != null) {
@@ -211,20 +212,22 @@ public class GameScreen extends JPanel {
      */
     private void dibujarEnemigos(Graphics2D g, List<Enemigo> enemigos) {
         for (Enemigo enemigo : enemigos) {
-            int x = (int) enemigo.getPosicion().getX();
-            int y = (int) enemigo.getPosicion().getY();
+            if(enemigo.isActiva()){
+                int x = (int) enemigo.getPosicion().getX();
+                int y = (int) enemigo.getPosicion().getY();
 
-            // Brillo
-            g.setColor(new Color(50, 120, 255, 40));
-            g.fillOval(x - 3, y - 3, enemigo.getAncho() + 6, enemigo.getAlto() + 6);
+                //Brillo
+                g.setColor(new Color(50, 120, 255, 40));
+                g.fillOval(x - 3, y - 3, enemigo.getAncho() + 6, enemigo.getAlto() + 6);
 
-            // Circulo azul
-            g.setColor(new Color(40, 100, 220));
-            g.fillOval(x, y, enemigo.getAncho(), enemigo.getAlto());
+                //Circulo azul
+                g.setColor(new Color(40, 100, 220));
+                g.fillOval(x, y, enemigo.getAncho(), enemigo.getAlto());
 
-            // Borde
-            g.setColor(new Color(25, 60, 160));
-            g.drawOval(x, y, enemigo.getAncho(), enemigo.getAlto());
+                //Borde
+                g.setColor(new Color(25, 60, 160));
+                g.drawOval(x, y, enemigo.getAncho(), enemigo.getAlto());
+            }
         }
     }
 
@@ -354,6 +357,35 @@ public class GameScreen extends JPanel {
                 g.setColor(new Color(30, 160, 50));
                 g.drawRect(x + 5, y, 6, 16);
                 g.drawRect(x, y + 5, 16, 6);
+            }
+        }
+    }
+    
+    /**
+     * Dibuja las bombas activas del nivel
+     * 
+     * @param g
+     * @param bombas
+     */
+    private void dibujarBombas(Graphics2D g, List<Bomba> bombas){
+        for(Bomba bomba : bombas){
+            if(bomba.isActiva()){
+                int x = (int) bomba.getPosicion().getX();
+                int y = (int) bomba.getPosicion().getY();
+            
+                //Bomba negra
+                g.setColor(new Color(30, 30, 30));
+                g.fillOval(x, y + 4, 14, 12);
+            
+                //Mecha
+                g.setColor(new Color(150, 100, 50));
+                g.setStroke(new BasicStroke(2));
+                g.drawLine(x + 7, y + 4, x + 11, y);
+                g.setStroke(new BasicStroke(1));
+            
+                //Chispa
+                g.setColor(new Color(255, 200, 50));
+                g.fillOval(x + 10, y - 2, 5, 5);
             }
         }
     }

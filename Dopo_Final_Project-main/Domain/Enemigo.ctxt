@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Enemigo
-comment0.text=\r\n\ Base\ abstracta\ para\ enemigos\ con\ trayectorias\ y\ colisiones.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (2.0)\r\n
+comment0.text=\r\n\ Base\ abstracta\ para\ enemigos\ con\ trayectorias\ y\ colisiones.\r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (2.1)\r\n
 comment1.params=posicion\ ancho\ alto\ velocidad\ puntoA\ puntoB
 comment1.target=Enemigo(Posicion,\ int,\ int,\ double,\ Posicion,\ Posicion)
 comment1.text=\r\n\ Inicializa\ los\ datos\ base\ de\ un\ enemigo.\r\n\r\n\ @param\ posicion\ \ posicion\ inicial.\r\n\ @param\ ancho\ \ \ \ \ ancho\ del\ enemigo.\r\n\ @param\ alto\ \ \ \ \ \ alto\ del\ enemigo.\r\n\ @param\ velocidad\ velocidad\ de\ desplazamiento.\r\n\ @param\ puntoA\ \ \ \ limite\ inferior\ o\ izquierdo\ del\ recorrido.\r\n\ @param\ puntoB\ \ \ \ limite\ superior\ o\ derecho\ del\ recorrido.\r\n
@@ -25,4 +25,7 @@ comment7.text=\r\n\ Obtiene\ el\ primer\ punto\ de\ control\ de\ la\ trayectoria
 comment8.params=
 comment8.target=Posicion\ getPuntoB()
 comment8.text=\r\n\ Obtiene\ el\ segundo\ punto\ de\ control\ de\ la\ trayectoria.\r\n\r\n\ @return\ punto\ B.\r\n
-numComments=9
+comment9.params=
+comment9.target=void\ reiniciar()
+comment9.text=\r\n\ Reinicia\ el\ enemigo\ a\ su\ estado\ y\ posicion\ inicial.\r\n
+numComments=10

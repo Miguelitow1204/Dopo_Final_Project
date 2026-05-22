@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=BombaTest
+comment0.text=\r\n\ Pruebas\ unitarias\ para\ Bomba.\r\n\ @author\ MurilloRubiano\r\n
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ testBombaInicialActiva()
+comment3.params=
+comment3.target=void\ testBombaExplotaAlActivarse()
+comment4.params=
+comment4.target=void\ testBombaNoExplotaDosVeces()
+comment5.params=
+comment5.target=void\ testBombaReiniciaCorrectamente()
+comment6.params=
+comment6.target=void\ testBombaColisionaConJugador()
+comment7.params=
+comment7.target=void\ testBombaNoColisionaLejos()
+numComments=8

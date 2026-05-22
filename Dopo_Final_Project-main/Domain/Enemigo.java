@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Base abstracta para enemigos con trayectorias y colisiones.
  * @author (MurilloRubiano)
- * @version (2.0)
+ * @version (2.1)
  */
 public abstract class Enemigo extends EntidadJuego implements Movible, Colisionable, Serializable {
     private static final long serialVersionUID = 1L;
@@ -14,6 +14,7 @@ public abstract class Enemigo extends EntidadJuego implements Movible, Colisiona
     protected double velocidad;
     protected Posicion puntoA;
     protected Posicion puntoB;
+    private Posicion posicionInicial;
 
     /**
      * Inicializa los datos base de un enemigo.
@@ -31,6 +32,7 @@ public abstract class Enemigo extends EntidadJuego implements Movible, Colisiona
         this.velocidad = velocidad;
         this.puntoA = puntoA;
         this.puntoB = puntoB;
+        this.posicionInicial = posicion.clonar();
     }
 
     /**
@@ -96,6 +98,15 @@ public abstract class Enemigo extends EntidadJuego implements Movible, Colisiona
      * @return punto B.
      */
     public Posicion getPuntoB() {
-        return puntoB;
+       return puntoB;
+    }
+    
+    /**
+     * Reinicia el enemigo a su estado y posicion inicial.
+     */
+    public void reiniciar() {
+        posicion.setX(posicionInicial.getX());
+        posicion.setY(posicionInicial.getY());
+        activa = true;
     }
 }

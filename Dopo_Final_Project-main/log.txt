@@ -15,3 +15,11 @@
 [2026-05-19 22:22:12] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
 [2026-05-19 22:27:39] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
 [2026-05-19 22:28:56] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-20 17:37:01] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-21 17:50:20] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partida1.dat
+[2026-05-21 17:50:38] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partidaPrueba.dat
+[2026-05-21 17:51:31] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partidaprueba1.dat
+[2026-05-21 17:52:07] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partidaprueba1.dat
+[2026-05-21 18:00:02] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partidaprueba1.dat
+[2026-05-21 18:47:49] ERROR: Partida guardada en: C:\Users\PERSONAL\Documents\partidaSustentacion.dat
+[2026-05-21 18:48:14] ERROR: Partida cargada desde: C:\Users\PERSONAL\Documents\partidaSustentacion.dat

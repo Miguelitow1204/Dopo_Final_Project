@@ -10,7 +10,7 @@ import java.io.Serializable;
  * Agregado de entidades de un nivel y su condicion de finalizacion.
  * 
  * @author MurilloRubiano
- * @version 3.1
+ * @version 3.2
  */
 public class Nivel implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -35,6 +35,7 @@ public class Nivel implements Serializable{
     private int tiempoLimite;
     private List<Wall> paredes;
     private List<FuenteVida> fuentesVida;
+    private List<Bomba> bombas;
     
     private Jugador jugador2; //Segundo jugador para el modo PvP. Null en modo Player Normal
     private boolean modoPvP = false; //Bandera que indica si el nivel esta en PvP
@@ -46,6 +47,7 @@ public class Nivel implements Serializable{
         this.monedas = new ArrayList<>();
         this.paredes = new ArrayList<>();
         this.fuentesVida = new ArrayList<>();
+        this.bombas = new ArrayList<>();
     }
 
     public void inicializar() {
@@ -59,11 +61,19 @@ public class Nivel implements Serializable{
             jugador2.setMonedasRecogidas(0);
             jugador2.reiniciarPosicion();
         }
+        for(Bomba b : bombas){
+            b.reiniciar();
+        }
+        for (Enemigo e : enemigos) {
+            e.reiniciar();
+        }
     }
 
     public void actualizar() {
         for (Enemigo e : enemigos) {
-            e.actualizar();
+            if(e.isActiva()){
+                e.actualizar();    
+            }
         }
     }
 
@@ -227,5 +237,23 @@ public class Nivel implements Serializable{
      */
     public void agregarFuenteVida(FuenteVida fuente) {
         fuentesVida.add(fuente);
+    }
+    
+    /**
+     * Obtiene las bombas del nivel
+     * 
+     * @return lista de bombas
+     */
+    public List<Bomba> getBombas(){
+        return Collections.unmodifiableList(bombas);
+    }
+    
+    /**
+     * Agrega una bomba al nivel
+     * 
+     * @param bomba
+     */
+    public void agregarBomba(Bomba bomba){
+        bombas.add(bomba);
     }
 }

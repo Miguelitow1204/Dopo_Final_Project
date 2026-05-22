@@ -62,7 +62,7 @@ public class GestorColisiones {
 
         //Verificar colision con enemigos
         for (Enemigo enemigo : nivel.getEnemigos()) {
-            if (jugadorTocaEnemigo(jugador, enemigo)) {
+            if (enemigo.isActiva() && jugadorTocaEnemigo(jugador, enemigo)) {
                 boolean murio = jugador.perderVida();
                 if (murio) {
                     // Solo reiniciar monedas si el jugador murio realmente
@@ -92,6 +92,30 @@ public class GestorColisiones {
         for (FuenteVida fuente : nivel.getFuentesVida()) {
             if (fuente.isActiva() && detectarColision(jugador, fuente)) {
                 fuente.activar(jugador);
+            }
+        }
+        
+        //Verificar bombas - destruyen al jugador y a los enemigos
+        for(Bomba bomba : nivel.getBombas()){
+            if(bomba.isActiva()){
+                //Con jugador
+                if(detectarColision(jugador, bomba)){
+                    bomba.explotar();
+                    jugador.perderVida();
+                    for(Moneda m : nivel.getMonedas()){
+                        m.reiniciar();
+                    }
+                    return;
+                }
+                
+                //Con enemigos
+                for(Enemigo enemigo : nivel.getEnemigos()){
+                    if(detectarColision(enemigo, bomba)){
+                        bomba.explotar();
+                        enemigo.setActiva(false);
+                        return;
+                    }
+                }
             }
         }
     }
