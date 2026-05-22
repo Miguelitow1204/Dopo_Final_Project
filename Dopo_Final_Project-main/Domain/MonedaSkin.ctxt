@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=MonedaSkin
+comment0.text=\r\n\ Moneda\ especial\ que\ cambia\ temporalmente\ el\ skin\ del\ jugador.\r\n\ El\ efecto\ dura\ hasta\ que\ el\ jugador\ recoge\ otra\ moneda\ o\ muere.\r\n
+comment1.params=posicion\ tipoAsociado
+comment1.target=MonedaSkin(Posicion,\ TipoPersonaje)
+comment1.text=\r\n\ Crea\ una\ MonedaSkin\ con\ su\ tipo\ y\ posicion.\r\n\r\n\ @param\ posicion\ \ \ \ \ posicion\ en\ el\ tablero.\r\n\ @param\ tipoAsociado\ tipo\ de\ personaje\ que\ otorga\ al\ recogerla.\r\n
+comment2.params=
+comment2.target=TipoPersonaje\ getTipoAsociado()
+comment2.text=\r\n\ Obtiene\ el\ tipo\ de\ personaje\ asociado\ a\ esta\ moneda.\r\n\r\n\ @return\ tipo\ de\ personaje.\r\n
+numComments=3

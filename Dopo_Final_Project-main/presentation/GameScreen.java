@@ -26,11 +26,11 @@ public class GameScreen extends JPanel {
     private boolean mostrandoVictoria;
     private boolean mostrandoDerrota;
     private boolean mostrandoPausa;
-    
+
     private boolean modoPvP = false;
     private boolean mostrandoVictoriaPvP = false;
     private String mensajeVictoriaPvP = "";
-    
+
     private boolean mensajeGuardado = false;
 
     /**
@@ -67,7 +67,7 @@ public class GameScreen extends JPanel {
         dibujarParedes(g2, nivel.getParedes());
         dibujarZonaSegura(g2, nivel.getZonaInicio());
         dibujarZonaSegura(g2, nivel.getZonaMeta());
-        if(nivel.getZonaIntermedia() != null){
+        if (nivel.getZonaIntermedia() != null) {
             dibujarZonaSegura(g2, nivel.getZonaIntermedia());
         }
         dibujarMonedas(g2, nivel.getMonedas());
@@ -87,7 +87,7 @@ public class GameScreen extends JPanel {
         } else if (mostrandoPausa) {
             dibujarPausa(g2);
         }
-        
+
         if (mostrandoVictoriaPvP) {
             dibujarVictoriaPvP(g2);
         } else if (mostrandoVictoria) {
@@ -97,7 +97,7 @@ public class GameScreen extends JPanel {
         } else if (mostrandoPausa) {
             dibujarPausa(g2);
         }
-        
+
         if (mensajeGuardado) {
             dibujarMensajeGuardado(g2);
         }
@@ -155,10 +155,10 @@ public class GameScreen extends JPanel {
 
         if (zona.getTipo() == TipoZona.INICIO) {
             g.setColor(new Color(130, 220, 130, 160));
-        } else if(zona.getTipo() == TipoZona.META){
+        } else if (zona.getTipo() == TipoZona.META) {
             g.setColor(new Color(40, 160, 60, 160));
         } else {
-            g.setColor(new Color(100, 180, 255, 160)); 
+            g.setColor(new Color(100, 180, 255, 160));
         }
         g.fillRect(x, y, zona.getAncho(), zona.getAlto());
 
@@ -169,8 +169,7 @@ public class GameScreen extends JPanel {
         // Texto indicador
         g.setFont(new Font("Monospaced", Font.BOLD, 11));
         g.setColor(new Color(20, 80, 30));
-        String label = zona.getTipo() == TipoZona.INICIO ? "START" :
-                       zona.getTipo() == TipoZona.META ? "GOAL" : "CHECK";
+        String label = zona.getTipo() == TipoZona.INICIO ? "START" : zona.getTipo() == TipoZona.META ? "GOAL" : "CHECK";
         FontMetrics fm = g.getFontMetrics();
         int tx = x + (zona.getAncho() - fm.stringWidth(label)) / 2;
         int ty = y + zona.getAlto() - 8;
@@ -188,18 +187,41 @@ public class GameScreen extends JPanel {
             if (moneda.isActiva()) {
                 int x = (int) moneda.getPosicion().getX();
                 int y = (int) moneda.getPosicion().getY();
+                // MonedaSkin
+                if (moneda instanceof MonedaSkin) {
+                    // Color según el tipo asociado
+                    MonedaSkin ms = (MonedaSkin) moneda;
+                    Color colorSkin;
+                    switch (ms.getTipoAsociado()) {
+                        case AZUL:
+                            colorSkin = new Color(50, 120, 230);
+                            break;
+                        case VERDE:
+                            colorSkin = new Color(50, 190, 70);
+                            break;
+                        default:
+                            colorSkin = new Color(220, 50, 50);
+                            break;
+                    }
+                    g.setColor(colorSkin);
+                    g.fillOval(x, y, moneda.getAncho(), moneda.getAlto());
+                    g.setColor(colorSkin.darker());
+                    g.drawOval(x, y, moneda.getAncho(), moneda.getAlto());
+                } else {
 
-                // Brillo exterior
-                g.setColor(new Color(255, 230, 80, 60));
-                g.fillOval(x - 3, y - 3, moneda.getAncho() + 6, moneda.getAlto() + 6);
+                    // Moneda amarilla normal
+                    // Brillo exterior
+                    g.setColor(new Color(255, 230, 80, 60));
+                    g.fillOval(x - 3, y - 3, moneda.getAncho() + 6, moneda.getAlto() + 6);
 
-                // Moneda
-                g.setColor(new Color(255, 215, 0));
-                g.fillOval(x, y, moneda.getAncho(), moneda.getAlto());
+                    // Moneda
+                    g.setColor(new Color(255, 215, 0));
+                    g.fillOval(x, y, moneda.getAncho(), moneda.getAlto());
 
-                // Borde
-                g.setColor(new Color(200, 160, 20));
-                g.drawOval(x, y, moneda.getAncho(), moneda.getAlto());
+                    // Borde
+                    g.setColor(new Color(200, 160, 20));
+                    g.drawOval(x, y, moneda.getAncho(), moneda.getAlto());
+                }
             }
         }
     }
@@ -212,19 +234,19 @@ public class GameScreen extends JPanel {
      */
     private void dibujarEnemigos(Graphics2D g, List<Enemigo> enemigos) {
         for (Enemigo enemigo : enemigos) {
-            if(enemigo.isActiva()){
+            if (enemigo.isActiva()) {
                 int x = (int) enemigo.getPosicion().getX();
                 int y = (int) enemigo.getPosicion().getY();
 
-                //Brillo
+                // Brillo
                 g.setColor(new Color(50, 120, 255, 40));
                 g.fillOval(x - 3, y - 3, enemigo.getAncho() + 6, enemigo.getAlto() + 6);
 
-                //Circulo azul
+                // Circulo azul
                 g.setColor(new Color(40, 100, 220));
                 g.fillOval(x, y, enemigo.getAncho(), enemigo.getAlto());
 
-                //Borde
+                // Borde
                 g.setColor(new Color(25, 60, 160));
                 g.drawOval(x, y, enemigo.getAncho(), enemigo.getAlto());
             }
@@ -292,14 +314,15 @@ public class GameScreen extends JPanel {
             }
         }
     }
-    
+
     /**
      * Dibuja el jugador 2 en modo PvP con borde distintivo.
      *
      * @param g contexto grafico.
      */
     private void dibujarJugador2(Graphics2D g, Jugador jugador2) {
-        if (jugador2 == null) return;
+        if (jugador2 == null)
+            return;
         int x = (int) jugador2.getPosicion().getX();
         int y = (int) jugador2.getPosicion().getY();
         int w = jugador2.getAncho();
@@ -335,7 +358,7 @@ public class GameScreen extends JPanel {
         g.setColor(Color.WHITE);
         g.drawString("P2", x + 4, y + h - 4);
     }
-    
+
     /**
      * Dibuja las fuentes de vida activas del nivel.
      *
@@ -348,42 +371,42 @@ public class GameScreen extends JPanel {
                 int x = (int) fuente.getPosicion().getX();
                 int y = (int) fuente.getPosicion().getY();
 
-                //Cruz verde
+                // Cruz verde
                 g.setColor(new Color(50, 220, 80));
                 g.fillRect(x + 5, y, 6, 16);
                 g.fillRect(x, y + 5, 16, 6);
 
-                //Borde
+                // Borde
                 g.setColor(new Color(30, 160, 50));
                 g.drawRect(x + 5, y, 6, 16);
                 g.drawRect(x, y + 5, 16, 6);
             }
         }
     }
-    
+
     /**
      * Dibuja las bombas activas del nivel
      * 
      * @param g
      * @param bombas
      */
-    private void dibujarBombas(Graphics2D g, List<Bomba> bombas){
-        for(Bomba bomba : bombas){
-            if(bomba.isActiva()){
+    private void dibujarBombas(Graphics2D g, List<Bomba> bombas) {
+        for (Bomba bomba : bombas) {
+            if (bomba.isActiva()) {
                 int x = (int) bomba.getPosicion().getX();
                 int y = (int) bomba.getPosicion().getY();
-            
-                //Bomba negra
+
+                // Bomba negra
                 g.setColor(new Color(30, 30, 30));
                 g.fillOval(x, y + 4, 14, 12);
-            
-                //Mecha
+
+                // Mecha
                 g.setColor(new Color(150, 100, 50));
                 g.setStroke(new BasicStroke(2));
                 g.drawLine(x + 7, y + 4, x + 11, y);
                 g.setStroke(new BasicStroke(1));
-            
-                //Chispa
+
+                // Chispa
                 g.setColor(new Color(255, 200, 50));
                 g.fillOval(x + 10, y - 2, 5, 5);
             }
@@ -396,22 +419,22 @@ public class GameScreen extends JPanel {
      * @param g contexto grafico.
      */
     private void dibujarHUD(Graphics2D g) {
-        //Barra superior oscura
+        // Barra superior oscura
         g.setColor(new Color(30, 30, 45));
         g.fillRect(0, 0, ANCHO, HUD_ALTO);
 
-        //Linea inferior del HUD
+        // Linea inferior del HUD
         g.setColor(new Color(255, 200, 50));
         g.fillRect(0, HUD_ALTO - 2, ANCHO, 2);
 
         g.setFont(new Font("Monospaced", Font.BOLD, 15));
 
-        //Nivel
+        // Nivel
         g.setColor(new Color(100, 200, 255));
         g.drawString("LEVEL " + (nivel != null ? nivel.getNumero() : ""), 20, 28);
 
-        //Muertes
-        if(modoPvP && nivel.getJugador2() != null){
+        // Muertes
+        if (modoPvP && nivel.getJugador2() != null) {
             int muertesTotales = nivel.getJugador().getMuertes() + nivel.getJugador2().getMuertes();
             g.setColor(new Color(255, 100, 100));
             g.drawString("DEATHS: " + muertesTotales, 180, 28);
@@ -420,11 +443,11 @@ public class GameScreen extends JPanel {
             g.drawString("DEATHS: " + muertes, 180, 28);
         }
 
-        //Monedas
+        // Monedas
         if (nivel != null) {
             int total = nivel.getMonedas().size();
             int recogidas;
-            if(modoPvP && nivel.getJugador2() != null){
+            if (modoPvP && nivel.getJugador2() != null) {
                 recogidas = nivel.getJugador().getMonedasRecogidas() + nivel.getJugador2().getMonedasRecogidas();
             } else {
                 recogidas = nivel.getJugador().getMonedasRecogidas();
@@ -483,18 +506,18 @@ public class GameScreen extends JPanel {
         dibujarBotonOverlay(g, boxX + 180, boxY + 180, 140, 44, "▶ NEXT LEVEL [N]", new Color(50, 160, 50));
         dibujarBotonOverlay(g, boxX + 340, boxY + 180, 140, 44, "⌂ MENU [M]", new Color(160, 60, 60));
     }
-    
+
     /**
      * Dibuja el overlay de victoria en modo PvP mostrando el ganador.
      *
      * @param g contexto grafico.
      */
     private void dibujarVictoriaPvP(Graphics2D g) {
-        //Overlay oscuro
+        // Overlay oscuro
         g.setColor(new Color(0, 0, 0, 170));
         g.fillRect(0, 0, ANCHO, ALTO);
 
-        //Caja central
+        // Caja central
         int boxW = 500, boxH = 280;
         int boxX = (ANCHO - boxW) / 2;
         int boxY = (ALTO - boxH) / 2;
@@ -506,20 +529,20 @@ public class GameScreen extends JPanel {
         g.drawRoundRect(boxX, boxY, boxW, boxH, 20, 20);
         g.setStroke(new BasicStroke(1));
 
-        //Titulo
+        // Titulo
         g.setFont(new Font("Monospaced", Font.BOLD, 36));
         g.setColor(new Color(150, 150, 255));
         FontMetrics fm = g.getFontMetrics();
         g.drawString(mensajeVictoriaPvP,
                 (ANCHO - fm.stringWidth(mensajeVictoriaPvP)) / 2, boxY + 80);
 
-        //Botones
-        dibujarBotonOverlay(g, boxX + 20,  boxY + 160, 140, 44,
-                            "PLAY AGAIN [R]",  new Color(60, 60, 180));
+        // Botones
+        dibujarBotonOverlay(g, boxX + 20, boxY + 160, 140, 44,
+                "PLAY AGAIN [R]", new Color(60, 60, 180));
         dibujarBotonOverlay(g, boxX + 180, boxY + 160, 140, 44,
-                            "SEL. LEVEL [L]",  new Color(50, 160, 50));
+                "SEL. LEVEL [L]", new Color(50, 160, 50));
         dibujarBotonOverlay(g, boxX + 340, boxY + 160, 140, 44,
-                            "MENU [M]",        new Color(160, 60, 60));
+                "MENU [M]", new Color(160, 60, 60));
     }
 
     /**
@@ -650,7 +673,7 @@ public class GameScreen extends JPanel {
 
         }
     }
-    
+
     /**
      * Dibuja el mensaje de confirmacion de la partida guardada
      * 
@@ -723,7 +746,7 @@ public class GameScreen extends JPanel {
     public void mostrarPausa() {
         this.mostrandoPausa = true;
     }
-    
+
     /**
      * Activa o desactiva el modo PvP en la vista.
      *
@@ -744,7 +767,7 @@ public class GameScreen extends JPanel {
         this.mostrandoVictoria = false;
         this.mostrandoDerrota = false;
     }
-    
+
     /**
      * Muestra un mensaje temporal de partida guardada.
      */

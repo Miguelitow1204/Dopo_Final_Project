@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 /**
  * Contrato para entidades que participan en deteccion de colisiones.
+ * 
  * @author (MurilloRubiano)
  * @version (1.0)
  */

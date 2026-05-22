@@ -49,13 +49,13 @@ public class LectorNivel {
                 nivel.setZonaInicio(new ZonaSegura(
                         new Posicion(Double.parseDouble(c[0]), Double.parseDouble(c[1])),
                         Integer.parseInt(c[2]), Integer.parseInt(c[3]), TipoZona.INICIO));
-                        
+
             } else if (key.equals("ZONA_INTERMEDIA")) {
                 String[] c = value.split(",");
                 nivel.setZonaIntermedia(new ZonaSegura(
                         new Posicion(Double.parseDouble(c[0]), Double.parseDouble(c[1])),
                         Integer.parseInt(c[2]), Integer.parseInt(c[3]), TipoZona.INTERMEDIA));
-                        
+
             } else if (key.equals("ZONA_META")) {
                 String[] c = value.split(",");
                 nivel.setZonaMeta(new ZonaSegura(
@@ -72,6 +72,14 @@ public class LectorNivel {
                 String[] c = value.split(",");
                 nivel.agregarMoneda(new Moneda(
                         new Posicion(Double.parseDouble(c[0]), Double.parseDouble(c[1]))));
+
+            } else if (key.equals("MONEDA_SKIN")) {
+                String[] c = value.split(",");
+                double x = Double.parseDouble(c[0]);
+                double y = Double.parseDouble(c[1]);
+                String skinStr = c[2].trim();
+                TipoPersonaje tipoSkin = Jugador.skinToTipo(skinStr);
+                nivel.agregarMoneda(new MonedaSkin(new Posicion(x, y), tipo));
 
             } else if (key.equals("ENEMIGO_LINEAL")) {
                 String[] c = value.split(",");
@@ -93,7 +101,7 @@ public class LectorNivel {
                 double velAngular = Double.parseDouble(c[3]);
                 nivel.agregarEnemigo(new EnemigoPatrullero(
                         new Posicion(cx, cy), radio, velAngular));
-            } else if (key.equals("ENEMIGO_ACELERADO")){
+            } else if (key.equals("ENEMIGO_ACELERADO")) {
                 String[] c = value.split(",");
                 double x = Double.parseDouble(c[0]);
                 double y = Double.parseDouble(c[1]);
@@ -108,13 +116,13 @@ public class LectorNivel {
             } else if (key.equals("FUENTE_VIDA")) {
                 String[] c = value.split(",");
                 nivel.agregarFuenteVida(new FuenteVida(
-                        new Posicion(Double.parseDouble(c[0]), 
-                        Double.parseDouble(c[1]))));
-            } else if (key.equals("BOMBA")){
+                        new Posicion(Double.parseDouble(c[0]),
+                                Double.parseDouble(c[1]))));
+            } else if (key.equals("BOMBA")) {
                 String[] c = value.split(",");
                 nivel.agregarBomba(new Bomba(
                         new Posicion(Double.parseDouble(c[0]),
-                        Double.parseDouble(c[1]))));
+                                Double.parseDouble(c[1]))));
             }
         }
         reader.close();

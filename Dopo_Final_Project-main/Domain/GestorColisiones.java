@@ -60,7 +60,7 @@ public class GestorColisiones {
     public void verificarColisionesNivel(Nivel nivel) {
         Jugador jugador = nivel.getJugador();
 
-        //Verificar colision con enemigos
+        // Verificar colision con enemigos
         for (Enemigo enemigo : nivel.getEnemigos()) {
             if (enemigo.isActiva() && jugadorTocaEnemigo(jugador, enemigo)) {
                 boolean murio = jugador.perderVida();
@@ -74,43 +74,46 @@ public class GestorColisiones {
             }
         }
 
-        //Verificar colision con monedas
+        // Verificar colision con monedas
         for (Moneda moneda : nivel.getMonedas()) {
             if (moneda.isActiva() && jugadorTocaMoneda(jugador, moneda)) {
+                if (moneda instanceof MonedaSkin) {
+                    jugador.activarEfectoSkin(((MonedaSkin) moneda).getTipoAsociado());
+                }
                 jugador.recogerMoneda(moneda);
             }
         }
-        
-        //Verificar zona intermedia
+
+        // Verificar zona intermedia
         ZonaSegura intermedia = nivel.getZonaIntermedia();
-        if(intermedia != null && intermedia.contiene(nivel.getJugador())){
+        if (intermedia != null && intermedia.contiene(nivel.getJugador())) {
             nivel.getJugador().setPosicionInicial(new Posicion(intermedia.getPosicion().getX() + 10,
-                                                               intermedia.getPosicion().getY() + intermedia.getAlto()/2));
+                    intermedia.getPosicion().getY() + intermedia.getAlto() / 2));
         }
-        
+
         // Verificar fuentes de vida
         for (FuenteVida fuente : nivel.getFuentesVida()) {
             if (fuente.isActiva() && detectarColision(jugador, fuente)) {
                 fuente.activar(jugador);
             }
         }
-        
-        //Verificar bombas - destruyen al jugador y a los enemigos
-        for(Bomba bomba : nivel.getBombas()){
-            if(bomba.isActiva()){
-                //Con jugador
-                if(detectarColision(jugador, bomba)){
+
+        // Verificar bombas - destruyen al jugador y a los enemigos
+        for (Bomba bomba : nivel.getBombas()) {
+            if (bomba.isActiva()) {
+                // Con jugador
+                if (detectarColision(jugador, bomba)) {
                     bomba.explotar();
                     jugador.perderVida();
-                    for(Moneda m : nivel.getMonedas()){
+                    for (Moneda m : nivel.getMonedas()) {
                         m.reiniciar();
                     }
                     return;
                 }
-                
-                //Con enemigos
-                for(Enemigo enemigo : nivel.getEnemigos()){
-                    if(detectarColision(enemigo, bomba)){
+
+                // Con enemigos
+                for (Enemigo enemigo : nivel.getEnemigos()) {
+                    if (detectarColision(enemigo, bomba)) {
                         bomba.explotar();
                         enemigo.setActiva(false);
                         return;
@@ -137,7 +140,7 @@ public class GestorColisiones {
             }
         }
     }
-    
+
     /**
      * Verifica si los dos jugadores colisionan entre si.
      * En ese caso ambos pierden una vida y regresan a su punto de inicio.
@@ -158,63 +161,77 @@ public class GestorColisiones {
     public void verificarColisionesNivelPvP(Nivel nivel) {
         Jugador j1 = nivel.getJugador();
         Jugador j2 = nivel.getJugador2();
-        
-        //Colision P1 con enemigos
-        for(Enemigo enemigo : nivel.getEnemigos()){
-            if(jugadorTocaEnemigo(j1, enemigo)){
+
+        // Colision P1 con enemigos
+        for (Enemigo enemigo : nivel.getEnemigos()) {
+            if (jugadorTocaEnemigo(j1, enemigo)) {
                 boolean murio = j1.perderVida();
-                if(murio){
+                if (murio) {
+                    j1.restaurarSkinOriginal();
                     j1.setMonedasRecogidas(0);
                     j2.setMonedasRecogidas(0);
-                    for(Moneda m : nivel.getMonedas()){
+                    for (Moneda m : nivel.getMonedas()) {
                         m.reiniciar();
                     }
                 }
                 return;
             }
         }
-        
-        //Colision P2 con enemigos
-        for(Enemigo enemigo : nivel.getEnemigos()){
-            if(jugadorTocaEnemigo(j2, enemigo)){
+
+        // Colision P2 con enemigos
+        for (Enemigo enemigo : nivel.getEnemigos()) {
+            if (jugadorTocaEnemigo(j2, enemigo)) {
                 boolean murio = j2.perderVida();
-                if(murio){
+                if (murio) {
+                    j2.restaurarSkinOriginal();
                     j1.setMonedasRecogidas(0);
                     j2.setMonedasRecogidas(0);
-                    for(Moneda m : nivel.getMonedas()){
+                    for (Moneda m : nivel.getMonedas()) {
                         m.reiniciar();
                     }
                 }
                 return;
             }
         }
-        
-        //Colision entre jugadores
-        if(jugadoresColisionan(j1, j2)){
+
+        // Colision entre jugadores
+        if (jugadoresColisionan(j1, j2)) {
             boolean murioJ1 = j1.perderVida();
             boolean murioJ2 = j2.perderVida();
-            if(murioJ1 || murioJ2){
+            if (murioJ1 || murioJ2) {
+                if (murioJ1)
+                    j1.restaurarSkinOriginal();
+                if (murioJ2)
+                    j2.restaurarSkinOriginal();
                 j1.setMonedasRecogidas(0);
                 j2.setMonedasRecogidas(0);
-                for(Moneda m : nivel.getMonedas()){
+                for (Moneda m : nivel.getMonedas()) {
                     m.reiniciar();
                 }
             }
             return;
         }
-        
-        //P1 recoge monedas
-        for(Moneda moneda : nivel.getMonedas()){
-            if(moneda.isActiva() && jugadorTocaMoneda(j1, moneda)){
+
+        // P1 recoge monedas
+        for (Moneda moneda : nivel.getMonedas()) {
+            if (moneda.isActiva() && jugadorTocaMoneda(j1, moneda)) {
+                if (moneda instanceof MonedaSkin) {
+                    j1.activarEfectoSkin(((MonedaSkin) moneda).getTipoAsociado());
+                }
                 j1.recogerMoneda(moneda);
             }
         }
-        
-        //P2 recoge monedas
-        for(Moneda moneda : nivel.getMonedas()){
-            if(moneda.isActiva() && jugadorTocaMoneda(j2, moneda)){
+
+        // P2 recoge monedas
+        for (Moneda moneda : nivel.getMonedas()) {
+            if (moneda.isActiva() && jugadorTocaMoneda(j2, moneda)) {
+
+                if (moneda instanceof MonedaSkin) {
+                    j2.activarEfectoSkin(((MonedaSkin) moneda).getTipoAsociado());
+                }
                 j2.recogerMoneda(moneda);
             }
         }
+
     }
 }

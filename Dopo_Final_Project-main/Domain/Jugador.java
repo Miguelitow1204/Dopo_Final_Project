@@ -20,9 +20,13 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
     private int muertes;
     private boolean escudoActivo;
     private int velocidadOriginal;
-    
+    private TipoPersonaje tipoOriginal;
+    private boolean bajoEfectoSkin = false;
+    private int monedasBajoEfecto = 0;
+    private static final int MONEDAS_PARA_RESTAURAR = 3;
+
     private int framesSinDaño = 0;
-    private static final int FRAMES_INVULNERABLE = 90; //1.5 sec a 60 FPS
+    private static final int FRAMES_INVULNERABLE = 90; // 1.5 sec a 60 FPS
 
     /**
      * Crea un jugador con nombre, tipo y posicion inicial.
@@ -35,6 +39,7 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
         super(posicion, 20, 20);
         this.nombre = nombre;
         this.tipoPersonaje = tipoPersonaje;
+        this.tipoOriginal = tipoPersonaje;
         this.posicionInicial = posicion.clonar();
         this.monedasRecogidas = 0;
         this.muertes = 0;
@@ -131,14 +136,16 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
         // Movimiento procesado por el controlador
     }
 
-    /**
-     * Registra la recoleccion de una moneda.
-     *
-     * @param moneda moneda recolectada.
-     */
     public void recogerMoneda(Moneda moneda) {
         moneda.recoger();
         monedasRecogidas++;
+        if (bajoEfectoSkin && !(moneda instanceof MonedaSkin)) {
+            monedasBajoEfecto++;
+            if (monedasBajoEfecto >= MONEDAS_PARA_RESTAURAR) {
+                restaurarSkinOriginal();
+
+            }
+        }
     }
 
     /**
@@ -150,36 +157,37 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
      * @return true si el jugador murio, false si el escudo absorb el golpe.
      */
     public boolean perderVida() {
-        //Si esta en periodo de invulnerabilidad, ignorar el golpe
-        if(framesSinDaño > 0){
+        // Si esta en periodo de invulnerabilidad, ignorar el golpe
+        if (framesSinDaño > 0) {
             return false;
         }
         framesSinDaño = FRAMES_INVULNERABLE;
-        
+
         if (tipoPersonaje == TipoPersonaje.VERDE && escudoActivo) {
-            //Primer golpe: pierde escudo y velocidad, no muere, monedas intactas
+            // Primer golpe: pierde escudo y velocidad, no muere, monedas intactas
             escudoActivo = false;
             velocidad = (int) (velocidadOriginal * 0.7);
             return false;
         }
-        //Segundo hit (verde sin escudo) o cualquier hit(rojo/azul): muerte real
+        // Segundo hit (verde sin escudo) o cualquier hit(rojo/azul): muerte real
         muertes++;
         monedasRecogidas = 0;
         reiniciarPosicion();
+        restaurarSkinOriginal();
         if (tipoPersonaje == TipoPersonaje.VERDE) {
-            //Restaurar escudo y velocidad al morir
+            // Restaurar escudo y velocidad al morir
             escudoActivo = true;
             velocidad = velocidadOriginal;
-        }   
+        }
         return true;
     }
-    
+
     /**
      * Reduce el contador de invulnerabilidad cada frame
      * Debe llamarse en cada tick del game loop
      */
-    public void actualizarInvulnerabilidad(){
-        if(framesSinDaño > 0){
+    public void actualizarInvulnerabilidad() {
+        if (framesSinDaño > 0) {
             framesSinDaño--;
         }
     }
@@ -284,7 +292,7 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
     public TipoPersonaje getTipoPersonaje() {
         return tipoPersonaje;
     }
-    
+
     /**
      * Otorga un punto de vida adicional al jugador.
      * Para el verde restaura el escudo si lo habia perdido.
@@ -294,8 +302,80 @@ public class Jugador extends EntidadJuego implements Movible, Colisionable, Seri
             escudoActivo = true;
             velocidad = velocidadOriginal;
         }
-        //Para rojo y azul simplemente registramos la vida extra
-        //como invulnerabilidad temporal
+        // Para rojo y azul simplemente registramos la vida extra
+        // como invulnerabilidad temporal
         framesSinDaño = FRAMES_INVULNERABLE * 2;
+    }
+
+    public boolean isBajoEfectoSkin() {
+        return bajoEfectoSkin;
+    }
+
+    public void activarEfectoSkin(TipoPersonaje nuevoTipo) {
+        monedasBajoEfecto = 0;
+
+        // Si la moneda es del mismo color que el tipo ACTUAL, avanzar al siguiente
+        if (nuevoTipo == this.tipoPersonaje) {
+            switch (this.tipoPersonaje) {
+                case ROJO:
+                    nuevoTipo = TipoPersonaje.AZUL;
+                    break;
+                case AZUL:
+                    nuevoTipo = TipoPersonaje.VERDE;
+                    break;
+                case VERDE:
+                    nuevoTipo = TipoPersonaje.ROJO;
+                    break;
+            }
+        }
+
+        bajoEfectoSkin = true;
+        this.tipoPersonaje = nuevoTipo;
+        switch (nuevoTipo) {
+            case ROJO:
+                velocidad = 3;
+                ancho = 20;
+                alto = 20;
+                escudoActivo = false;
+                break;
+            case AZUL:
+                velocidad = 5;
+                ancho = 30;
+                alto = 30;
+                escudoActivo = false;
+                break;
+            case VERDE:
+                velocidad = 3;
+                ancho = 20;
+                alto = 20;
+                escudoActivo = true;
+                break;
+        }
+    }
+
+    public void restaurarSkinOriginal() {
+        bajoEfectoSkin = false;
+        monedasBajoEfecto = 0;
+        this.tipoPersonaje = tipoOriginal;
+        switch (tipoOriginal) {
+            case ROJO:
+                velocidad = 3;
+                ancho = 20;
+                alto = 20;
+                escudoActivo = false;
+                break;
+            case AZUL:
+                velocidad = 5;
+                ancho = 30;
+                alto = 30;
+                escudoActivo = false;
+                break;
+            case VERDE:
+                velocidad = 3;
+                ancho = 20;
+                alto = 20;
+                escudoActivo = true;
+                break;
+        }
     }
 }
