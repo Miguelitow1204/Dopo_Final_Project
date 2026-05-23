@@ -8,10 +8,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 /**
- * Controlador principal del ciclo de juego, entrada de teclado y estados.
+ * Controlador principal del ciclo de juego, entrada de teclado y gestión de
+ * estados.
+ *
  * 
- * @author Murillo-Rubiano
- * @version 2.0
+ * Gestiona el bucle principal (timers), la lectura de entrada de teclado,
+ * la lógica de colisiones y las transiciones entre pantallas y niveles.
+ * Soporta modos PvP (player vs player) y PvM (player vs máquina) con
+ * configuración de tipo y estrategia de la máquina.
+ *
+ *
+ * 
+ * @author MurilloRubiano
+ * @version 4.0
  */
 public class ControladorJuego implements ActionListener {
 
@@ -26,12 +35,12 @@ public class ControladorJuego implements ActionListener {
 
     private static final int FPS = 60;
     private static final int INTERVALO_MS = 1000 / FPS;
-    
-    private boolean modoPvP; //Indica si el juego esta en modo PvP
-    private TipoPersonaje tipoP2; //Tipo de personaje de P2 
-    
-    private boolean modoPvM; //indica si el juego esta en modo player vs maquina
-    private EstrategiaMaquina estrategiaMaquina; //Estrategia de movimiento de la maquina
+
+    private boolean modoPvP; // Indica si el juego esta en modo PvP
+    private TipoPersonaje tipoP2; // Tipo de personaje de P2
+
+    private boolean modoPvM; // indica si el juego esta en modo player vs maquina
+    private EstrategiaMaquina estrategiaMaquina; // Estrategia de movimiento de la maquina
 
     /**
      * Construye el controlador del juego y configura timers y entrada.
@@ -69,7 +78,7 @@ public class ControladorJuego implements ActionListener {
             }
         });
     }
-    
+
     /**
      * Construye el controlador en modo PvP con dos jugadores.
      *
@@ -83,7 +92,7 @@ public class ControladorJuego implements ActionListener {
         this.modoPvP = true;
         this.tipoP2 = tipoP2;
     }
-    
+
     /**
      * construye el controlador en modo PvM con estrategia de la maquina
      * 
@@ -94,7 +103,7 @@ public class ControladorJuego implements ActionListener {
      * @param estrategiaMaquina
      */
     public ControladorJuego(Juego juego, GameScreen gameScreen, PrincipalWindow window, TipoPersonaje tipoP2,
-                            EstrategiaMaquina estrategiaMaquina){
+            EstrategiaMaquina estrategiaMaquina) {
         this(juego, gameScreen, window, tipoP2);
         this.modoPvM = true;
         this.modoPvP = false;
@@ -108,15 +117,15 @@ public class ControladorJuego implements ActionListener {
         juego.iniciar();
         Nivel nivel = juego.getNivelActual();
 
-        //Configurar jugador 2 en modo PvP
+        // Configurar jugador 2 en modo PvP
         if (modoPvP || modoPvM) {
             Jugador jugador2 = new Jugador(new Posicion(nivel.getZonaMeta().getPosicion().getX() + 30,
-                nivel.getZonaMeta().getPosicion().getY() + nivel.getZonaMeta().getAlto() / 2), "Player2", tipoP2);
+                    nivel.getZonaMeta().getPosicion().getY() + nivel.getZonaMeta().getAlto() / 2), "Player2", tipoP2);
             nivel.setJugador2(jugador2);
             jugador2.setPosicionInicial(new Posicion(
                     nivel.getZonaMeta().getPosicion().getX() + 30,
-                    nivel.getZonaMeta().getPosicion().getY() + 
-                    nivel.getZonaMeta().getAlto() / 2));
+                    nivel.getZonaMeta().getPosicion().getY() +
+                            nivel.getZonaMeta().getAlto() / 2));
             nivel.setModoPvP(true);
             gameScreen.setModoPvP(true);
         }
@@ -137,7 +146,7 @@ public class ControladorJuego implements ActionListener {
         temporizadorJuego.stop();
         temporizadorSegundo.stop();
     }
-    
+
     /**
      * Reanuda una partida cargada desde archivo sin reiniciar el estado.
      */
@@ -239,20 +248,25 @@ public class ControladorJuego implements ActionListener {
                     juego.getNivelActual(), prevX, prevY, jugador);
         }
     }
-    
+
     /**
      * Lee entrada del teclado para el jugador 2 (flechas).
      */
     private void procesarEntradaP2() {
         Jugador jugador2 = juego.getNivelActual().getJugador2();
-        if (jugador2 == null) return;
+        if (jugador2 == null)
+            return;
 
         int dx = 0, dy = 0;
 
-        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_UP))    dy = -1;
-        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_DOWN))  dy = 1;
-        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_LEFT))  dx = -1;
-        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_RIGHT)) dx = 1;
+        if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_UP))
+            dy = -1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_DOWN))
+            dy = 1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_LEFT))
+            dx = -1;
+        else if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_RIGHT))
+            dx = 1;
 
         if (dx != 0 || dy != 0) {
             double prevX = jugador2.getPosicion().getX();
@@ -273,41 +287,41 @@ public class ControladorJuego implements ActionListener {
                     juego.getNivelActual(), prevX, prevY, jugador2);
         }
     }
-    
+
     /**
      * calcula y aplica el movimiento de la maquina segun su estrategia
      */
-    private void procesarMovimientoMaquina(){
+    private void procesarMovimientoMaquina() {
         Jugador maquina = juego.getNivelActual().getJugador2();
-        if(maquina == null || estrategiaMaquina == null){
+        if (maquina == null || estrategiaMaquina == null) {
             return;
         }
         int[] movimiento = estrategiaMaquina.calcularMovimiento(maquina, juego.getNivelActual());
-        
+
         int dx = movimiento[0];
         int dy = movimiento[1];
-        
-        if(dx != 0 || dy != 0){
+
+        if (dx != 0 || dy != 0) {
             double prevX = maquina.getPosicion().getX();
             double prevY = maquina.getPosicion().getY();
-            
+
             maquina.mover(dx, dy);
-            
+
             double newX = maquina.getPosicion().getX();
             double newY = maquina.getPosicion().getY();
-            
+
             java.awt.Rectangle limites = juego.getNivelActual().getLimitesJugables();
-            
-            if(newX < limites.getMinX() || newX + maquina.getAncho() > limites.getMaxX() ||
-               newY < limites.getMinY() || newY + maquina.getAlto() > limites.getMaxY()){
-                   maquina.getPosicion().setX(prevX);
-                   maquina.getPosicion().setY(prevY);
+
+            if (newX < limites.getMinX() || newX + maquina.getAncho() > limites.getMaxX() ||
+                    newY < limites.getMinY() || newY + maquina.getAlto() > limites.getMaxY()) {
+                maquina.getPosicion().setX(prevX);
+                maquina.getPosicion().setY(prevY);
             }
-               
-            gestorColisiones.verificarColisionParedes(juego.getNivelActual(), prevX, prevY, maquina);   
+
+            gestorColisiones.verificarColisionParedes(juego.getNivelActual(), prevX, prevY, maquina);
         }
     }
-    
+
     /**
      * Verifica si un jugador colisiona con alguna pared y revierte su posicion.
      *
@@ -336,12 +350,12 @@ public class ControladorJuego implements ActionListener {
                     juego.setEstado(EstadoJuego.JUGANDO);
                     temporizadorSegundo.restart();
                 }
-                
+
                 if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_L)) {
                     detener();
                     window.showLevelsScreen();
                 }
-                
+
                 if (controladorTeclado.isTeclaPresionada(KeyEvent.VK_M)) {
                     detener();
                     window.showMenu();
@@ -422,7 +436,7 @@ public class ControladorJuego implements ActionListener {
             gameScreen.mostrarVictoria();
         }
     }
-    
+
     /**
      * Verifica si alguno de los jugadores gano en modo PvP.
      */

@@ -9,9 +9,19 @@ import java.util.List;
 
 /**
  * Vista principal del juego: render de mapa, entidades, HUD y mensajes.
- * 
+ *
+ * <p>
+ * Esta clase se encarga del renderizado por capas del nivel: fondo,
+ * paredes, zonas seguras, entidades (jugador, enemigos, bombas, monedas)
+ * y la barra de estado (HUD). También muestra overlays modales para
+ * victoria, derrota, pausa y mensajes temporales (por ejemplo "Game saved").
+ * Proporciona métodos públicos que el controlador utiliza para actualizar
+ * el estado mostrado (nivel, muertes, tiempo) y activar vistas específicas
+ * (modo PvP, mensajes y overlays).
+ * </p>
+ *
  * @author (Murillo Rubiano)
- * @version 2.5
+ * @version 4.0
  */
 public class GameScreen extends JPanel {
 

@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  * Gestiona teclas presionadas para consulta continua durante el game loop.
- * Autores: MurilloRubiano con apoyo de Claude Opus 4.6.
+ * Autores: MurilloRubiano
  */
 public class ControladorTeclado implements KeyListener {
 
@@ -68,7 +68,7 @@ public class ControladorTeclado implements KeyListener {
     public Set<Integer> getTeclasPresionadas() {
         return teclasPresionadas;
     }
-    
+
     /**
      * Limpia todas las teclas presionadas actualmente.
      */

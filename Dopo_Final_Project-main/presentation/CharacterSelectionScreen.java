@@ -4,48 +4,70 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CharacterSelectionScreen extends JPanel {
+    /**
+     * Pantalla para la selección de personaje.
+     * <p>
+     * Permite seleccionar la "skin" de los jugadores (P1 y P2) o la máquina,
+     * según el modo de juego configurado en la ventana principal.
+     * Contiene la UI y la lógica mínima para navegar entre la selección y
+     * lanzar la partida o mostrar opciones de estrategia.
+     * 
+     * @author MurilloRubiano
+     * @version 4.0
+     */
 
     private PrincipalWindow window;
     private JButton btnRed, btnBlue, btnGreen;
     private String selectedSkin = "RED";
     private static final Color COLOR_SELECTED = new Color(255, 200, 50);
-    
+
     private String skinP1 = "RED";
     private String skinP2 = "RED";
     private boolean seleccionandoP2 = false;
 
+    /**
+     * Crea la pantalla de selección y la asocia a la ventana principal.
+     * 
+     * @param window Ventana principal que controla modos y navegación
+     */
     public CharacterSelectionScreen(PrincipalWindow window) {
         this.window = window;
         setLayout(new GridBagLayout());
         buildUI();
     }
-    
+
+    /**
+     * Dibuja la interfaz gráfica de fondo y elementos decorativos.
+     * Se usa para crear un fondo temático con franjas y una cuadrícula.
+     * 
+     * @param g Contexto gráfico proporcionado por Swing
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //Fondo oscuro
+        // Fondo oscuro
         g2.setColor(new Color(25, 25, 38));
         g2.fillRect(0, 0, getWidth(), getHeight());
 
-        //Franjas diagonales suaves por personaje
+        // Franjas diagonales suaves por personaje
         int w = getWidth() / 3;
 
-        //Franja roja
+        // Franja roja
         g2.setColor(new Color(180, 40, 40, 40));
         g2.fillRect(0, 0, w, getHeight());
 
-        //Franja azul
+        // Franja azul
         g2.setColor(new Color(40, 80, 180, 40));
         g2.fillRect(w, 0, w, getHeight());
 
-        //Franja verde
+        // Franja verde
         g2.setColor(new Color(40, 160, 60, 40));
         g2.fillRect(w * 2, 0, w, getHeight());
 
-        //Cuadrícula encima
+        // Cuadrícula encima
         g2.setColor(new Color(50, 50, 70, 80));
         int cellSize = 40;
         for (int x = 0; x < getWidth(); x += cellSize) {
@@ -55,7 +77,7 @@ public class CharacterSelectionScreen extends JPanel {
             g2.drawLine(0, y, getWidth(), y);
         }
 
-        //Cuadraditos decorativos de cada personaje
+        // Cuadraditos decorativos de cada personaje
         g2.setColor(new Color(220, 50, 50, 60));
         g2.fillRect(30, 30, 25, 25);
 
@@ -66,17 +88,22 @@ public class CharacterSelectionScreen extends JPanel {
         g2.fillRect(getWidth() - 60, 30, 25, 25);
     }
 
+    /**
+     * Construye y organiza todos los componentes Swing de la pantalla:
+     * título, botones de selección, y controles de navegación.
+     * Llama a `selectSkin` para inicializar la selección por defecto.
+     */
     private void buildUI() {
         removeAll();
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(12, 20, 12, 20);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        //Título
+        // Título
         String tituloTexto = "SELECT YOUR CHARACTER";
         if (window.getModoJuego().equals("PVP")) {
             tituloTexto = seleccionandoP2 ? "PLAYER 2 - SELECT CHARACTER" : "PLAYER 1 - SELECT CHARACTER";
-        } else if(window.getModoJuego().equals("PVM")) {
+        } else if (window.getModoJuego().equals("PVM")) {
             tituloTexto = seleccionandoP2 ? "MACHINE - SELECT CHARACTER" : "PLAYER 1 - SELECT CHARACTER";
         }
 
@@ -84,26 +111,34 @@ public class CharacterSelectionScreen extends JPanel {
         title.setFont(new Font("Monospaced", Font.BOLD, 20));
         title.setForeground(new Color(255, 200, 50));
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 3;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
         add(title, gbc);
 
-        //Botones de personaje
+        // Botones de personaje
         gbc.gridwidth = 1;
         gbc.fill = GridBagConstraints.NONE;
 
-        btnRed   = createSkinButton("BLINKY", "Speed: normal\nSize: normal",  new Color(220, 50, 50));
-        btnBlue  = createSkinButton("INKY",   "Speed: fast\nSize: large",     new Color(50, 100, 220));
-        btnGreen = createSkinButton("CLYDE",  "Speed: normal\nAbsorbs 1 hit", new Color(50, 180, 70));
+        btnRed = createSkinButton("BLINKY", "Speed: normal\nSize: normal", new Color(220, 50, 50));
+        btnBlue = createSkinButton("INKY", "Speed: fast\nSize: large", new Color(50, 100, 220));
+        btnGreen = createSkinButton("CLYDE", "Speed: normal\nAbsorbs 1 hit", new Color(50, 180, 70));
 
-        btnRed.addActionListener(e   -> selectSkin("RED"));
-        btnBlue.addActionListener(e  -> selectSkin("BLUE"));
+        btnRed.addActionListener(e -> selectSkin("RED"));
+        btnBlue.addActionListener(e -> selectSkin("BLUE"));
         btnGreen.addActionListener(e -> selectSkin("GREEN"));
 
-        gbc.gridx = 0; gbc.gridy = 1; add(btnRed,   gbc);
-        gbc.gridx = 1; gbc.gridy = 1; add(btnBlue,  gbc);
-        gbc.gridx = 2; gbc.gridy = 1; add(btnGreen, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        add(btnRed, gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        add(btnBlue, gbc);
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        add(btnGreen, gbc);
 
-        //Botones navegación
+        // Botones navegación
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JButton btnBack = createNavButton("← BACK", new Color(180, 60, 60));
@@ -111,14 +146,17 @@ public class CharacterSelectionScreen extends JPanel {
             seleccionandoP2 = false;
             window.showModeSelection();
         });
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 1;
         add(btnBack, gbc);
 
         JButton btnNext = createNavButton(window.getModoJuego().equals("PVP") && !seleccionandoP2 ? "NEXT ▶" : "PLAY ▶",
-            new Color(255, 200, 50));
+                new Color(255, 200, 50));
         btnNext.setForeground(new Color(30, 30, 40));
         btnNext.addActionListener(e -> confirmarSeleccion());
-        gbc.gridx = 2; gbc.gridy = 2;
+        gbc.gridx = 2;
+        gbc.gridy = 2;
         add(btnNext, gbc);
 
         selectSkin("RED");
@@ -126,16 +164,29 @@ public class CharacterSelectionScreen extends JPanel {
         repaint();
     }
 
+    /**
+     * Marca visualmente la skin seleccionada actual actualizando bordes.
+     * 
+     * @param skin "RED", "BLUE" o "GREEN"
+     */
     private void selectSkin(String skin) {
         selectedSkin = skin;
         btnRed.setBorder(BorderFactory.createLineBorder(
-                skin.equals("RED")   ? COLOR_SELECTED : new Color(220, 50, 50),  skin.equals("RED")   ? 4 : 1));
+                skin.equals("RED") ? COLOR_SELECTED : new Color(220, 50, 50), skin.equals("RED") ? 4 : 1));
         btnBlue.setBorder(BorderFactory.createLineBorder(
-                skin.equals("BLUE")  ? COLOR_SELECTED : new Color(50, 100, 220), skin.equals("BLUE")  ? 4 : 1));
+                skin.equals("BLUE") ? COLOR_SELECTED : new Color(50, 100, 220), skin.equals("BLUE") ? 4 : 1));
         btnGreen.setBorder(BorderFactory.createLineBorder(
-                skin.equals("GREEN") ? COLOR_SELECTED : new Color(50, 180, 70),  skin.equals("GREEN") ? 4 : 1));
+                skin.equals("GREEN") ? COLOR_SELECTED : new Color(50, 180, 70), skin.equals("GREEN") ? 4 : 1));
     }
 
+    /**
+     * Crea un botón estilizado que representa una skin/personaje.
+     * 
+     * @param name        Nombre mostrado del personaje
+     * @param description Texto descriptivo (puede contener '\n' para saltos)
+     * @param color       Color de fondo del botón
+     * @return JButton configurado con estilo del juego
+     */
     private JButton createSkinButton(String name, String description, Color color) {
         JButton btn = new JButton("<html><center><b>" + name + "</b><br><br>" +
                 description.replace("\n", "<br>") + "</center></html>");
@@ -148,6 +199,13 @@ public class CharacterSelectionScreen extends JPanel {
         return btn;
     }
 
+    /**
+     * Crea un botón de navegación (Back, Next/Play) con estilo consistente.
+     * 
+     * @param text Texto del botón
+     * @param bg   Color de fondo
+     * @return JButton configurado para navegación
+     */
     private JButton createNavButton(String text, Color bg) {
         JButton btn = new JButton(text);
         btn.setFont(new Font("Monospaced", Font.BOLD, 15));
@@ -159,14 +217,14 @@ public class CharacterSelectionScreen extends JPanel {
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return btn;
     }
-    
+
     /**
      * Confirma la selección de skin segun el modo de juego
      * En PvP primero selecciona P1 luego P2, en PLAYER arranca directo
      */
-    private void confirmarSeleccion(){
-        if(window.getModoJuego().equals("PVP")){
-            if(!seleccionandoP2){
+    private void confirmarSeleccion() {
+        if (window.getModoJuego().equals("PVP")) {
+            if (!seleccionandoP2) {
                 skinP1 = selectedSkin;
                 seleccionandoP2 = true;
                 selectedSkin = "RED";
@@ -176,13 +234,13 @@ public class CharacterSelectionScreen extends JPanel {
                 seleccionandoP2 = false;
                 window.startGamePvP(skinP1, skinP2);
             }
-        } else if(window.getModoJuego().equals("PVM")){
-            if(!seleccionandoP2){
+        } else if (window.getModoJuego().equals("PVM")) {
+            if (!seleccionandoP2) {
                 skinP1 = selectedSkin;
                 seleccionandoP2 = true;
                 selectedSkin = "RED";
                 buildUI();
-            } else{
+            } else {
                 skinP2 = selectedSkin;
                 seleccionandoP2 = false;
                 window.mostrarSeleccionEstrategia(skinP1, skinP2);
@@ -191,21 +249,23 @@ public class CharacterSelectionScreen extends JPanel {
             window.startGame(selectedSkin);
         }
     }
-    
+
     /**
      * Obtiene la skin seleccionada por P1
+     * 
      * @return skin skin de P1
      */
-    public String getSkinP1(){
+    public String getSkinP1() {
         return skinP1;
     }
-    
+
     /**
      * Obtiene la skin seleccionada por P2
+     * 
      * @return skin skin de P2
      */
-    public String getSkinP2(){
+    public String getSkinP2() {
         return skinP2;
     }
-    
+
 }

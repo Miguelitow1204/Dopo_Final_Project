@@ -11,7 +11,7 @@ import java.io.IOException;
  * Ventana principal Swing que organiza pantallas y arranca partidas.
  * 
  * @author (MurilloRubiano)
- * @version (2.2)
+ * @version (4.0)
  */
 public class PrincipalWindow extends JFrame {
 
@@ -26,14 +26,14 @@ public class PrincipalWindow extends JFrame {
     private CardLayout cardLayout;
     private JPanel container;
     private ControladorJuego controladorJuego;
-    
-    private int nivelesDesbloqueados = 1; //Numero de niveles desbloqueados en la sesion actual
+
+    private int nivelesDesbloqueados = 1; // Numero de niveles desbloqueados en la sesion actual
     private int nivelSeleccionado = 1; // Nivel seleccionado desde la pantalla de levels
-    
+
     private LevelsScreen levelsScreen;
     private MenuScreen menuScreen;
-    
-    private String modoJuego = "PLAYER"; //Modo de juego seleccionado: PLAYER o PvP
+
+    private String modoJuego = "PLAYER"; // Modo de juego seleccionado: PLAYER o PvP
 
     /**
      * Construye la ventana principal y registra las pantallas base.
@@ -110,12 +110,13 @@ public class PrincipalWindow extends JFrame {
                     .forEach(juego::agregarNivel);
         } catch (RuntimeException e) {
             LogErrores.registrar("Error al iniciar el juego", e);
-            JOptionPane.showMessageDialog(this, "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
-                "Error al cargar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this,
+                    "No se pudieron cargar los niveles.\nVerifica la carpeta 'configuraciones/'.",
+                    "Error al cargar", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
-        //Saltar al nivel Seleccionado
+
+        // Saltar al nivel Seleccionado
         juego.irAlNivel(nivelSeleccionado - 1);
 
         GameScreen gameScreen = new GameScreen();
@@ -125,7 +126,7 @@ public class PrincipalWindow extends JFrame {
         controladorJuego = new ControladorJuego(juego, gameScreen, this);
         controladorJuego.iniciar();
     }
-    
+
     /**
      * Inicia el juego en modo Player vs Player.
      *
@@ -157,7 +158,7 @@ public class PrincipalWindow extends JFrame {
         controladorJuego = new ControladorJuego(juego, gameScreen, this, tipoP2);
         controladorJuego.iniciar();
     }
-    
+
     /**
      * Inicia el juego en modo Player vs Maquina
      * 
@@ -165,49 +166,50 @@ public class PrincipalWindow extends JFrame {
      * @param skinMaquina
      * @param estrategia
      */
-    public void startGamePvM(String skinP1, String skinMaquina, EstrategiaMaquina estrategia){
+    public void startGamePvM(String skinP1, String skinMaquina, EstrategiaMaquina estrategia) {
         TipoPersonaje tipoP1 = Jugador.skinToTipo(skinP1);
         TipoPersonaje tipoMaquina = Jugador.skinToTipo(skinMaquina);
-        
+
         Juego juego = new Juego();
-        try{
+        try {
             FabricaNivel.cargarTodos(tipoP1, TOTAL_NIVELES).forEach(juego::agregarNivel);
-        } catch(NivelNoEncontradoException e){
+        } catch (NivelNoEncontradoException e) {
             LogErrores.registrar("Error al iniciar PvM.", e);
-            JOptionPane.showMessageDialog(this, "No se pudieron cargar los niveles.", "Error al cargar", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los niveles.", "Error al cargar",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
-        
+
         juego.irAlNivel(nivelSeleccionado - 1);
-        
+
         GameScreen gameScreen = new GameScreen();
         container.add(gameScreen, GAME_SCREEN);
         cardLayout.show(container, GAME_SCREEN);
-        
+
         controladorJuego = new ControladorJuego(juego, gameScreen, this, tipoMaquina, estrategia);
         controladorJuego.iniciar();
     }
-    
+
     /**
      * Muestra un dialog para seleccionar la estrategia de la maquina
      * 
      * @param skinP1
      * @param skinMaquina
      */
-    public void mostrarSeleccionEstrategia(String skinP1, String skinMaquina){
-        String[] opciones = {"Random","Expert"};
+    public void mostrarSeleccionEstrategia(String skinP1, String skinMaquina) {
+        String[] opciones = { "Random", "Expert" };
         int seleccion = JOptionPane.showOptionDialog(this, "Select type of machine:", "Machine Mode",
-                                                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
-                                                     null, opciones, opciones[0]);
+                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                null, opciones, opciones[0]);
         EstrategiaMaquina estrategia;
-        if(seleccion == 1){
+        if (seleccion == 1) {
             estrategia = new MaquinaExperta();
         } else {
             estrategia = new MaquinaAleatoria();
         }
         startGamePvM(skinP1, skinMaquina, estrategia);
     }
-    
+
     /**
      * Abre un explorador de archivos para guardar la partida actual.
      *
@@ -234,7 +236,7 @@ public class PrincipalWindow extends JFrame {
             }
         }
     }
-    
+
     /**
      * Abre un explorador de archivos para cargar una partida guardada.
      */
@@ -262,7 +264,7 @@ public class PrincipalWindow extends JFrame {
             }
         }
     }
-    
+
     /**
      * Desbloquea el siguiente nivel si no se ha alcanzado el maximo.
      * Se llama cuando el jugador completa el nivel actual.
@@ -300,22 +302,22 @@ public class PrincipalWindow extends JFrame {
     public int getNivelSeleccionado() {
         return nivelSeleccionado;
     }
-    
+
     /**
      * Define el modo de juego seleccionado
      * 
      * @param modo modo de juego
      */
-    public void setModoJuego(String modo){
+    public void setModoJuego(String modo) {
         this.modoJuego = modo;
     }
-    
+
     /**
      * Obtiene el modo de juego seleccionado
      * 
      * @return modo de juego actual
      */
-    public String getModoJuego(){
+    public String getModoJuego() {
         return modoJuego;
     }
 
