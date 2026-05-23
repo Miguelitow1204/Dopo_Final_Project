@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=MenuScreen
+comment0.text=\r\n\ Pantalla\ del\ men\u00FA\ principal\ del\ juego.\r\n\r\n\ <p>\r\n\ Construye\ la\ interfaz\ del\ men\u00FA\ principal\ con\ opciones\ para\ iniciar\r\n\ una\ nueva\ partida,\ cargar\ una\ partida\ existente\ y\ navegar\ al\ selector\r\n\ de\ niveles.\ Incluye\ render\ simple\ de\ fondo\ y\ utilidades\ para\ reconstruir\r\n\ la\ interfaz\ cuando\ cambie\ el\ estado\ (por\ ejemplo,\ si\ existe\ una\ partida\r\n\ guardada).\r\n\ </p>\r\n\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 4.0\r\n
 comment1.params=window
 comment1.target=MenuScreen(PrincipalWindow)
+comment1.text=\r\n\ Construye\ la\ pantalla\ del\ men\u00FA\ y\ configura\ la\ UI\ inicial.\r\n\r\n\ @param\ window\ Ventana\ principal\ para\ navegaci\u00F3n\ entre\ pantallas\r\n
 comment2.params=g
 comment2.target=void\ paintComponent(java.awt.Graphics)
 comment3.params=

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=GameScreen
-comment0.text=\r\n\ Vista\ principal\ del\ juego\:\ render\ de\ mapa,\ entidades,\ HUD\ y\ mensajes.\r\n\ \r\n\ @author\ (Murillo\ Rubiano)\r\n\ @version\ 2.5\r\n
+comment0.text=\r\n\ Vista\ principal\ del\ juego\:\ render\ de\ mapa,\ entidades,\ HUD\ y\ mensajes.\r\n\r\n\ <p>\r\n\ Esta\ clase\ se\ encarga\ del\ renderizado\ por\ capas\ del\ nivel\:\ fondo,\r\n\ paredes,\ zonas\ seguras,\ entidades\ (jugador,\ enemigos,\ bombas,\ monedas)\r\n\ y\ la\ barra\ de\ estado\ (HUD).\ Tambi\u00E9n\ muestra\ overlays\ modales\ para\r\n\ victoria,\ derrota,\ pausa\ y\ mensajes\ temporales\ (por\ ejemplo\ "Game\ saved").\r\n\ Proporciona\ m\u00E9todos\ p\u00FAblicos\ que\ el\ controlador\ utiliza\ para\ actualizar\r\n\ el\ estado\ mostrado\ (nivel,\ muertes,\ tiempo)\ y\ activar\ vistas\ espec\u00EDficas\r\n\ (modo\ PvP,\ mensajes\ y\ overlays).\r\n\ </p>\r\n\r\n\ @author\ (Murillo\ Rubiano)\r\n\ @version\ 4.0\r\n
 comment1.params=
 comment1.target=GameScreen()
 comment1.text=\r\n\ Crea\ el\ panel\ de\ juego\ y\ configura\ propiedades\ de\ render.\r\n

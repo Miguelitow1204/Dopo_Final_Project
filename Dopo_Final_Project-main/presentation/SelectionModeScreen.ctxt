@@ -1,11 +1,15 @@
 #BlueJ class context
 comment0.target=SelectionModeScreen
+comment0.text=\r\n\ Pantalla\ de\ selecci\u00F3n\ de\ modo\ de\ juego.\r\n\r\n\ <p>\r\n\ Proporciona\ la\ interfaz\ para\ elegir\ el\ modo\ de\ juego\:\ jugador\ \u00FAnico,\r\n\ jugador\ contra\ jugador\ (PvP)\ o\ jugador\ contra\ m\u00E1quina\ (PvM).\ La\ pantalla\r\n\ es\ principalmente\ una\ vista\ que\ delega\ la\ navegaci\u00F3n\ y\ los\ cambios\ de\r\n\ estado\ en\ la\ `PrincipalWindow`.\r\n\ </p>\r\n\r\n\ <p>\r\n\ Incluye\ render\ de\ fondo\ decorativo\ y\ botones\ para\ cada\ modo\ y\ para\r\n\ regresar\ al\ men\u00FA\ principal.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 4.0\r\n
 comment1.params=window
 comment1.target=SelectionModeScreen(PrincipalWindow)
+comment1.text=\r\n\ Construye\ la\ pantalla\ de\ selecci\u00F3n\ de\ modo\ y\ crea\ la\ UI\ inicial.\r\n\r\n\ @param\ window\ ventana\ principal\ usada\ para\ la\ navegaci\u00F3n\ entre\ pantallas\r\n
 comment2.params=g
 comment2.target=void\ paintComponent(java.awt.Graphics)
+comment2.text=\r\n\ Dibuja\ el\ fondo\ decorativo\ de\ la\ pantalla\:\ fondo\ oscuro,\ cuadr\u00EDcula\r\n\ y\ motivos\ circulares\ que\ representan\ enemigos\ decorativos.\r\n\r\n\ @param\ g\ contexto\ gr\u00E1fico\ proporcionado\ por\ Swing\r\n
 comment3.params=
 comment3.target=void\ buildUI()
 comment4.params=text\ bg
 comment4.target=javax.swing.JButton\ createButton(java.lang.String,\ java.awt.Color)
+comment4.text=\r\n\ Crea\ un\ bot\u00F3n\ estilizado\ para\ esta\ pantalla\ con\ las\ propiedades\r\n\ visuales\ usadas\ en\ la\ interfaz\ (fuente,\ colores,\ tama\u00F1o\ y\ cursor).\r\n\r\n\ @param\ text\ texto\ mostrado\ en\ el\ bot\u00F3n\r\n\ @param\ bg\ \ \ color\ de\ fondo\ del\ bot\u00F3n\r\n\ @return\ JButton\ configurado\r\n
 numComments=5

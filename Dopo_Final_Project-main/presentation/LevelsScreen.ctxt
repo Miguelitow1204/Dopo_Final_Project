@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=LevelsScreen
+comment0.text=\r\n\ Pantalla\ de\ selecci\u00F3n\ de\ niveles.\r\n\r\n\ <p>\r\n\ Renderiza\ una\ vista\ con\ decoraci\u00F3n,\ botones\ para\ los\ niveles\ disponibles\r\n\ y\ un\ bot\u00F3n\ para\ volver\ al\ men\u00FA.\ Los\ botones\ de\ nivel\ reflejan\ el\ progreso\r\n\ (desbloqueados/lockeados)\ y\ liberan\ la\ selecci\u00F3n\ del\ nivel\ hacia\ la\r\n\ `PrincipalWindow`\ cuando\ el\ jugador\ selecciona\ uno.\r\n\r\n\ @author\ MurilloRubiano\r\n\ @version\ 4.0\r\n
 comment1.params=window
 comment1.target=LevelsScreen(PrincipalWindow)
+comment1.text=\r\n\ Construye\ la\ pantalla\ de\ niveles\ y\ crea\ la\ UI\ inicial.\r\n\r\n\ @param\ window\ Ventana\ principal\ para\ navegaci\u00F3n\ y\ selecci\u00F3n\ de\ nivel\r\n
 comment2.params=g
 comment2.target=void\ paintComponent(java.awt.Graphics)
 comment3.params=

@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=ControladorJuego
-comment0.text=\r\n\ Controlador\ principal\ del\ ciclo\ de\ juego,\ entrada\ de\ teclado\ y\ estados.\r\n\ \r\n\ @author\ Murillo-Rubiano\r\n\ @version\ 2.0\r\n
+comment0.text=\r\n\ Controlador\ principal\ del\ ciclo\ de\ juego,\ entrada\ de\ teclado\ y\ gesti\u00F3n\ de\r\n\ estados.\r\n\r\n\ \r\n\ Gestiona\ el\ bucle\ principal\ (timers),\ la\ lectura\ de\ entrada\ de\ teclado,\r\n\ la\ l\u00F3gica\ de\ colisiones\ y\ las\ transiciones\ entre\ pantallas\ y\ niveles.\r\n\ Soporta\ modos\ PvP\ (player\ vs\ player)\ y\ PvM\ (player\ vs\ m\u00E1quina)\ con\r\n\ configuraci\u00F3n\ de\ tipo\ y\ estrategia\ de\ la\ m\u00E1quina.\r\n\r\n\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 4.0\r\n
 comment1.params=juego\ gameScreen\ window
 comment1.target=ControladorJuego(Domain.Juego,\ GameScreen,\ PrincipalWindow)
 comment1.text=\r\n\ Construye\ el\ controlador\ del\ juego\ y\ configura\ timers\ y\ entrada.\r\n\r\n\ @param\ juego\ \ \ \ \ \ modelo\ principal\ del\ juego.\r\n\ @param\ gameScreen\ vista\ de\ render\ del\ juego.\r\n\ @param\ window\ \ \ \ \ ventana\ principal\ para\ cambiar\ de\ pantalla.\r\n

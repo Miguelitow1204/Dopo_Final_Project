@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=PrincipalWindow
-comment0.text=\r\n\ Ventana\ principal\ Swing\ que\ organiza\ pantallas\ y\ arranca\ partidas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (2.2)\r\n
+comment0.text=\r\n\ Ventana\ principal\ Swing\ que\ organiza\ pantallas\ y\ arranca\ partidas.\r\n\ \r\n\ @author\ (MurilloRubiano)\r\n\ @version\ (4.0)\r\n
 comment1.params=
 comment1.target=PrincipalWindow()
 comment1.text=\r\n\ Construye\ la\ ventana\ principal\ y\ registra\ las\ pantallas\ base.\r\n

@@ -140,7 +140,7 @@ MONEDA_SKIN=495,338,GREEN
 # ════════════════════════════════════════════════════════════════
 
 # Justo debajo del GAP superior-izquierda S1 (aterrizaje peligroso)
-BOMBA= 162,45
+BOMBA=162,45
 
 # Justo encima del GAP inferior-derecha S1
 BOMBA=310,350
@@ -160,7 +160,7 @@ BOMBA=685,350
 # ════════════════════════════════════════════════════════════════
 
 # En la zona intermedia, corredor superior (recompensa al llegar al checkpoint)
-FUENTE_VIDA=400, 192
+FUENTE_VIDA=400,192
 
 # En el corredor inferior S2, tras la pared vertical (requiere esquivar E_A4)
 FUENTE_VIDA=622,378
@@ -183,7 +183,7 @@ ENEMIGO_LINEAL=244,181,2.5,H,244,181,354,181
 
 # E_L3: Corredor superior S2 – sub-derecha (post pared vertical)
 #   Patrulla x=609-721.
-ENEMIGO_LINEAL=609,181,2.5,H,609,181,721, 181
+ENEMIGO_LINEAL=609,181,2.5,H,609,181,721,181
 
 # E_L4: Corredor inferior S2 – patrulla VERTICAL
 #   Sube y baja en x=470, de y=348 a y=406, bloqueando la columna.

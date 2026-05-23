@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=ControladorTeclado
-comment0.text=\r\n\ Gestiona\ teclas\ presionadas\ para\ consulta\ continua\ durante\ el\ game\ loop.\r\n\ Autores\:\ MurilloRubiano\ con\ apoyo\ de\ Claude\ Opus\ 4.6.\r\n
+comment0.text=\r\n\ Gestiona\ teclas\ presionadas\ para\ consulta\ continua\ durante\ el\ game\ loop.\r\n\ Autores\:\ MurilloRubiano\r\n
 comment1.params=
 comment1.target=ControladorTeclado()
 comment1.text=\r\n\ Inicializa\ el\ conjunto\ de\ teclas\ actualmente\ presionadas.\r\n
