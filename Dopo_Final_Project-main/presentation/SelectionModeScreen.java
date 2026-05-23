@@ -75,9 +75,12 @@ public class SelectionModeScreen extends JPanel{
         gbc.gridy = 2;
         add(btnPvP, gbc);
         
-        //Boton PvM (deshabilitado por ahora)
-        JButton btnPvM = createButton("PLAYER VS MACHINE", new Color(80, 80, 80));
-        btnPvM.setEnabled(false);
+        //Boton PvM
+        JButton btnPvM = createButton("PLAYER VS MACHINE", new Color(150, 60, 180));
+        btnPvM.addActionListener(e -> {
+            window.setModoJuego("PVM");
+            window.showLevelsScreen();
+        });
         gbc.gridy = 3;
         add(btnPvM, gbc);
         

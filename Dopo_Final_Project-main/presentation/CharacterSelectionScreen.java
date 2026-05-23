@@ -76,6 +76,8 @@ public class CharacterSelectionScreen extends JPanel {
         String tituloTexto = "SELECT YOUR CHARACTER";
         if (window.getModoJuego().equals("PVP")) {
             tituloTexto = seleccionandoP2 ? "PLAYER 2 - SELECT CHARACTER" : "PLAYER 1 - SELECT CHARACTER";
+        } else if(window.getModoJuego().equals("PVM")) {
+            tituloTexto = seleccionandoP2 ? "MACHINE - SELECT CHARACTER" : "PLAYER 1 - SELECT CHARACTER";
         }
 
         JLabel title = new JLabel(tituloTexto);
@@ -173,6 +175,17 @@ public class CharacterSelectionScreen extends JPanel {
                 skinP2 = selectedSkin;
                 seleccionandoP2 = false;
                 window.startGamePvP(skinP1, skinP2);
+            }
+        } else if(window.getModoJuego().equals("PVM")){
+            if(!seleccionandoP2){
+                skinP1 = selectedSkin;
+                seleccionandoP2 = true;
+                selectedSkin = "RED";
+                buildUI();
+            } else{
+                skinP2 = selectedSkin;
+                seleccionandoP2 = false;
+                window.mostrarSeleccionEstrategia(skinP1, skinP2);
             }
         } else {
             window.startGame(selectedSkin);

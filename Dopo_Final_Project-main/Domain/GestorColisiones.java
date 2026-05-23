@@ -232,6 +232,64 @@ public class GestorColisiones {
                 j2.recogerMoneda(moneda);
             }
         }
-
+        
+        //Bomba - afecta a ambos players y enemigos
+        for(Bomba bomba : nivel.getBombas()){
+            if(bomba.isActiva()){
+                if(detectarColision(j1, bomba)){
+                    bomba.explotar();
+                    j1.perderVida();
+                    j1.setMonedasRecogidas(0);
+                    j2.setMonedasRecogidas(0);
+                    for(Moneda m : nivel.getMonedas()){
+                        m.reiniciar();
+                    }
+                    return;
+                }
+                if(detectarColision(j2, bomba)){
+                    bomba.explotar();
+                    j2.perderVida();
+                    j1.setMonedasRecogidas(0);
+                    j2.setMonedasRecogidas(0);
+                    for(Moneda m : nivel.getMonedas()){
+                        m.reiniciar();
+                    }
+                    return;
+                }
+                
+                for(Enemigo enemigo : nivel.getEnemigos()){
+                    if(enemigo.isActiva() && detectarColision(enemigo, bomba)){
+                        bomba.explotar();
+                        enemigo.setActiva(false);
+                        return;
+                    }
+                }
+            }
+        }
+        
+        //Fuentes de vida
+        for(FuenteVida fuente : nivel.getFuentesVida()){
+            if(fuente.isActiva()){
+                if(detectarColision(j1, fuente)){
+                    fuente.activar(j1);
+                }
+                if(detectarColision(j2, fuente)){
+                    fuente.activar(j2);
+                }
+            }
+        }
+        
+        //Zona intermedia
+        ZonaSegura intermedia = nivel.getZonaIntermedia();
+        if(intermedia != null){
+            if(intermedia.contiene(j1)){
+                j1.setPosicionInicial(new Posicion(intermedia.getPosicion().getX() + 10,
+                                                   intermedia.getPosicion().getY() + intermedia.getAlto() / 2));
+            }
+            if(intermedia.contiene(j2)){
+                j2.setPosicionInicial(new Posicion(intermedia.getPosicion().getX() + 10,
+                                                   intermedia.getPosicion().getY() + intermedia.getAlto() / 2));
+            }
+        }
     }
 }

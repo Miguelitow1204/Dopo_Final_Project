@@ -29,6 +29,9 @@ public class ControladorJuego implements ActionListener {
     
     private boolean modoPvP; //Indica si el juego esta en modo PvP
     private TipoPersonaje tipoP2; //Tipo de personaje de P2 
+    
+    private boolean modoPvM; //indica si el juego esta en modo player vs maquina
+    private EstrategiaMaquina estrategiaMaquina; //Estrategia de movimiento de la maquina
 
     /**
      * Construye el controlador del juego y configura timers y entrada.
@@ -80,6 +83,23 @@ public class ControladorJuego implements ActionListener {
         this.modoPvP = true;
         this.tipoP2 = tipoP2;
     }
+    
+    /**
+     * construye el controlador en modo PvM con estrategia de la maquina
+     * 
+     * @param juego
+     * @param gameScreen
+     * @param window
+     * @param tipoP2
+     * @param estrategiaMaquina
+     */
+    public ControladorJuego(Juego juego, GameScreen gameScreen, PrincipalWindow window, TipoPersonaje tipoP2,
+                            EstrategiaMaquina estrategiaMaquina){
+        this(juego, gameScreen, window, tipoP2);
+        this.modoPvM = true;
+        this.modoPvP = false;
+        this.estrategiaMaquina = estrategiaMaquina;
+    }
 
     /**
      * Inicia una nueva partida y arranca el ciclo de actualizacion.
@@ -89,7 +109,7 @@ public class ControladorJuego implements ActionListener {
         Nivel nivel = juego.getNivelActual();
 
         //Configurar jugador 2 en modo PvP
-        if (modoPvP) {
+        if (modoPvP || modoPvM) {
             Jugador jugador2 = new Jugador(new Posicion(nivel.getZonaMeta().getPosicion().getX() + 30,
                 nivel.getZonaMeta().getPosicion().getY() + nivel.getZonaMeta().getAlto() / 2), "Player2", tipoP2);
             nivel.setJugador2(jugador2);
@@ -149,15 +169,18 @@ public class ControladorJuego implements ActionListener {
                 break;
             case JUGANDO:
                 juego.getNivelActual().getJugador().actualizarInvulnerabilidad();
-                if(modoPvP && juego.getNivelActual().getJugador2() != null){
+                if ((modoPvP || modoPvM) && juego.getNivelActual().getJugador2() != null) {
                     juego.getNivelActual().getJugador2().actualizarInvulnerabilidad();
                 }
                 procesarEntrada();
                 if (modoPvP) {
                     procesarEntradaP2();
                 }
+                if (modoPvM) {
+                    procesarMovimientoMaquina();
+                }
                 juego.getNivelActual().actualizar();
-                if (modoPvP) {
+                if (modoPvP || modoPvM) {
                     gestorColisiones.verificarColisionesNivelPvP(juego.getNivelActual());
                     verificarVictoriaPvP();
                 } else {
@@ -248,6 +271,40 @@ public class ControladorJuego implements ActionListener {
             }
             gestorColisiones.verificarColisionParedes(
                     juego.getNivelActual(), prevX, prevY, jugador2);
+        }
+    }
+    
+    /**
+     * calcula y aplica el movimiento de la maquina segun su estrategia
+     */
+    private void procesarMovimientoMaquina(){
+        Jugador maquina = juego.getNivelActual().getJugador2();
+        if(maquina == null || estrategiaMaquina == null){
+            return;
+        }
+        int[] movimiento = estrategiaMaquina.calcularMovimiento(maquina, juego.getNivelActual());
+        
+        int dx = movimiento[0];
+        int dy = movimiento[1];
+        
+        if(dx != 0 || dy != 0){
+            double prevX = maquina.getPosicion().getX();
+            double prevY = maquina.getPosicion().getY();
+            
+            maquina.mover(dx, dy);
+            
+            double newX = maquina.getPosicion().getX();
+            double newY = maquina.getPosicion().getY();
+            
+            java.awt.Rectangle limites = juego.getNivelActual().getLimitesJugables();
+            
+            if(newX < limites.getMinX() || newX + maquina.getAncho() > limites.getMaxX() ||
+               newY < limites.getMinY() || newY + maquina.getAlto() > limites.getMaxY()){
+                   maquina.getPosicion().setX(prevX);
+                   maquina.getPosicion().setY(prevY);
+            }
+               
+            gestorColisiones.verificarColisionParedes(juego.getNivelActual(), prevX, prevY, maquina);   
         }
     }
     

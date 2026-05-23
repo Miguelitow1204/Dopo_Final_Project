@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=EstrategiaMaquina
+comment0.text=\r\n\ Contrato\ para\ las\ estrategias\ de\ movimiento\ de\ la\ m\u00E1quina\ para\ el\ modo\ machine\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=maquina\ nivel
+comment1.target=int[]\ calcularMovimiento(Jugador,\ Nivel)
+comment1.text=\r\n\ Calcula\ el\ siguiente\ movimiento\ de\ la\ m\u00E1quina\r\n\ \r\n\ @param\ maquina\ \ jugador\ controlado\ por\ la\ maquina\r\n\ @param\ nivel\ \ nivel\ actual\ del\ juego\r\n\ @return\ array\ con\ dx\ y\ dy\ del\ movimiento\r\n
+numComments=2
