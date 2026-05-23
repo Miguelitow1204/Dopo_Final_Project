@@ -38,16 +38,25 @@ dependency8.type=UsesDependency
 dependency9.from=CharacterSelectionScreen
 dependency9.to=PrincipalWindow
 dependency9.type=UsesDependency
+<<<<<<< Updated upstream
 objectbench.height=124
 objectbench.width=1342
 package.divider.horizontal=0.600297176820208
 package.divider.vertical=0.796583850931677
 package.editor.height=506
 package.editor.width=1226
+=======
+objectbench.height=125
+objectbench.width=799
+package.divider.horizontal=0.6005961251862891
+package.divider.vertical=0.7914691943127962
+package.editor.height=494
+package.editor.width=1222
+>>>>>>> Stashed changes
 package.editor.x=0
-package.editor.y=0
-package.frame.height=744
-package.frame.width=1382
+package.editor.y=2
+package.frame.height=733
+package.frame.width=1378
 package.numDependencies=13
 package.numTargets=8
 package.showExtends=true

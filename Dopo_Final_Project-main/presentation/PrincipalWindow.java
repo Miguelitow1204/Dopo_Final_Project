@@ -159,6 +159,56 @@ public class PrincipalWindow extends JFrame {
     }
     
     /**
+     * Inicia el juego en modo Player vs Maquina
+     * 
+     * @param skinP1
+     * @param skinMaquina
+     * @param estrategia
+     */
+    public void startGamePvM(String skinP1, String skinMaquina, EstrategiaMaquina estrategia){
+        TipoPersonaje tipoP1 = Jugador.skinToTipo(skinP1);
+        TipoPersonaje tipoMaquina = Jugador.skinToTipo(skinMaquina);
+        
+        Juego juego = new Juego();
+        try{
+            FabricaNivel.cargarTodos(tipoP1, TOTAL_NIVELES).forEach(juego::agregarNivel);
+        } catch(NivelNoEncontradoException e){
+            LogErrores.registrar("Error al iniciar PvM.", e);
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar los niveles.", "Error al cargar", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        juego.irAlNivel(nivelSeleccionado - 1);
+        
+        GameScreen gameScreen = new GameScreen();
+        container.add(gameScreen, GAME_SCREEN);
+        cardLayout.show(container, GAME_SCREEN);
+        
+        controladorJuego = new ControladorJuego(juego, gameScreen, this, tipoMaquina, estrategia);
+        controladorJuego.iniciar();
+    }
+    
+    /**
+     * Muestra un dialog para seleccionar la estrategia de la maquina
+     * 
+     * @param skinP1
+     * @param skinMaquina
+     */
+    public void mostrarSeleccionEstrategia(String skinP1, String skinMaquina){
+        String[] opciones = {"Random","Expert"};
+        int seleccion = JOptionPane.showOptionDialog(this, "Select type of machine:", "Machine Mode",
+                                                     JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+                                                     null, opciones, opciones[0]);
+        EstrategiaMaquina estrategia;
+        if(seleccion == 1){
+            estrategia = new MaquinaExperta();
+        } else {
+            estrategia = new MaquinaAleatoria();
+        }
+        startGamePvM(skinP1, skinMaquina, estrategia);
+    }
+    
+    /**
      * Abre un explorador de archivos para guardar la partida actual.
      *
      * @param juego estado del juego a guardar.

@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=MaquinaAleatoria
+comment0.text=\r\n\ Estrategia\ de\ maquina\ que\ elige\ direcciones\ aleatorias\ de\ movimeinto.\r\n\ \r\n\ @author\ MurilloRubiano\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=MaquinaAleatoria()
+comment1.text=\r\n\ Crea\ una\ maquina\ aleatoria\ con\ movimiento\ inicial\ nulo\r\n
+comment2.params=Maquina\ nivel
+comment2.target=int[]\ calcularMovimiento(Jugador,\ Nivel)
+numComments=3
