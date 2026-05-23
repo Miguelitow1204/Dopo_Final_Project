@@ -1,0 +1,240 @@
+# ════════════════════════════════════════════════════════════════
+#  NIVEL 5 - "LABERINTO DEL CAOS"
+#  Nivel avanzado - Alta dificultad
+#  Autor: MurilloRubiano Con apuyo de Claude opus4.6 para aumento de dificultad del nivel 
+#  ESTRUCTURA:
+#    [INICIO x=0-65] -- SECCION 1 (x:65-368) -- [INTER x=368-433]
+#    -- SECCION 2 (x:433-735) -- [META x=735-800]
+#
+#  Cada sección tiene 3 corredores horizontales separados por
+#  paredes con gaps de 30-35 px que fuerzan un recorrido en zigzag.
+#  Ningún enemigo tiene su ruta dentro de la zona intermedia
+#  (x=368-433).
+#
+#  Area jugable: X 0-800 / Y 155-420
+# ════════════════════════════════════════════════════════════════
+
+NUMERO=5
+TIEMPO=80
+
+# ── Jugador ──────────────────────────────────────────────────────
+# Posición inicial dentro de ZONA_INICIO. El jugador (20x20) queda
+# completamente contenido: x+20=42 <= 65, y+20=297 <= 420.
+JUGADOR=22,277
+
+# ── Zonas Seguras ─────────────────────────────────────────────────
+ZONA_INICIO=0,155,65,265
+ZONA_INTERMEDIA=368,155,65,265
+ZONA_META=735,155,65,265
+
+# ════════════════════════════════════════════════════════════════
+#  PAREDES  –  SECCION 1  (x: 65 → 368)
+#
+#  3 corredores:
+#    SUPERIOR  y = 155 – 220  (65 px)
+#    MEDIO     y = 235 – 330  (95 px)
+#    INFERIOR  y = 345 – 420  (75 px)
+# ════════════════════════════════════════════════════════════════
+
+# -- Separador SUPERIOR S1 (y=220, h=15) -------------------------
+# Cubre x=65-155, luego x=185-270, luego x=305-368
+# GAP izquierdo : x = 155-185 (30 px)  ← única bajada desde corredor sup
+# GAP derecho   : x = 270-305 (35 px)  ← única subida hacia corredor sup
+PARED=65,220,90,15
+PARED=185,220,85,15
+PARED=305,220,63,15
+
+# -- Separador INFERIOR S1 (y=330, h=15) -------------------------
+# GAP izquierdo : x = 125-160 (35 px)  ← única subida desde corredor inf
+# GAP derecho   : x = 290-325 (35 px)  ← única bajada hacia corredor inf
+PARED=65,330,60,15
+PARED=160,330,130,15
+PARED=325,330,43,15
+
+# -- Divisor vertical corredor SUPERIOR S1 -----------------------
+# Bloquea el avance directo en y=155-220 a partir de x=230.
+# El jugador debe bajar al corredor medio para rodearla.
+PARED=230,155,14,65
+
+# -- Divisor vertical corredor INFERIOR S1 -----------------------
+# Bloquea el avance directo en y=345-420 a partir de x=200.
+PARED=200,345,14,75
+
+# ════════════════════════════════════════════════════════════════
+#  PAREDES  –  SECCION 2  (x: 433 → 735)
+#
+#  Misma estructura de 3 corredores, espejada y con gaps
+#  en posiciones distintas para que la ruta no sea simétrica.
+# ════════════════════════════════════════════════════════════════
+
+# -- Separador SUPERIOR S2 (y=220, h=15) -------------------------
+# GAP izquierdo : x = 523-558 (35 px)
+# GAP derecho   : x = 638-673 (35 px)
+PARED=433,220,90,15
+PARED=558,220,80,15
+PARED=673,220,62,15
+
+# -- Separador INFERIOR S2 (y=330, h=15) -------------------------
+# GAP izquierdo : x = 483-518 (35 px)
+# GAP derecho   : x = 668-703 (35 px)
+PARED=433,330,50,15
+PARED=518,330,150,15
+PARED=703,330,32,15
+
+# -- Divisr vertical corredor SUPERIOR S2 -----------------------
+PARED=595,155,14,65
+
+# -- Divisor vertical corredor INFERIOR S2 -----------------------
+PARED=580,345,14,75
+
+# ════════════════════════════════════════════════════════════════
+#  MONEDAS REGULARES  (13 unidades, 10x10 px cada una)
+#  Distribuidas en zonas de alto riesgo de cada corredor.
+# ════════════════════════════════════════════════════════════════
+
+# Corredor superior S1 – sub-izquierda (dentro del patrol de E_L1)
+MONEDA=100,183
+MONEDA=190,183
+
+# Corredor superior S1 – sub-derecha (dentro del patrol de E_L2)
+MONEDA=320,183
+
+# Corredor medio S1 (entre los dos circulares)
+MONEDA=130,275
+MONEDA=340,275
+
+# Corredor inferior S1 (dentro de los dos aceleradores)
+MONEDA=90,378
+MONEDA=280,378
+
+# Corredor superior S2 – sub-izquierda (patrol del acelerador E_A3)
+MONEDA=470,183
+MONEDA=560,183
+
+# Corredor superior S2 – sub-derecha (patrol de E_L3)
+MONEDA=650,183
+MONEDA=710,183
+
+# Corredor medio S2 (dentro de la órbita de los circulares)
+MONEDA=540,275
+MONEDA=670,275
+
+# ════════════════════════════════════════════════════════════════
+#  MONEDAS SKIN  (2 unidades)
+#  Activan cambio de tipo en el jugador.
+#  BLUE  → jugador crece a 30x30 px, velocidad 5 (más difícil esquivar)
+#  GREEN → jugador obtiene/restaura escudo
+# ════════════════════════════════════════════════════════════════
+
+# En el GAP superior-izquierda S1 (zona de transición obligatoria)
+MONEDA_SKIN=165,228,BLUE
+
+# En el GAP inferior-izquierda S2 (zona de transición obligatoria)
+MONEDA_SKIN=495,338,GREEN
+
+# ════════════════════════════════════════════════════════════════
+#  BOMBAS  (5 unidades, 16x16 px)
+#  Colocadas en la salida de los gaps y en el corredor medio.
+#  Al explotar: el jugador pierde vida + monedas se reinician.
+#  Los circulares NO alcanzan estas posiciones (verificado por radio).
+# ════════════════════════════════════════════════════════════════
+
+# Justo debajo del GAP superior-izquierda S1 (aterrizaje peligroso)
+BOMBA= 162,45
+
+# Justo encima del GAP inferior-derecha S1
+BOMBA=310,350
+
+# Centro del corredor medio S1 (entre E_C1 radio máx x=222 y E_C2 radio mín x=268)
+BOMBA=245,282
+
+# Justo debajo del GAP superior-izquierda S2
+BOMBA=535,245
+
+# Justo encima del GAP inferior-derecha S2
+BOMBA=685,350
+
+# ════════════════════════════════════════════════════════════════
+#  FUENTES DE VIDA  (2 unidades, 16x16 px)
+#  Accesibles pero en zonas con riesgo cercano.
+# ════════════════════════════════════════════════════════════════
+
+# En la zona intermedia, corredor superior (recompensa al llegar al checkpoint)
+FUENTE_VIDA=400, 192
+
+# En el corredor inferior S2, tras la pared vertical (requiere esquivar E_A4)
+FUENTE_VIDA=622,378
+
+# ════════════════════════════════════════════════════════════════
+#  ENEMIGOS LINEALES  –  ENEMIGO_LINEAL
+#  Formato: x, y, vel, H/V, pAx, pAy, pBx, pBy
+#  Se mueven horizontalmente (H) o verticalmente (V) entre A y B.
+#
+#  Ninguno tiene puntoB dentro de x=368-433 (zona intermedia).
+# ════════════════════════════════════════════════════════════════
+
+# E_L1: Corredor superior S1 – sub-izquierda
+#   Patrulla x=65-155 (cubre la entrada desde zona inicio).
+ENEMIGO_LINEAL=65,181,2.0,H,65,181,155,181
+
+# E_L2: Corredor superior S1 – sub-derecha (post pared vertical)
+#   Patrulla x=244-354. máx x = 354+14 = 368 (borde zona inter).
+ENEMIGO_LINEAL=244,181,2.5,H,244,181,354,181
+
+# E_L3: Corredor superior S2 – sub-derecha (post pared vertical)
+#   Patrulla x=609-721.
+ENEMIGO_LINEAL=609,181,2.5,H,609,181,721, 181
+
+# E_L4: Corredor inferior S2 – patrulla VERTICAL
+#   Sube y baja en x=470, de y=348 a y=406, bloqueando la columna.
+ENEMIGO_LINEAL=470,380,2.0,V,470,348,470,406
+
+# ════════════════════════════════════════════════════════════════
+#  ENEMIGOS CIRCULARES  –  ENEMIGO_CIRCULAR  (EnemigoPatrullero)
+#  Formato: cx, cy, radio, velAngular (rad/frame; negativo = anti-horario)
+#
+#  Posición del enemigo:
+#    x=cx+radio*cos(a) - 7
+#    y=cy+radio*sin(a) - 7
+#
+#  Todos quedan dentro del corredor medio (y=235-330).
+#  Ninguno alcanza la zona intermedia (x=368-433).
+# ════════════════════════════════════════════════════════════════
+
+# E_C1: Corredor medio S1 – lado izquierdo (sentido horario)
+#   x: 180±35 → [138, 222]   y: 282±35 → [240, 317]  ✓ dentro y=235-330
+ENEMIGO_CIRCULAR=180,282,35,0.06
+
+# E_C2: Corredor medio S1 – lado derecho (sentido anti-horario)
+#   x: 310±35 → [268, 345]   máx lado der = 345+14=359 < 368 ✓
+ENEMIGO_CIRCULAR=310,282,35,-0.06
+
+# E_C3: Corredor medio S2 – lado izquierdo (sentido anti-horario)
+#   x: 520±40 → [473, 553]   y: 282±40 → [235, 315]  ✓
+ENEMIGO_CIRCULAR=520,282,40,-0.07
+
+# E_C4: Corredor medio S2 – lado derecho (sentido horario, más rápido)
+#   x: 650±35 → [608, 685]   685+14=699 < 735 ✓
+ENEMIGO_CIRCULAR=650,282,35,0.08
+
+# ════════════════════════════════════════════════════════════════
+#  ENEMIGOS ACELERADOS  –  ENEMIGO_ACELERADO  (vel real = vel × 2)
+#  Formato: x, y, vel, H/V, pAx, pAy, pBx, pBy
+# ════════════════════════════════════════════════════════════════
+
+# E_A1: Corredor inferior S1 – sub-izquierda  (vel real = 3.0 px/frame)
+#   Patrulla x=65-200. Pared vertical comienza en x=200. máx = 214 < 368 ✓
+ENEMIGO_ACELERADO=65,378,1.5,H,65,378,200,378
+
+# E_A2: Corredor inferior S1 – sub-derecha   (vel real = 3.0 px/frame)
+#   Patrulla x=214-348. máx = 348+14=362 < 368 ✓
+ENEMIGO_ACELERADO=214,378,1.5,H,214,378,348,378
+
+# E_A3: Corredor superior S2 – sub-izquierda  (vel real = 4.0 px/frame)
+#   Cubre casi toda la mitad izquierda del corredor superior S2.
+#   Patrulla x=445-595. Empieza fuera de zona inter (x>433). ✓
+ENEMIGO_ACELERADO=445,181,2.0,H,445,181,595,181
+
+# E_A4: Corredor inferior S2 – sub-derecha    (vel real = 3.0 px/frame)
+#   Empieza después de la pared vertical (x=594) hasta x=715.
+ENEMIGO_ACELERADO=594,378,1.5,H,594,378,715,378
